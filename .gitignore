@@ -1,0 +1,13 @@
+#################
+## RubyMine
+#################
+
+#IDE meta data directory
+.project
+.buildpath
+.idea/
+#output files
+trace.txt
+output*
+result*
+#backup zip

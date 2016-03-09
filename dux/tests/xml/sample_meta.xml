@@ -1,0 +1,18 @@
+<meta id="meta_id">
+    <name>Metadata example</name>
+    <grammar>
+    </grammar>
+    <history>
+        <insert id="change_0_id" date="2015-08-20T19:20:30+01:00">
+            <description>created file</description>
+        </insert>
+    </history>
+    <design id="design_id">
+        <target id="targetiddxcz">something something</target>
+        <thing id="thing1" visible="asdf"/>
+        <legal_parent id="lp_0">
+            <illegal_child id="ic_0"/>
+            <legal_child id="lc_0"/>
+        </legal_parent>
+    </design>
+</meta>
