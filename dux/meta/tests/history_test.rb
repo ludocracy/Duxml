@@ -52,7 +52,7 @@ class HistoryTest < MiniTest::Test
     t.design.find_child('targetiddxcz').content = 'new content'
     c = t.history.first
     assert_equal 'change_content', c.type
-    assert_equal %(Element 'targetiddxcz' of type 'thing' changed content from 'something something' to 'new content'.), c.description
+    assert_equal %(Element 'targetiddxcz' of type 'target' changed content from 'something something' to 'new content'.), c.description
   end
 
   def test_change_param

@@ -14,7 +14,8 @@ module Dux
   end
 
   def load file
-    dux Nokogiri::XML File.open file if File.exists? file
+    xml = Nokogiri::XML(File.open file).root
+    dux xml if File.exists? file
   end
 
   def validate file=nil

@@ -4,8 +4,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../dux/meta/grammar.rb')
 class Meta < DuxObject
 
   def initialize xml_node=nil, args = {}
-    xml_node = Nokogiri::XML File.open xml_node if File.exists?(xml_node.to_s)
-    xml_node = xml_node.root if xml_node.respond_to?(:root)
     super class_to_xml(xml_node), reserved: %w(history grammar)
   end
 
@@ -30,7 +28,9 @@ class Meta < DuxObject
   end
 
   def class_to_xml xml_node
-    if xml_node.xml && xml_node.name != 'meta'
+    xml_node = Nokogiri::XML File.open xml_node if File.exists?(xml_node.to_s)
+    xml_node = xml_node.root if xml_node.respond_to?(:root)
+    if (xml_node = xml_node.xml) && xml_node.name != 'meta'
       new_xml = Nokogiri::XML(%(
         <meta id="temp_id">
           <grammar/>
@@ -40,9 +40,13 @@ class Meta < DuxObject
                 <date>#{Time.now.to_s}</date>
             </insert>
         </meta>)).root
-      design_xml = element 'design'
+      if xml_node.name != 'design'
+        design_xml = element 'design'
+        design_xml << xml_node
+      else
+        design_xml = xml_node
+      end
       new_xml << design_xml
-      design_xml << xml_node
       new_xml
     else
       xml_node
@@ -50,4 +54,4 @@ class Meta < DuxObject
   end
 
   private :class_to_xml
-end # end of Dux class
+end # class Meta
