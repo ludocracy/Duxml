@@ -43,7 +43,7 @@ module DuxObjGuts
   end
 
   def init_reserved child
-    child_class = Module::const_get(child.name.capitalize)
+    child_class = Dux::const_get(child.name.capitalize)
     self << child_class.new(child, reserved: reserved_word_array)
   end
 

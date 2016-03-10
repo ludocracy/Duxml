@@ -1,4 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/dux/meta')
+require File.expand_path(File.dirname(__FILE__) + '/ext/nokogiri')
 
 module Dux
   @current_dux
@@ -16,6 +17,7 @@ module Dux
   def load file
     xml = Nokogiri::XML(File.open file).root
     dux xml if File.exists? file
+    current_dux
   end
 
   def validate file=nil
