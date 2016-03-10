@@ -1,0 +1,10 @@
+<meta id="meta_id">
+    <name>Metadata example</name>
+    <grammar>
+    </grammar>
+    <history>
+        <add id="change_0_id" date="2015-08-20T19:20:30+01:00">
+            <description>created file</description>
+        </add>
+    </history>
+</meta>
