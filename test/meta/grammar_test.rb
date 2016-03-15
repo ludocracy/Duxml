@@ -1,17 +1,21 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../lib/dux/meta')
+require File.expand_path(File.dirname(__FILE__) + '/../../lib/dux')
 require 'minitest/autorun'
 
 class GrammarTest < MiniTest::Test
+  include Dux
+
   def setup
-    sample_template = File.expand_path(File.dirname(__FILE__) + '/../../xml/.design.dux')
-    @meta = Dux::Meta.new sample_template
+    @grammar_file = File.expand_path(File.dirname(__FILE__) + '/../../xml/Dita 1.3 Manual Spec Conversion.xlsx')
+
+    sample_dux = File.expand_path(File.dirname(__FILE__) + '/../../xml/design.xml')
+    @meta = load sample_dux
     @schema_rule = Dux::Rule.new element 'rule', {subject: 'thing'}, '%w(legal_child).include? object.type'
     @content_rule = Dux::Rule.new element 'rule', {subject: 'target'}, %(subject.content != 'something something')
     @change = Dux::NewContent.new nil, {subject: meta.design.find_child(:targetiddxcz), object: ''}
     meta.history.add change, 0
   end
 
-  attr_reader :meta, :schema_rule, :content_rule, :change
+  attr_reader :meta, :schema_rule, :content_rule, :change, :grammar_file
 
   def test_init_pattern
     p = Dux::Pattern.new meta.design.find_child 'targetiddxcz'
@@ -19,6 +23,11 @@ class GrammarTest < MiniTest::Test
     assert_equal 'targetiddxcz', p.subject(meta).id
     assert_equal nil, p.object
     # test compare
+  end
+
+  def test_load_xlsx
+    assert g = Dux::Grammar.new(grammar_file)
+    assert_equal '(data | sort-as | data-about)*, li+', g.first_child.content
   end
 
   def test_rule

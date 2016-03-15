@@ -8,7 +8,7 @@ module Dux
   end
 
   class ChangeContent < Edit
-    def class_to_xml args={}
+    private def class_to_xml args={}
       xml_node = super
       xml_node.content = args[:object].to_s
       xml_node
@@ -29,7 +29,7 @@ module Dux
   end
 
   class ChangeAttribute < Edit
-    def class_to_xml args={}
+    private def class_to_xml args={}
       xml_node = super args
       args[:object].each do |k, v| xml_node[k] = v end if args[:object].is_a?(Hash)
       xml_node
@@ -53,7 +53,7 @@ module Dux
   end
 
   class NewAttribute < Edit
-    def class_to_xml args={}
+    private def class_to_xml args={}
       xml_node = super args
       args[:object].each do |k, v| xml_node[k] = v end if args[:object].is_a?(Hash)
       xml_node

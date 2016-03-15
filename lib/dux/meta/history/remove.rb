@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/change')
 
 module Dux
   class Remove < Change
-    def class_to_xml args={}
+    private def class_to_xml args={}
       super(args) << args[:object].xml
     end
 

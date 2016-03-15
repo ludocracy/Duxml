@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../grammar/pattern')
 
 module Dux
   class Change < Pattern
-    def class_to_xml args={}
+    private def class_to_xml args={}
       xml_node = super args
       xml_node[:date] = Time.now.to_s
       xml_node

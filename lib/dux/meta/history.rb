@@ -13,7 +13,7 @@ module Dux
       super class_to_xml(xml_node), reserved: %w(add remove change_content change_attribute new_content new_attribute error correction instantiate move undo)
     end
 
-    def class_to_xml xml_node
+    private def class_to_xml xml_node
       if xml_node.nil?
         %(<history><add id="change_0" owner="system"><description>file created</description><date>#{Time.now.to_s}</date></add></history>)
       else

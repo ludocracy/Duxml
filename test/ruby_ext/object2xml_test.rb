@@ -1,9 +1,7 @@
 require_relative '../../lib/dux/ruby_ext/object'
 require 'minitest/autorun'
 
-class MooMoo
-
-end
+class MooMoo; end
 
 class Object2XMLTest < MiniTest::Test
   def setup
@@ -16,10 +14,14 @@ class Object2XMLTest < MiniTest::Test
     # Do nothing
   end
 
-  # Fake test
+  def test_file_str_to_xml
+    sample_file_path = File.expand_path(File.dirname(__FILE__) + '/../../xml/design.xml')
+    assert sample_file_path.xml
+  end
+
+
   def test_nil_xml
     assert "".xml.nil?
-    assert " ".xml.nil?
     assert nil.xml.nil?
   end
 

@@ -1,5 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/ruby_ext/nokogiri')
-require File.expand_path(File.dirname(__FILE__) + '/ruby_ext/tree')
+require File.expand_path(File.dirname(__FILE__) + '/ruby_tree_ext/tree')
 require File.expand_path(File.dirname(__FILE__) + '/ruby_ext/object')
 require File.expand_path(File.dirname(__FILE__) + '/object/interface')
 require File.expand_path(File.dirname(__FILE__) + '/object/guts')

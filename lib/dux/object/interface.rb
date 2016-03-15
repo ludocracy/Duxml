@@ -77,6 +77,7 @@ module Dux
       a
     end
 
+    # TODO not sure if method is finding targets with element type array
     def find_child child_pattern, cur_comp = nil
         pattern = if child_pattern.is_a?(Array)
                     child_pattern.any? ? child_pattern.first : nil
@@ -131,15 +132,16 @@ module Dux
         @xml_cursor.add_child new_kid.xml_root_node
         report :add, node if design_comp?
       end
+      self
     end
 
-    # should we add a remove array function?
     def remove child_or_id
       return if child_or_id.nil?
       child = child_or_id.respond_to?(:id) ? child_or_id : find_child(child_or_id)
       child.xml_root_node.remove
       remove! child
       report :remove, child
+      self
     end
 
     def one_or_more? legal_types
@@ -158,6 +160,7 @@ module Dux
 
     def []= key, val
       change_attr_value key, val
+      self
     end
 
     def rename new_id
@@ -165,6 +168,7 @@ module Dux
       super new_id
       @xml_root_node[:id] = new_id
       report :change_attribute, {id: old_id} if design_comp?
+      self
     end
 
     def content= new_content
@@ -172,6 +176,7 @@ module Dux
       old_content = content
       @xml_root_node.content = new_content
       report change_type, old_content
+      self
     end
 
     def descended_from? target
