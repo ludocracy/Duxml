@@ -43,7 +43,7 @@ module Dux
     end
 
     def init_reserved child
-      child_class = Dux::const_get(child.name.capitalize)
+      child_class = Dux::const_get(child.name.classify)
       self << child_class.new(child, reserved: reserved_word_array)
     end
 

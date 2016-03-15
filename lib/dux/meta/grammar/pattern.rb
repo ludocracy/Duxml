@@ -16,8 +16,9 @@ module Dux
       resolve_ref :subject, context_root
     end
 
-    def object
-      has_children? ? children.first : resolve_ref(:object, root)
+    def object context_root=root
+      result = has_children? ? children.first : resolve_ref(:object, context_root)
+      result
     end
 
     def <=> pattern

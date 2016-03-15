@@ -1,0 +1,37 @@
+<design>
+  <ol id="single_child">
+    <li/>
+  </ol>
+  <ol id="plural_children">
+    <li/>
+    <li/>
+  </ol>
+  <ol id="data_and_child">
+    <data/>
+    <li/>
+  </ol>
+  <ol id="arbitrary_data_and_child">
+    <data/>
+    <data-about/>
+    <data/>
+    <li/>
+  </ol>
+  <ol id="error_no_children"/>
+  <ol id="error_child_in_wrong_pos">
+    <li/>
+    <data/>
+  </ol>
+  <ol id="error_many_children_in_wrong_pos">
+    <li/>
+    <data/>
+  </ol>
+  <ol id="error_children_split_in_wrong_pos">
+    <li/>
+    <data/>
+    <li/>
+  </ol>
+  <ol id="error_no_valid_first_child">
+    <data/>
+    <data-about/>
+  </ol>
+</design>

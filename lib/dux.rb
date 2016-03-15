@@ -28,12 +28,17 @@ module Dux
 
   def validate file=nil
     if file.nil?
-      current_dux.design.each do |node| current_dux.grammar.validate node end unless current_dux.grammar.nil?
+      current_dux.design.each do |node|
+        current_dux.grammar.validate node
+      end
     else
       load file
       validate
     end
-    current_dux.history.each do |pattern| STDERR.puts pattern.description if pattern.type == 'validate_error' end
+    current_dux.history.each do |pattern|
+      # TODO get descriptions working for all error types and test log output
+      #STDERR.puts pattern.description if pattern.type == 'validate_error'
+    end
     current_dux
   end
 end # module Dux

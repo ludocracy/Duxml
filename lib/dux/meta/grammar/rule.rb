@@ -4,14 +4,14 @@ module Dux
   class Rule < Pattern
     def qualify change
       subject = change.subject meta
-      object = change.object
+      object = change.object meta
 
       begin
         # TODO use a safer eval - filter? use limited eval?
         # one statement only
         # no objects but components or object arguments
         # no methods but object interface or sub interfaces
-        qualified_or_false = eval content
+        qualified_or_false = eval content, get_binding(object)
       rescue NoMethodError
         qualified_or_false ||= true
       end
@@ -34,6 +34,10 @@ module Dux
       xml_node << args[:statement]
       xml_node.remove_attribute 'statement'
       xml_node
+    end
+
+    def get_binding object
+      binding
     end
 
     private :class_to_xml

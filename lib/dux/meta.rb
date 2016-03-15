@@ -28,6 +28,14 @@ module Dux
       last_child
     end
 
+    def grammar= grammar_file
+      unless grammar.has_children?
+        index = grammar.position
+        remove 'grammar'
+        add Grammar.new(grammar_file), index
+      end
+    end
+
     def class_to_xml xml_node
       if xml_node.nil?
         Nokogiri::XML(%(

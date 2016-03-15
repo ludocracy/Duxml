@@ -23,6 +23,12 @@ class InterfaceTest < MiniTest::Test
     assert_equal 'large', h[:size]
   end
 
+  def test_position
+    t = Dux::Object.new(%(<birdhouse><color/><material><wood id="part0">pine</wood><wood id="part1">oak</wood><nails id="part3">steel</nails></material></birdhouse>))
+    c = t.find_child(%w(material nails))
+    assert_equal 2, c.position
+  end
+
   def test_promote_attr
     e.promote(:color)
     assert_equal 'color', e.first_child.type
@@ -57,7 +63,7 @@ class InterfaceTest < MiniTest::Test
   end
 
   def test_find_children
-    t = Dux::Object.new(%(<birdhouse><color/><material><wood id="part0">pine</wood><wood id="part1">oak</wood><nails id="part3">steel</wood></material></birdhouse>))
+    t = Dux::Object.new(%(<birdhouse><color/><material><wood id="part0">pine</wood><wood id="part1">oak</wood><nails id="part3">steel</nails></material></birdhouse>))
     woods = t.last_child.find_children :wood
 
     assert_equal 'wood', woods.last.type

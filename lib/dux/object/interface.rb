@@ -18,6 +18,12 @@ module Dux
       true
     end
 
+    def position
+      parent.children.each_with_index do |child, index|
+        return index if child == self
+      end
+    end
+
     def promote attr_key, args={}
       new_name = args[:element] || attr_key.to_s
       if !args[:attr].nil?
@@ -140,7 +146,7 @@ module Dux
       child = child_or_id.respond_to?(:id) ? child_or_id : find_child(child_or_id)
       child.xml_root_node.remove
       remove! child
-      report :remove, child
+      report :remove, child if design_comp?
       self
     end
 
