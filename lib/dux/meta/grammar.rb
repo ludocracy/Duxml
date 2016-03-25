@@ -11,12 +11,15 @@ module Dux
 
     def validate comp
       relationships = {}
-      comp.children.each do |child| relationships[child] = :child end
-      comp.attributes.each do |k, v| relationships[v] = "attr_name_#{k.to_s}".to_sym end
-      relationships[comp.content] = :content
-      relationships[comp.parent] = :parent
-      relationships.each do |rel, type|
-        qualify Pattern.new(comp, {relationship: type, object: rel})
+      if comp.children.any?
+        comp.children.each do |child| relationships[child] = :child end
+      else
+        relationships[:nil] = :child
+      end
+      #comp.attributes.each do |k, v| relationships[v] = "attr_name_#{k.to_s}".to_sym end
+      #relationships[comp.content] = :content
+      relationships.each do |relation, type|
+        qualify Pattern.new(comp, {relationship: type, object: relation})
       end
     end
 

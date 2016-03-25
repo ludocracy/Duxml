@@ -29,6 +29,7 @@ module Dux
       unless change_comp.type[-5..-1] == 'error' || root.grammar.nil?
         root.grammar.qualify change_comp
       end
+      sleep 0
     end
 
     def each &block

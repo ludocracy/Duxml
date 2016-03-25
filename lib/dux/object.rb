@@ -21,7 +21,8 @@ module Dux
       @xml_root_node = @xml_cursor = xml_node.nil? ? class_to_xml(args) : xml_node.xml
       @xml_root_node[:id] ||= xml_root_node.name+object_id.to_s
       # must happen before traverse to have @children/@children_hash available
-      super xml_root_node[:id], xml_root_node.content
+      new_content = xml_root_node.content.match(/[\S]*/) ? xml_root_node.content : ''
+      super xml_root_node[:id], new_content
       # traverse and load Component from xml
       traverse_xml exec_methods %w(do_nothing init_reserved init_generic)
     end # def Dux::initialize xml_node, args={}

@@ -4,7 +4,7 @@ module Dux
   class Rule < Pattern
     def qualify change
       subject = change.subject meta
-      object = change.object meta
+      object = (change[:object] == :nil) ? nil : change.object(meta)
 
       begin
         # TODO use a safer eval - filter? use limited eval?
@@ -12,8 +12,6 @@ module Dux
         # no objects but components or object arguments
         # no methods but object interface or sub interfaces
         qualified_or_false = eval content, get_binding(object)
-      rescue NoMethodError
-        qualified_or_false ||= true
       end
 
       if change.type == 'pattern'
@@ -24,7 +22,7 @@ module Dux
         target = change
       end
 
-      report type, target unless qualified_or_false
+      report type, target unless qualified_or_false || qualified_or_false.nil?
       qualified_or_false
     end
 
