@@ -95,6 +95,9 @@ module Dux
         end # if child.type.match scanner[:match]
         break if child.id == @cur_object.id && scanners.empty? # loop do
       end
+      result = false if child_stack.empty? && scanners.any? do |scanner|
+        %w(* ?).any? do |operator| operator != scanner[:operator] end
+      end
       result # default return value should be true?
     end # def scan
   end # class RegexpRule
