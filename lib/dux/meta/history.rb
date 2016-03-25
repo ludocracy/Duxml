@@ -13,6 +13,13 @@ module Dux
       super class_to_xml(xml_node), reserved: %w(add remove change_content change_attribute new_content new_attribute error correction instantiate move undo)
     end
 
+    def description
+      "history follows: \n" +
+      children.collect do |change_or_error|
+        change_or_error.description
+      end.join("\n")
+    end
+
     private def class_to_xml xml_node
       if xml_node.nil?
         %(<history><add id="change_0" owner="system"><description>file created</description><date>#{Time.now.to_s}</date></add></history>)

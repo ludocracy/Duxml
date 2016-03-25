@@ -1,0 +1,9 @@
+history follows: 
+data-about2500 of type data-about being child of error_no_valid_first_child of type ol. violates rule: regexp_rule2506 of type regexp_rule which states: child_rule(object, "(data|sort-as|data-about)*,li+").
+data2498 of type data being child of error_no_valid_first_child of type ol. violates rule: regexp_rule2506 of type regexp_rule which states: child_rule(object, "(data|sort-as|data-about)*,li+").
+data2492 of type data being child of error_children_split_in_wrong_pos of type ol. violates rule: regexp_rule2506 of type regexp_rule which states: child_rule(object, "(data|sort-as|data-about)*,li+").
+data2486 of type data being child of error_many_children_in_wrong_pos of type ol. violates rule: regexp_rule2506 of type regexp_rule which states: child_rule(object, "(data|sort-as|data-about)*,li+").
+data2484 of type data being child of error_many_children_in_wrong_pos of type ol. violates rule: regexp_rule2506 of type regexp_rule which states: child_rule(object, "(data|sort-as|data-about)*,li+").
+data2478 of type data being child of error_child_in_wrong_pos of type ol. violates rule: regexp_rule2506 of type regexp_rule which states: child_rule(object, "(data|sort-as|data-about)*,li+").
+error_no_children of type ol having no children  violates rule: regexp_rule2506 of type regexp_rule which states: child_rule(object, "(data|sort-as|data-about)*,li+").
+initial commit

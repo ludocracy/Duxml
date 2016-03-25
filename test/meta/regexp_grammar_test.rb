@@ -19,11 +19,16 @@ class RegexpGrammarTest < MiniTest::Test
 
   def test_xlsx_grammar
     validate
-    assert_equal 'error_no_children', meta.history[6].object.id
-    assert_equal 'error_child_in_wrong_pos', meta.history[5].object.id
-    assert_equal 'error_many_children_in_wrong_pos', meta.history[4].object.id
-    assert_equal 'error_children_split_in_wrong_pos', meta.history[2].object.id
-    assert_equal 'error_no_valid_first_child', meta.history[0].object.id
+    assert_equal 'error_no_children', meta.history[6].affected_parent.id
+    assert_equal 'error_child_in_wrong_pos', meta.history[5].affected_parent.id
+    assert_equal 'error_many_children_in_wrong_pos', meta.history[4].affected_parent.id
+    assert_equal 'error_children_split_in_wrong_pos', meta.history[2].affected_parent.id
+    assert_equal 'error_no_valid_first_child', meta.history[0].affected_parent.id
+  end
+
+  def test_output_to_log
+    validate
+    log 'log.txt'
   end
 
   def tear_down

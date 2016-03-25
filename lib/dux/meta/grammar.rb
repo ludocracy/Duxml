@@ -23,6 +23,13 @@ module Dux
       end
     end
 
+    def description
+      "grammar follows: \n" +
+          children.collect do |change_or_error|
+            change_or_error.description
+          end.join("\n")
+    end
+
     def qualify change
       children.each do |child|
         subj = change.subject meta

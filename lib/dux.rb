@@ -26,6 +26,10 @@ module Dux
     dux meta_xml, xml
   end
 
+  def log file
+    File.write file, current_dux.history.description
+  end
+
   def validate file=nil
     if file.nil?
       current_dux.design.each do |node|

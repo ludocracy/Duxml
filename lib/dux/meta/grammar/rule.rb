@@ -2,9 +2,9 @@ require File.expand_path(File.dirname(__FILE__) + '/pattern')
 
 module Dux
   class Rule < Pattern
-    def qualify change
-      subject = change.subject meta
-      object = (change[:object] == :nil) ? nil : change.object(meta)
+    def qualify change_or_pattern
+      subject = change_or_pattern.subject meta
+      object = (change_or_pattern[:object] == :nil) ? nil : change_or_pattern.object(meta)
 
       begin
         # TODO use a safer eval - filter? use limited eval?
@@ -14,16 +14,14 @@ module Dux
         qualified_or_false = eval content, get_binding(object)
       end
 
-      if change.type == 'pattern'
-        type = :validate_error
-        target = subject
-      else
-        type = :qualify_error
-        target = change
-      end
+      type = (change_or_pattern.type == 'pattern') ? :validate_error : :qualify_error
 
-      report type, target unless qualified_or_false || qualified_or_false.nil?
+      report type, change_or_pattern unless qualified_or_false || qualified_or_false.nil?
       qualified_or_false
+    end
+
+    def description
+      %(#{id} of type #{type} which states: #{content})
     end
 
     def class_to_xml args={}

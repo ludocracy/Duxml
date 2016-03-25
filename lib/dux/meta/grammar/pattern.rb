@@ -12,6 +12,18 @@ module Dux
       super xml_node, args
     end
 
+    def description
+      if object.nil?
+        %(#{subject.id} of type #{subject.type} having no children )
+      else
+        %(#{object.id} of type #{object.type} being #{relationship} of #{subject.id} of type #{subject.type}.)
+      end
+    end
+
+    def relationship
+      self[:relationship]
+    end
+
     def subject context_root=root
       resolve_ref :subject, context_root
     end
