@@ -1,4 +1,6 @@
-require File.expand_path(File.dirname(__FILE__) + '/grammar/rule')
+require File.expand_path(File.dirname(__FILE__) + '/grammar/rule/child_rule')
+require File.expand_path(File.dirname(__FILE__) + '/grammar/rule/attr_rule')
+require File.expand_path(File.dirname(__FILE__) + '/grammar/rule/content_rule')
 require 'rubyXL'
 
 module Dux
@@ -6,8 +8,27 @@ module Dux
     def initialize xml_node_or_file, args={}
       xml_node = class_to_xml(xml_node_or_file)
       xml_node = xml_node[:ref] ? class_to_xml(xml_node[:ref]) : xml_node
-      super xml_node, reserved: %w{rule}
+      super xml_node
     end
+
+    def class_to_xml xml_node_or_file
+      if xml_node_or_file.is_a?(String) && File.exists?(xml_node_or_file)
+        worksheet = RubyXL::Parser.parse(xml_node_or_file)[0]
+        new_xml = super
+        worksheet.each_with_index do |row, index|
+          next if index == 0
+          break if row[3].nil? || row[4].nil?
+          statement_str = row[4].value
+          new_xml << element('child_rule', {subject: row[3].value, statement: statement_str})
+          #new_xml << element('regexp_rule', {subject: row[3], statement: row[5].value}) unless row[5].nil?
+        end
+        new_xml
+      elsif xml_node_or_file.nil?
+        super
+      else
+        xml_node_or_file.xml
+      end
+    end # def class_to_xml
 
     def validate comp
       relationships = {}

@@ -10,7 +10,7 @@ module Dux
     attr_reader :rules
 
     def initialize xml_node=nil, args={}
-      super class_to_xml(xml_node), reserved: %w(add remove change_content change_attribute new_content new_attribute error correction instantiate move undo)
+      super class_to_xml(xml_node)
     end
 
     def description

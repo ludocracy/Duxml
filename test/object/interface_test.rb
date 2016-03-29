@@ -16,6 +16,11 @@ class InterfaceTest < MiniTest::Test
     assert_equal answer, e.to_s
   end
 
+  def test_add_text_content
+    @e << 'blah blah blah'
+    assert_equal 'blah blah blah', e.content
+  end
+
   def test_attributes
     h = e.attributes
     assert_equal 'birdhouse0', h[:id]

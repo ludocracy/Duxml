@@ -6,6 +6,6 @@ class String
   end
 
   def classify
-    split('_').collect do |word| word.capitalize unless word == '_' end.join
+    split('_').collect do |word| word.capitalize unless word == '_' end.join.gsub('-', '_')
   end
 end

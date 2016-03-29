@@ -18,6 +18,10 @@ module Dux
       true
     end
 
+    def text?
+      false
+    end
+
     def position
       parent.children.each_with_index do |child, index|
         return index if child == self
@@ -135,10 +139,18 @@ module Dux
       objs.each do |node|
         new_kid = coerce node
         add new_kid
-        @xml_cursor.add_child new_kid.xml_root_node
+        @xml_root_node.add_child new_kid.xml_root_node
         report :add, node if design_comp?
       end
       self
+    end
+
+    def xml
+      x = xml_root_node.to_s.xml
+      x.element_children.each do |element|
+        element.replace Nokogiri::XML::Text.new(element.content) if element.name == 'p_c_data'
+      end
+      x
     end
 
     def remove child_or_id

@@ -3,6 +3,8 @@ require 'minitest/autorun'
 
 class MooMoo; end
 
+class Quack_quack; end
+
 class Object2XMLTest < MiniTest::Test
   def setup
   end
@@ -27,6 +29,7 @@ class Object2XMLTest < MiniTest::Test
 
   def test_class_to_str
     assert_equal 'moo_moo', MooMoo.new.simple_class
+    assert_equal 'quack-quack', Quack_quack.new.simple_class
   end
 
   def test_string_to_xml

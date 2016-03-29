@@ -13,7 +13,11 @@ class Object
   def simple_class
     str = self.class.to_s.split('::').last
     str.split(//).collect do |char|
-      char == char.upcase ? "_#{char.downcase!}" : char.downcase
+      if char == '_'
+        '-'
+      else
+        char == char.upcase ? "_#{char.downcase!}" : char.downcase
+      end
     end.join[1..-1]
   end
 end

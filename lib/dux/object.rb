@@ -17,14 +17,45 @@ module Dux
     alias_method :id, :name
 
     def initialize xml_node, args={}
-      @reserved_word_array = args[:reserved] || []
-      @xml_root_node = @xml_cursor = xml_node.nil? ? class_to_xml(args) : xml_node.xml
+      @xml_root_node = xml_node.nil? ? class_to_xml(args) : xml_node.xml
       @xml_root_node[:id] ||= xml_root_node.name+object_id.to_s
-      # must happen before traverse to have @children/@children_hash available
-      new_content = xml_root_node.content.match(/[\S]*/) ? xml_root_node.content : ''
-      super xml_root_node[:id], new_content
-      # traverse and load Component from xml
-      traverse_xml exec_methods %w(do_nothing init_reserved init_generic)
+      super xml_root_node[:id]
+      return if text?
+      @xml_root_node.children.each do |xml_child|
+        class_name = xml_child.name.classify
+        case
+          when xml_child.text? && xml_child.content.match(/\w/)
+            new_child = Dux::PCData.new(xml_child.content)
+            add new_child
+            xml_child.replace new_child.xml
+          when Dux::constants.include?(class_name.to_sym)
+            klass = Dux::const_get(class_name)
+            self << klass.new(xml_child)
+          when xml_child.element?
+            klass = Class.new Object
+            Dux::const_set class_name, klass
+            self << klass.new(xml_child)
+          else # skipping attributes
+        end
+      end
     end # def Dux::initialize xml_node, args={}
   end # class Object
+
+  class PCData < Object
+    def initialize content
+      super element('p_c_data', content)
+    end
+
+    def description
+      content
+    end
+
+    def xml
+      content
+    end
+
+    def text?
+      true
+    end
+  end
 end # module Dux

@@ -6,59 +6,15 @@ module Dux
     include Observable
     private
 
-    attr_reader :xml_cursor, :reserved_word_array
-
-    # loads methods to run during initialize from a hash
-    def exec_methods method_names
-      method_hash = {}
-      index = 0
-      %w(top reserved traverse).each do |key|
-        method_name = method_names[index]
-        if method_name
-          our_method = method(method_names[index].to_sym)
-        else
-          our_method = method(:do_nothing)
-        end
-        method_hash[key.to_sym] = our_method
-        index += 1
-      end
-      method_hash
-    end
-
-    # needed because i have to call a method and it has to have an argument
-    def do_nothing arg = nil
-      # this is silly
-    end
-
-    # run by initialize
-    def traverse_xml method_hash
-      method_hash[:top].call
-      xml_cursor.element_children.each do |child|
-        if reserved_word_array.include? child.name
-          method_hash[:reserved].call child
-        else
-          method_hash[:traverse].call child
-        end
-      end
-    end
-
-    def init_reserved child
-      child_class = Dux::const_get(child.name.classify)
-      self << child_class.new(child, reserved: reserved_word_array)
-    end
-
-    def init_generic child
-      self << Dux::Object.new(child, reserved: reserved_word_array)
-    end
-
-    def xml=arg
-      @xml_cursor=arg
-    end
-
     def coerce obj
-      case obj.class
-        when String                                       then Dux::Object.new(Nokogiri::XML(obj).root)
-        when Nokogiri::XML::Element                       then Dux::Object.new(obj)
+      case
+        when obj.to_s == obj
+          if (xml = obj.xml)
+            Dux::Object.new(xml)
+          else
+            Dux::PCData.new obj
+          end
+        when obj.respond_to?(:element?) && obj.element?   then Dux::Object.new(obj)
         when obj.respond_to?(:document?) && obj.document? then Dux::Object.new(obj.root)
         else obj
       end

@@ -5,7 +5,7 @@ module Dux
   class Meta < Object
 
     def initialize xml_node=nil, args = {}
-      super class_to_xml(xml_node), reserved: %w(history grammar)
+      super class_to_xml(xml_node)
     end
 
     def find target

@@ -1,8 +1,7 @@
 <design id="design_id">
-  <target id="targetiddxcz">something something</target>
-  <thing id="thing1" visible="asdf"/>
   <legal_parent id="lp_0">
+    <also_legal_child id="alc_0"/>
     <illegal_child id="ic_0"/>
-    <legal_child id="lc_0"/>
+    <legal_child id="lc_0" visible="nope">text content</legal_child>
   </legal_parent>
 </design>

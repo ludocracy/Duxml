@@ -35,5 +35,6 @@ class StringIdentifierTest < MiniTest::Test
 
   def test_classify
     assert_equal 'MailMan', 'mail_man'.classify
+    assert_equal 'Mail_man', 'mail-man'.classify
   end
 end
