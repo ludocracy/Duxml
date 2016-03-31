@@ -1,9 +1,15 @@
 require File.expand_path(File.dirname(__FILE__) + '/change')
 
 module Dux
+  # created when object loses a child
   class Remove < Change
-    private def class_to_xml args={}
-      super(args) << args[:object].xml
+    private def class_to_xml *args
+              return args.first.xml if args.first.xml
+              removed_child = args.first[:object].xml
+              xml_node = super *args
+              xml_node << removed_child
+              xml_node.remove_attribute 'object'
+              xml_node
     end
 
     def description

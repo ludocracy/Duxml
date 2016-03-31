@@ -25,6 +25,8 @@ class Object2XMLTest < MiniTest::Test
   def test_nil_xml
     assert "".xml.nil?
     assert nil.xml.nil?
+    assert "asdf".xml.nil?
+    assert "fds fds".xml.nil?
   end
 
   def test_class_to_str
@@ -39,6 +41,6 @@ class Object2XMLTest < MiniTest::Test
   end
 
   def test_get_xml
-    assert "<poop>".xml.is_a?(Nokogiri::XML::Element)
+    assert "<poop/>".xml.is_a?(Nokogiri::XML::Element)
   end
 end

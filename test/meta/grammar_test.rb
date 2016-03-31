@@ -5,43 +5,43 @@ class GrammarTest < MiniTest::Test
   include Dux
 
   def setup
-    @child_rule = Dux::ChildRule.new element('child_rule', {subject: 'legal_parent', statement: %((<legal_child> | <also_legal_child>)+)})
+    @child_rule = Dux::ChildRule.new 'legal_parent', %((<legal_child> | <also_legal_child>)+)
+    sample_dux = File.expand_path(File.dirname(__FILE__) + '/../../xml/design.xml')
+    @meta = load sample_dux
   end
   attr_reader :meta, :child_rule
 
   def test_xlsx_grammar
     grammar_file = File.expand_path(File.dirname(__FILE__) + '/../../xml/Dita 1.3 Manual Spec Conversion.xlsx')
     sample_dux = File.expand_path(File.dirname(__FILE__) + '/../../xml/dita_test.xml')
-    @meta = load sample_dux
-    @meta.grammar = grammar_file
+    ditameta = load sample_dux
+    ditameta.grammar = grammar_file
 
     validate
-    assert_equal 'error_no_children', meta.history[6].affected_parent.id
-    assert_equal 'error_child_in_wrong_pos', meta.history[5].affected_parent.id
-    assert_equal 'error_many_children_in_wrong_pos', meta.history[4].affected_parent.id
-    assert_equal 'error_children_split_in_wrong_pos', meta.history[2].affected_parent.id
-    assert_equal 'error_no_valid_first_child', meta.history[0].affected_parent.id
+    assert_equal 'error_no_children', ditameta.history[6].affected_parent.id
+    assert_equal 'error_child_in_wrong_pos', ditameta.history[5].affected_parent.id
+    assert_equal 'error_many_children_in_wrong_pos', ditameta.history[4].affected_parent.id
+    assert_equal 'error_children_split_in_wrong_pos', ditameta.history[2].affected_parent.id
+    assert_equal 'error_no_valid_first_child', ditameta.history[0].affected_parent.id
   end
 
   def test_output_to_log
-    skip
     validate
     log 'log.txt'
   end
 
   def test_init_pattern
-    sample_dux = File.expand_path(File.dirname(__FILE__) + '/../../xml/design.xml')
-    @meta = load sample_dux
-    p = Dux::Pattern.new meta.design.find_child %w(legal_parent legal_child)
-    assert_equal 'pattern', p.type
-    assert_equal 'lc_0', p.subject(meta).id
-    assert_equal nil, p.object
-    # test compare patterns
+    target = meta.design.find_child %w(legal_parent legal_child)
+    p = Dux::ChildPattern.new target.parent, target
+    assert_equal 'child_pattern', p.type
+    assert_equal 'lp_0', p.subject(meta).id
+    assert_equal 'lc_0', p.object(meta).id
+    # test <=>
   end
 
   def test_grammar_qualify
     sample_dux = File.expand_path(File.dirname(__FILE__) + '/../../xml/design.xml')
-    @meta = load sample_dux
+    meta = load sample_dux
     meta.grammar << child_rule
     target = meta.design.find_child(:legal_parent)
     target << Dux::Object.new(element 'legal_child')
@@ -52,7 +52,7 @@ class GrammarTest < MiniTest::Test
 
   def test_grammar_validate_node
     sample_dux = File.expand_path(File.dirname(__FILE__) + '/../../xml/design.xml')
-    @meta = load sample_dux
+    meta = load sample_dux
     meta.grammar << child_rule
     target = meta.design.find_child(:legal_parent)
     meta.grammar.validate target

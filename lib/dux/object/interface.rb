@@ -5,95 +5,39 @@ module Dux
 
     public
 
-    def <=> comp
+    def <=>(comp)
       case size <=> comp.size
-      when -1 then -1
-      when 0 then xml_root_node.size <=> comp.xml_root_node.size
-      when 1 then 1
-      else nil
+        when -1 then
+          -1
+        when 0 then
+          xml_root_node.size <=> comp.xml_root_node.size
+        when 1 then
+          1
+        else
+          nil
       end
     end
 
-    def is_component?
-      true
-    end
-
-    def text?
-      false
-    end
-
-    def position
-      parent.children.each_with_index do |child, index|
-        return index if child == self
-      end
-    end
-
-    def promote attr_key, args={}
-      new_name = args[:element] || attr_key.to_s
-      if !args[:attr].nil?
-        new_attr = args[:attr] || attr_key.to_s
-        new_val = args[:value] || self[attr_key]
-        s_string = "<#{new_name.to_s} #{new_attr}=\"#{new_val}\"/>"
-      else
-        new_content = args[:content] || self[attr_key]
-        s_string = "<#{new_name}>#{new_content}</#{new_name}>"
-      end
-      new_comp = Dux::Object.new(s_string)
-      self << new_comp
-      @xml_root_node.remove_attribute attr_key.to_s
-      new_comp
-      report :edit, attr_key.to_sym => ''
-    end
-
-    def to_s
-      @xml_root_node.to_s
-    end
-
-    def detached_subtree_copy
-      new_node = detached_copy
-      children.each do |child|
-        new_node << child.detached_subtree_copy
-      end
-      new_node
-    end
-
-    def type
-      xml_root_node.name
-    end
-
-    def stub
-      x = xml.dup
-      x.element_children.remove
-      self.class.new x
-    end
-    alias_method :detached_copy, :stub
-
-    def summarize
-      content = ""
-      if @children.size != 0
-        content = "children: "
-        @children.each do |child|
-          content << "'#{child.name}' "
-        end
-      else
-        content = "content: #{self.content}"
-      end
-      puts "Component '#{name}' #{content}"
-    end
-
-    def find_children type
+    # returns an array of this object's children that match the given type i.e. element name
+    def find_children(type)
       a = []
-      children.each do |child| a << child if child.type == type.to_s end
+      children.each do |child|
+        a << child if child.type == type.to_s
+      end
       a
     end
 
-    # TODO not sure if method is finding targets with element type array
-    def find_child child_pattern, cur_comp = nil
-        pattern = if child_pattern.is_a?(Array)
-                    child_pattern.any? ? child_pattern.first : nil
-                  else
-                    child_pattern
-                  end
+    # returns the first child matching a given pattern, which can be of types:
+    # Fixnum - for child index
+    # String - for both id or type
+    # Symbol - for id
+    # Array - allows application of one pattern per generation
+    def find_child(child_pattern, cur_comp = nil)
+      pattern = if child_pattern.is_a?(Array)
+                  child_pattern.any? ? child_pattern.first : nil
+                else
+                  child_pattern
+                end
       return nil unless pattern
       #attempting to match by name
       cur_comp ||= self
@@ -122,19 +66,24 @@ module Dux
       xml_root_node.content
     end
 
+    # returns id i.e. name that is unique among its siblings
     def id
       self[:id]
     end
 
-    def [] attr=nil
+    # shortcut for accessing XML attributes
+    def [](attr=nil)
       attr.nil? ? xml_root_node.attributes : xml_root_node[attr.to_s]
     end
 
-    def each &block
+    # TODO assess if we need this - wasn't it just for debugging?
+    def each(&block)
       super &block
     end
 
-    def << obj
+    # add a child from given object; method will attempt to coerce object into acceptable Dux::Object
+    # allowable argument types include: XML represented as string, Nokogiri::XML::Element, an XML file, and Dux::Object
+    def <<(obj)
       objs = obj.is_a?(Array) ? obj : [obj]
       objs.each do |node|
         new_kid = coerce node
@@ -145,15 +94,8 @@ module Dux
       self
     end
 
-    def xml
-      x = xml_root_node.to_s.xml
-      x.element_children.each do |element|
-        element.replace Nokogiri::XML::Text.new(element.content) if element.name == 'p_c_data'
-      end
-      x
-    end
-
-    def remove child_or_id
+    # removes a child matching the given child or id, returning self if successful, nil if not
+    def remove(child_or_id)
       return if child_or_id.nil?
       child = child_or_id.respond_to?(:id) ? child_or_id : find_child(child_or_id)
       child.xml_root_node.remove
@@ -162,12 +104,7 @@ module Dux
       self
     end
 
-    def one_or_more? legal_types
-    end
-
-    def zero_or_more? legal_types
-    end
-
+    # returns attributes as simple Hash
     def attributes
       h = {}
       xml_root_node.attributes.each do |attr|
@@ -176,12 +113,14 @@ module Dux
       h
     end
 
-    def []= key, val
+    # change an attribute value
+    def []=(key, val)
       change_attr_value key, val
       self
     end
 
-    def rename new_id
+    # TODO assess whether we really need this method
+    def rename(new_id)
       old_id = id
       super new_id
       @xml_root_node[:id] = new_id
@@ -189,7 +128,9 @@ module Dux
       self
     end
 
-    def content= new_content
+    # TODO assess whether we should block user from using this to spawn children
+    # changes content of this XML::Element
+    def content=(new_content)
       change_type = content.empty? ? :new_content : :change_content
       old_content = content
       @xml_root_node.content = new_content
@@ -197,7 +138,49 @@ module Dux
       self
     end
 
-    def descended_from? target
+    # used for #respond_to?
+    def is_component?
+      true
+    end
+
+    # all Dux::Objects other than Dux::PCData represent XML elements are are therefore not text
+    def text?
+      false
+    end
+
+    # returns this object as a string representation of its XML in memory;
+    # note that this differs XML on file as in memory, #PCDATA children are wrapped in a temporary element
+    # <p_c_data>. compare to #xml
+    def to_s
+      @xml_root_node.to_s
+    end
+
+    # returns type of object i.e. the xml element's name
+    def type
+      xml_root_node.name
+    end
+
+    # returns root of metadata
+    def meta
+      return root if root.type == 'meta'
+      nil
+    end
+
+    # returns this object as a Nokogiri::XML::Element
+    # note that <p_c_data> children are converted back to ordinary #PCDATA
+    def xml
+      x = xml_root_node.to_s.xml
+      x.element_children.each do |element|
+        element.replace Nokogiri::XML::Text.new(element.content) if element.name == 'p_c_data'
+      end
+      x
+    end
+
+    # stub for documentation
+    def description; end
+
+    # returns true if this object is descended from an object of the target type or id
+    def descended_from?(target)
       xml_root_node.ancestors.each do |ancestor|
         return true if ancestor.name == target.to_s
         return true if ancestor.type == target.to_s
@@ -205,14 +188,11 @@ module Dux
       false
     end
 
-    def instance
-      parentage.each do |ancestor| return ancestor if ancestor.respond_to?(:params) end
-      nil
-    end
-
-    def meta
-      return root if root.type == 'meta'
-      nil
+    # index position of this object among its siblings
+    def position
+      parent.children.each_with_index do |child, index|
+        return index if child == self
+      end
     end
   end # module ObjectInterface
 end # module Dux

@@ -6,7 +6,7 @@ module Dux
     include Observable
     private
 
-    def coerce obj
+    def coerce(obj)
       case
         when obj.to_s == obj
           if (xml = obj.xml)
@@ -14,9 +14,12 @@ module Dux
           else
             Dux::PCData.new obj
           end
-        when obj.respond_to?(:element?) && obj.element?   then Dux::Object.new(obj)
-        when obj.respond_to?(:document?) && obj.document? then Dux::Object.new(obj.root)
-        else obj
+        when obj.respond_to?(:element?) && obj.element?
+          Dux::Object.new(obj)
+        when obj.respond_to?(:document?) && obj.document?
+          Dux::Object.new(obj.root)
+        else
+          obj
       end
     end
 
@@ -29,11 +32,34 @@ module Dux
     end
 
 
-    def class_to_xml args={}
-      element self.simple_class, {id: self.simple_class+object_id.to_s}
+    def class_to_xml(*args)
+      xml_node = if args.first.xml
+        args.first.xml
+      else
+        all_str_args = objects2ids args
+        element self.simple_class, *all_str_args
+      end
+      xml_node[:id] ||= new_id
+      xml_node
     end
 
-    def resolve_ref attr, context_template=nil
+    def new_id
+      self.simple_class+object_id.to_s
+    end
+
+    def objects2ids(args)
+      args.collect do |arg|
+        if arg.is_a?(Hash)
+          arg.each do |k, v|
+            arg[k] = v[:id] || v if v.respond_to?(:element) || v.respond_to?(:is_component?)
+          end
+        else
+          arg
+        end
+      end
+    end # def objects2ids
+
+    def resolve_ref(attr, context_template=nil)
       ref = self[attr.to_sym]
       return nil if ref.nil?
       if context_template.nil?
@@ -43,7 +69,7 @@ module Dux
       end
     end
 
-    def report type, obj
+    def report(type, obj)
       if post_init? || respond_to?(:qualify)
         add_observer meta.history if meta && count_observers == 0
         changed
@@ -52,9 +78,10 @@ module Dux
       end
     end
 
-    def change_attr_value key, val
+    def change_attr_value(key, val)
       case key
-        when :id, :if then return
+        when :id, :if then
+          return
         else
           old_val = if self[key]
                       change_type = :change_attribute
@@ -65,7 +92,7 @@ module Dux
                     end
           @xml_root_node[key] = val
           report change_type, {old_value: old_val, new_value: val, attr_name: key.to_s}
-      end
-    end
+      end # case key
+    end # def change_attr_value
   end # module ObjectGuts
 end # module Dux

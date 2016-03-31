@@ -34,11 +34,6 @@ class InterfaceTest < MiniTest::Test
     assert_equal 2, c.position
   end
 
-  def test_promote_attr
-    e.promote(:color)
-    assert_equal 'color', e.first_child.type
-  end
-
   def test_type
     a = Dux::Object.new(%(<birdhouse id="poop" color="red" size="large"/>))
     assert_equal 'birdhouse', a.type
@@ -73,13 +68,6 @@ class InterfaceTest < MiniTest::Test
 
     assert_equal 'wood', woods.last.type
     assert_equal 2, woods.size
-  end
-
-  def test_stub
-    t = Dux::Object.new(%(<birdhouse id="birdhouse0"><color/><material><wood>pine</wood></material></birdhouse>))
-    s = t.stub
-    assert_equal %(<birdhouse id="birdhouse0"/>), s.xml.to_s
-    assert_equal 0, s.children.size
   end
 
   def test_remove

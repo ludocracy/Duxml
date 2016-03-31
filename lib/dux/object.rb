@@ -16,10 +16,9 @@ module Dux
 
     alias_method :id, :name
 
-    def initialize xml_node, args={}
-      @xml_root_node = xml_node.nil? ? class_to_xml(args) : xml_node.xml
-      @xml_root_node[:id] ||= xml_root_node.name+object_id.to_s
-      super xml_root_node[:id]
+    def initialize(*xml_or_args)
+      @xml_root_node = class_to_xml *xml_or_args
+      super xml_root_node[:id] || new_id
       return if text?
       @xml_root_node.children.each do |xml_child|
         class_name = xml_child.name.classify
@@ -42,7 +41,7 @@ module Dux
   end # class Object
 
   class PCData < Object
-    def initialize content
+    def initialize(content)
       super element('p_c_data', content)
     end
 

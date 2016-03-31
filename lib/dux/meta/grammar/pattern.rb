@@ -2,51 +2,38 @@ require File.expand_path(File.dirname(__FILE__) + '/../../object')
 
 module Dux
   class Pattern < Object
-    def initialize subj, args = {}
-      if subj.respond_to?(:is_component?)
-        xml_node = class_to_xml args
-        xml_node[:subject] = subj.id
+    private def class_to_xml *args
+              return args.first.xml if args.first.xml && args.first.respond_to?(:element?)
+      if args.any? do |arg| arg.is_a?(Hash) end
+        super *args
       else
-        xml_node = subj
-      end
-      super xml_node, args
-    end
-
-    def description
-      if object.nil?
-        %(#{subject.id} of type #{subject.type} having no children )
-      else
-        %(#{object.id} of type #{object.type} being #{relationship} of #{subject.id} of type #{subject.type}.)
+        h = Hash.new
+        h[:subject] = args.first if args.first
+        h[:object] = args.last if args.size > 1
+        super h
       end
     end
 
-    def relationship
-      self[:relationship]
+    # subject of pattern; almost always the superior object in the relationship, e.g. parent object
+    def subject(context_root=root)
+      resolve_ref(:subject, context_root) || self[:subject]
     end
 
-    def subject context_root=root
-      resolve_ref :subject, context_root
-    end
-
+    # object of pattern; almost always the inferior object in the relationship, e.g. child object
     def object context_root=root
-      has_children? ? children.first : resolve_ref(:object, context_root)
+      has_children? ? children.first : resolve_ref(:object, context_root) || self[:object]
     end
 
-    def <=> pattern
+    def <=>(pattern)
       return 1 unless pattern.respond_to?(:subject)
       case subject <=> pattern.subject
-        when -1 then -1
-        when 0 then object <=> pattern.object
-        else -1
+        when -1 then
+          -1
+        when 0 then
+          object <=> pattern.object
+        else
+          -1
       end
-    end
-
-    def class_to_xml args={}
-      xml_node = super()
-      args.each do |k, v| xml_node[k] = v.respond_to?(:id) ? v.id : v end
-      xml_node
-    end
-
-    private :class_to_xml
+    end # def <=>
   end # class Pattern
 end # module Dux

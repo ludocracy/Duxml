@@ -7,12 +7,6 @@ module Dux
   class History < Object
     include Enumerable
 
-    attr_reader :rules
-
-    def initialize xml_node=nil, args={}
-      super class_to_xml(xml_node)
-    end
-
     def description
       "history follows: \n" +
       children.collect do |change_or_error|
@@ -20,17 +14,19 @@ module Dux
       end.join("\n")
     end
 
-    private def class_to_xml xml_node
+    private def class_to_xml(xml_node)
       if xml_node.nil?
-        %(<history><add id="change_0" owner="system"><description>file created</description><date>#{Time.now.to_s}</date></add></history>)
-      else
+        xml_node = super xml_node
+        xml_node << %(<add owner="system" date="#{Time.now.to_s}"><description>file created</description></add>)
         xml_node
+      else
+        super xml_node
       end
     end
 
-    def update type, change_hash
+    def update(type, change_hash)
       change_class = Dux::const_get type.to_s.classify
-      change_comp = change_class.new(nil, change_hash)
+      change_comp = change_class.new change_hash
       add change_comp, 0
       @xml_root_node.prepend_child change_comp.xml
       unless change_comp.type[-5..-1] == 'error' || root.grammar.nil?
@@ -39,7 +35,7 @@ module Dux
       sleep 0
     end
 
-    def each &block
+    def each(&block)
       children.each &block
     end
 
@@ -47,7 +43,7 @@ module Dux
       last_child
     end
 
-    def [] key
+    def [](key)
       find_child key
     end
   end # class History
