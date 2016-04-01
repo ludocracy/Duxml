@@ -11,7 +11,7 @@ module Dux
   # created when grammar detects error from file
   class ValidateError < Error
     def class_to_xml *args
-      return args.first.xml if args.first.xml
+      return args.first.xml if args.first.is_a?(Nokogiri::XML::Element)
       pattern = args.first[:object].xml
       xml_node = super *args
       xml_node << pattern

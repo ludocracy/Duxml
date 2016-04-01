@@ -4,20 +4,6 @@ module Dux
     include Comparable
 
     public
-
-    def <=>(comp)
-      case size <=> comp.size
-        when -1 then
-          -1
-        when 0 then
-          xml_root_node.size <=> comp.xml_root_node.size
-        when 1 then
-          1
-        else
-          nil
-      end
-    end
-
     # returns an array of this object's children that match the given type i.e. element name
     def find_children(type)
       a = []
@@ -169,9 +155,9 @@ module Dux
     # returns this object as a Nokogiri::XML::Element
     # note that <p_c_data> children are converted back to ordinary #PCDATA
     def xml
-      x = xml_root_node.to_s.xml
+      x = xml_root_node.dup
       x.element_children.each do |element|
-        element.replace Nokogiri::XML::Text.new(element.content) if element.name == 'p_c_data'
+        element.replace Nokogiri::XML::Text.new(element.content, x.document) if element.name == 'p_c_data'
       end
       x
     end

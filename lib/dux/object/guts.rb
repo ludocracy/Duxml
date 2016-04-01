@@ -33,7 +33,7 @@ module Dux
 
 
     def class_to_xml(*args)
-      xml_node = if args.first.xml
+      xml_node = if args.compact.size == 1 && !args.first.respond_to?(:is_component?) && !args.first.is_a?(Hash)
         args.first.xml
       else
         all_str_args = objects2ids args

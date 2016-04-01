@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../object')
 module Dux
   class Pattern < Object
     private def class_to_xml *args
-              return args.first.xml if args.first.xml && args.first.respond_to?(:element?)
+              return args.first.xml if args.first.respond_to?(:element?) && args.first.xml
       if args.any? do |arg| arg.is_a?(Hash) end
         super *args
       else

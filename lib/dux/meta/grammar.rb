@@ -69,7 +69,7 @@ module Dux
     def class_to_xml(xml_node_or_file)
       if xml_node_or_file.is_a?(String) && File.exists?(xml_node_or_file)
         worksheet = RubyXL::Parser.parse(xml_node_or_file)[0]
-        new_xml = super
+        new_xml = element simple_class
         worksheet.each_with_index do |row, index|
           next if index == 0
           break if row[3].nil? || row[4].nil?
