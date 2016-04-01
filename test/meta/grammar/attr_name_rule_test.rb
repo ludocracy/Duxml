@@ -9,7 +9,7 @@ class AttrNameRuleTest < MiniTest::Test
     rule = Dux::ChildRule.new subject: 'legal_parent', statement: '<statement> of rule'
     assert_equal 'child_rule', rule.type
     assert_equal 'legal_parent', rule.subject
-    assert_equal '\\bstatement\\bofrule', rule.statement
+    assert_equal '<statement> of rule', rule.statement
     assert_equal nil, rule.object
   end
 

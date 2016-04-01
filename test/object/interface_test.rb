@@ -49,8 +49,20 @@ class InterfaceTest < MiniTest::Test
     a = [Dux::Object.new(%(<sub0/>)), Dux::Object.new(%(<sub1/>)), Dux::Object.new(%(<sub2/>))]
     e << a
     assert_equal 'sub0', e.children[0].type
+    assert_equal 0, e.children[0].position
     assert_equal 'sub1', e.children[1].type
     assert_equal 'sub2', e.children[2].type
+  end
+
+  def test_xml
+    a = Dux::Object.new(%(<sub id="sub0">some text</sub>))
+    assert_equal 'p_c_data', a.children.first.type
+    assert_equal %(<sub id="sub0">some text</sub>), a.xml.to_s
+  end
+
+  def test_content
+    a = Dux::Object.new(%(<sub id="sub0">some text</sub>))
+    assert_equal 'some text', a.content
   end
 
   def test_get_attr

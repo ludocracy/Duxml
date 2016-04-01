@@ -156,8 +156,8 @@ module Dux
     # note that <p_c_data> children are converted back to ordinary #PCDATA
     def xml
       x = xml_root_node.dup
-      x.element_children.each do |element|
-        element.replace Nokogiri::XML::Text.new(element.content, x.document) if element.name == 'p_c_data'
+      x.element_children.each_with_index do |element, index|
+        element.replace children[index].xml if element.name == 'p_c_data'
       end
       x
     end

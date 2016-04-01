@@ -11,7 +11,7 @@ class ChildRuleTest < MiniTest::Test
     assert_equal rule.to_s, rule0.to_s
     assert_equal 'child_rule', rule.type
     assert_equal 'legal_parent', rule.subject
-    assert_equal '\\bstatement\\bofrule', rule.statement
+    assert_equal '<statement> of rule', rule.statement
     assert_equal nil, rule.object
   end
 

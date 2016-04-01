@@ -5,6 +5,10 @@ require File.expand_path(File.dirname(__FILE__) + '/object/interface')
 require File.expand_path(File.dirname(__FILE__) + '/object/guts')
 
 module Dux
+
+  # Dux::Object is a Ruby Object combined with a Tree::TreeNode's methods via subclassing
+  # With some restrictions, this allows Dux::Object to behave like an XML element with attributes and children
+  # note that text nodes are converted into <p_c_data> elements in order to treat them as a Class i.e. Dux::PCData
   class Object < Tree::TreeNode
     include ObjectInterface
     include ObjectGuts
@@ -16,6 +20,10 @@ module Dux
 
     alias_method :id, :name
 
+    # all Dux::Objects are initialized as either XML (see Nokogiri::XML::Node#initialize)
+    # or as arguments that can be customized by each subclass's private #class_to_xml method.
+    # by default, arguments that are not XML are interpreted as arguments to #element in order
+    # to create the XML required to initialize this Dux::Object
     def initialize(*xml_or_args)
       @xml_root_node = class_to_xml *xml_or_args
       super xml_root_node[:id] || new_id
@@ -40,7 +48,9 @@ module Dux
     end # def Dux::initialize xml_node, args={}
   end # class Object
 
+  # Dux class for XML text nodes
   class PCData < Object
+    # always initialized from a string, either via interface or from XML text
     def initialize(content)
       super element('p_c_data', content)
     end
@@ -49,10 +59,12 @@ module Dux
       content
     end
 
+    # this method returns PCData as XML text
     def xml
       content
     end
 
+    # this is a text node
     def text?
       true
     end
