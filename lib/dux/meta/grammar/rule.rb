@@ -16,7 +16,7 @@ module Dux
     private def class_to_xml *args
       return args.first.xml if args.first.xml
       xml_node = super *args
-      xml_node.content = args.last.to_s.gsub(/[<>]/, '\b').gsub(/\s/, '')
+      xml_node.content = args.last.to_s.gsub(/[<>\s]/, '')
       xml_node.remove_attribute 'object'
       xml_node
     end

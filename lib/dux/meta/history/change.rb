@@ -23,8 +23,7 @@ module Dux
 
     # change subject is always an object
     def subject(context_dux=nil)
-      resolve_ref :subject, context_dux || meta
-    end
+      resolve_ref :subject, (context_dux || meta)   end
 
     # TODO - do we need this?
     def base_dux

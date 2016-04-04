@@ -18,16 +18,13 @@ class GrammarTest < MiniTest::Test
     ditameta.grammar = grammar_file
 
     validate
-    assert_equal 'error_no_children', ditameta.history[6].affected_parent.id
-    assert_equal 'error_child_in_wrong_pos', ditameta.history[5].affected_parent.id
-    assert_equal 'error_many_children_in_wrong_pos', ditameta.history[4].affected_parent.id
-    assert_equal 'error_children_split_in_wrong_pos', ditameta.history[2].affected_parent.id
-    assert_equal 'error_no_valid_first_child', ditameta.history[0].affected_parent.id
-  end
-
-  def test_output_to_log
-    validate
     log 'log.txt'
+    assert_equal 7, ditameta.history.size
+    assert_equal 'error_no_children', ditameta.history[5].affected_parent.id
+    assert_equal 'error_child_in_wrong_pos', ditameta.history[4].affected_parent.id
+    assert_equal 'error_many_children_in_wrong_pos', ditameta.history[3].affected_parent.id
+    assert_equal 'error_children_split_in_wrong_pos', ditameta.history[1].affected_parent.id
+    assert_equal 'error_no_valid_first_child', ditameta.history[0].affected_parent.id
   end
 
   def test_init_pattern

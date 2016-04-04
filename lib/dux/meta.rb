@@ -4,7 +4,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../dux/meta/grammar.rb')
 module Dux
   class Meta < Object
     # searches entire file plus metadata for an object matching given target
-    def find target
+    def find(target)
       n = target.respond_to?(:name) ? target.name : target.to_s
       last_child.each do |node|
         return node if node.name == n
@@ -12,19 +12,29 @@ module Dux
       nil
     end
 
+    # returns Dux::History
     def history
       find_child 'history'
     end
 
+    # returns Dux::Grammar
     def grammar
       find_child 'grammar'
     end
 
+    # adding Dux::Design or XML to Dux::Meta will add it to object tree but not to XML
+    # to retain properties of original XML document
+    def <<(obj)
+      add coerce obj
+      self
+    end
+
+    # returns XML design content as Dux::Object tree
     def design
       last_child
     end
 
-    def grammar= grammar_file
+    def grammar=(grammar_file)
       unless grammar.has_children?
         index = grammar.position
         remove 'grammar'
@@ -32,7 +42,7 @@ module Dux
       end
     end
 
-    def class_to_xml xml_node
+    def class_to_xml(xml_node)
       if xml_node.nil?
         xml_node = super
         xml_node << Dux::Grammar.new.xml

@@ -11,7 +11,7 @@ class DuxTest < MiniTest::Test
 
   def test_grammar_validate
     validate
-    assert_equal 'add', current_dux.history.first.type
+    assert_equal 'add', current_meta.history.first.type
   end
 
   def tear_down

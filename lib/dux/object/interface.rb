@@ -74,7 +74,7 @@ module Dux
       objs.each do |node|
         new_kid = coerce node
         add new_kid
-        @xml_root_node.add_child new_kid.xml_root_node
+        @xml_root_node.add_child new_kid.xml_root_node if post_init?
         report :add, node if design_comp?
       end
       self
@@ -152,18 +152,16 @@ module Dux
       nil
     end
 
-    # returns this object as a Nokogiri::XML::Element
-    # note that <p_c_data> children are converted back to ordinary #PCDATA
-    def xml
-      x = xml_root_node.dup
-      x.element_children.each_with_index do |element, index|
-        element.replace children[index].xml if element.name == 'p_c_data'
-      end
-      x
+    # returns root of this XML document
+    def xml_root
+      meta.design.xml_root_node
     end
 
-    # stub for documentation
-    def description; end
+
+    # returns human-readable description of this object
+    def description
+      %(<#{type} id="#{id}">)
+    end
 
     # returns true if this object is descended from an object of the target type or id
     def descended_from?(target)
@@ -173,6 +171,7 @@ module Dux
       end
       false
     end
+
 
     # index position of this object among its siblings
     def position

@@ -5,7 +5,6 @@ require File.expand_path(File.dirname(__FILE__) + '/object/interface')
 require File.expand_path(File.dirname(__FILE__) + '/object/guts')
 
 module Dux
-
   # Dux::Object is a Ruby Object combined with a Tree::TreeNode's methods via subclassing
   # With some restrictions, this allows Dux::Object to behave like an XML element with attributes and children
   # note that text nodes are converted into <p_c_data> elements in order to treat them as a Class i.e. Dux::PCData
@@ -13,10 +12,10 @@ module Dux
     include ObjectInterface
     include ObjectGuts
 
+    #pointer to XML element corresponding to this Object
     @xml_root_node
-    @xml_cursor
 
-    attr_reader :children, :children_hash, :xml_root_node
+    attr_reader :children, :children_hash, :xml_root_node, :line
 
     alias_method :id, :name
 
@@ -26,25 +25,19 @@ module Dux
     # to create the XML required to initialize this Dux::Object
     def initialize(*xml_or_args)
       @xml_root_node = class_to_xml *xml_or_args
+      @line = xml_root_node.line+1 if xml_or_args.first && (xml_root_node == xml_or_args.first)
       super xml_root_node[:id] || new_id
       return if text?
       @xml_root_node.children.each do |xml_child|
-        class_name = xml_child.name.classify
         case
           when xml_child.text? && xml_child.content.match(/\w/)
             new_child = Dux::PCData.new(xml_child.content)
-            add new_child
-            xml_child.replace new_child.xml
-          when Dux::constants.include?(class_name.to_sym)
-            klass = Dux::const_get(class_name)
-            self << klass.new(xml_child)
+            self << new_child
           when xml_child.element?
-            klass = Class.new Object
-            Dux::const_set class_name, klass
-            self << klass.new(xml_child)
+            self << xml_child
           else # skipping attributes
-        end
-      end
+        end # case ... Nokogiri::XML::Node types
+      end # @xml_root_node.children.each
     end # def Dux::initialize xml_node, args={}
   end # class Object
 
@@ -59,9 +52,14 @@ module Dux
       content
     end
 
+    # dissolves object into String
+    def to_s
+      xml_root_node.content
+    end
+
     # this method returns PCData as XML text
     def xml
-      content
+      to_s
     end
 
     # this is a text node

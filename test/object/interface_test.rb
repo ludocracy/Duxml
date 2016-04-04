@@ -3,8 +3,6 @@ require 'minitest/autorun'
 require 'nokogiri'
 # tests term formatting - without regard to validity of evaluation
 class InterfaceTest < MiniTest::Test
-  SAMPLE_TEMPLATE_FILE = 'xml/sample_dux.xml'
-
   @e
   attr_reader :e
   def setup
@@ -41,13 +39,13 @@ class InterfaceTest < MiniTest::Test
 
   def test_add_child
     answer = %(<birdhouse color="red" id="birdhouse0" size="large"><material id="id0">pine</material></birdhouse>)
-    e << Dux::Object.new(%(<material id="id0">pine</material>))
+    @e << Dux::Object.new(%(<material id="id0">pine</material>))
     assert_equal answer, e.to_s
   end
 
   def test_add_children
     a = [Dux::Object.new(%(<sub0/>)), Dux::Object.new(%(<sub1/>)), Dux::Object.new(%(<sub2/>))]
-    e << a
+    @e << a
     assert_equal 'sub0', e.children[0].type
     assert_equal 0, e.children[0].position
     assert_equal 'sub1', e.children[1].type

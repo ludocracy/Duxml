@@ -24,6 +24,7 @@ module Dux
       end
     end
 
+    # receives reports from interface of changes or from Dux::Rule violations
     def update(type, change_hash)
       change_class = Dux::const_get type.to_s.classify
       change_comp = change_class.new change_hash
@@ -35,14 +36,12 @@ module Dux
       sleep 0
     end
 
+    # override #each to return only children
     def each(&block)
       children.each &block
     end
 
-    def last
-      last_child
-    end
-
+    # override #[] to return child of history
     def [](key)
       find_child key
     end

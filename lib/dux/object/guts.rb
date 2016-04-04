@@ -7,19 +7,14 @@ module Dux
     private
 
     def coerce(obj)
-      case
-        when obj.to_s == obj
-          if (xml = obj.xml)
-            Dux::Object.new(xml)
-          else
-            Dux::PCData.new obj
-          end
-        when obj.respond_to?(:element?) && obj.element?
-          Dux::Object.new(obj)
-        when obj.respond_to?(:document?) && obj.document?
-          Dux::Object.new(obj.root)
-        else
-          obj
+      return obj if obj.respond_to?(:is_component?)
+      x = obj.xml
+      return Dux::PCData.new obj if x.nil?
+      class_name = x.name.classify
+      if Dux::constants.include?(class_name.to_sym)
+        Dux::const_get(class_name).new x
+      else
+        Dux::const_set(class_name, Class.new(Dux::Object)).new x
       end
     end
 
@@ -33,14 +28,12 @@ module Dux
 
 
     def class_to_xml(*args)
-      xml_node = if args.compact.size == 1 && !args.first.respond_to?(:is_component?) && !args.first.is_a?(Hash)
+      if args.compact.size == 1 && !args.first.respond_to?(:is_component?) && !args.first.is_a?(Hash)
         args.first.xml
       else
         all_str_args = objects2ids args
         element self.simple_class, *all_str_args
       end
-      xml_node[:id] ||= new_id
-      xml_node
     end
 
     def new_id
@@ -51,7 +44,7 @@ module Dux
       args.collect do |arg|
         if arg.is_a?(Hash)
           arg.each do |k, v|
-            arg[k] = v[:id] || v if v.respond_to?(:element) || v.respond_to?(:is_component?)
+            arg[k] = v[:id] || v.id if v.respond_to?(:element) || v.respond_to?(:is_component?)
           end
         else
           arg
@@ -63,7 +56,7 @@ module Dux
       ref = self[attr.to_sym]
       return nil if ref.nil?
       if context_template.nil?
-        Dux::Object.new File.open ref if File.exists?(ref)
+        File.open(ref) if File.exists?(ref)
       else
         context_template.find ref
       end

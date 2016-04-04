@@ -1,2 +1,8 @@
 history follows: 
-created file
+ at line 39: <data-about id="data-about2214"> is child #2 of <ol id="error_no_valid_first_child"> which violates rule child_rule2298 which states that children of <ol> must match (data|sort-as|data-about)*,li+.
+ at line 34: <data id="data2206"> is child #2 of <ol id="error_children_split_in_wrong_pos"> which violates rule child_rule2298 which states that children of <ol> must match (data|sort-as|data-about)*,li+.
+ at line 30: <data id="data2200"> is child #3 of <ol id="error_many_children_in_wrong_pos"> which violates rule child_rule2298 which states that children of <ol> must match (data|sort-as|data-about)*,li+.
+ at line 29: <data id="data2198"> is child #2 of <ol id="error_many_children_in_wrong_pos"> which violates rule child_rule2298 which states that children of <ol> must match (data|sort-as|data-about)*,li+.
+ at line 25: <data id="data2192"> is child #2 of <ol id="error_child_in_wrong_pos"> which violates rule child_rule2298 which states that children of <ol> must match (data|sort-as|data-about)*,li+.
+ at line 22: <ol id="error_no_children"> has no children which violates rule child_rule2298 which states that children of <ol> must match (data|sort-as|data-about)*,li+.
+initial commit

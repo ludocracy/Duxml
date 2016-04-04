@@ -24,7 +24,7 @@ module Dux
     end
 
     def description
-      super || "#{non_compliant_change.description} violates rule: #{violated_rule.description}."
+      "#{super} at line #{non_compliant_change.object.line}: #{non_compliant_change.description} which violates rule #{violated_rule.description}."
     end
 
     def non_compliant_change
@@ -35,7 +35,7 @@ module Dux
   # created when grammar detects error from user input
   class QualifyError < Error
     def description
-      super || "#{non_compliant_change.description} violates rule: #{violated_rule.description}."
+      super || "#{non_compliant_change.description} violates rule #{violated_rule.description}."
     end
 
     def non_compliant_change
