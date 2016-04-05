@@ -5,15 +5,15 @@ module Dux
   # changes represent events i.e. patterns with a fixed position in time,
   # and can include qualification and validation errors
   class Change < Pattern
-    private def class_to_xml(*args)
-      xml_node = super *args
-      xml_node[:date] ||= Time.now.to_s
-      xml_node
+    def initialize(*args)
+      super *args
+      @xml[:date] = Time.now.to_s unless from_file?(args)
     end
 
     def description
       descr = find_child(:description)
-      descr.nil? ? nil : descr.content
+      result = descr.nil? ? nil : descr.content
+      result
     end
 
     # returns date and time of change

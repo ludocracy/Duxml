@@ -20,4 +20,8 @@ class Object
       end
     end.join[1..-1]
   end
+
+  private def new_id
+    self.simple_class+object_id.to_s
+  end
 end

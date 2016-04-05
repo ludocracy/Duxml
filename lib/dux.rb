@@ -44,7 +44,7 @@ module Dux
   def validate(file=nil)
     if file.nil?
       @current_meta.design.each do |node|
-        current_meta.grammar.validate node
+        current_meta.grammar.validate node unless node.text?
       end
     else
       load file

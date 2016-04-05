@@ -7,5 +7,9 @@ module Dux
     def object
       content
     end
+
+    def description
+      "#{relationship} of #{subject.description}"
+    end
   end # class ContentPattern
 end # module Dux

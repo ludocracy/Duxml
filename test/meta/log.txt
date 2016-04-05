@@ -1,8 +1,44 @@
 history follows: 
- at line 39: <data-about id="data-about2214"> is child #2 of <ol id="error_no_valid_first_child"> which violates rule child_rule2298 which states that children of <ol> must match (data|sort-as|data-about)*,li+.
- at line 34: <data id="data2206"> is child #2 of <ol id="error_children_split_in_wrong_pos"> which violates rule child_rule2298 which states that children of <ol> must match (data|sort-as|data-about)*,li+.
- at line 30: <data id="data2200"> is child #3 of <ol id="error_many_children_in_wrong_pos"> which violates rule child_rule2298 which states that children of <ol> must match (data|sort-as|data-about)*,li+.
- at line 29: <data id="data2198"> is child #2 of <ol id="error_many_children_in_wrong_pos"> which violates rule child_rule2298 which states that children of <ol> must match (data|sort-as|data-about)*,li+.
- at line 25: <data id="data2192"> is child #2 of <ol id="error_child_in_wrong_pos"> which violates rule child_rule2298 which states that children of <ol> must match (data|sort-as|data-about)*,li+.
- at line 22: <ol id="error_no_children"> has no children which violates rule child_rule2298 which states that children of <ol> must match (data|sort-as|data-about)*,li+.
+ at line 2: id is attribute value of @<ol id="error_no_valid_first_child">
+      <data/>
+      <data-about/>
+    </ol> which violates rule value_rule2570 that value of ol must match (yes|no|-dita-use-conref-target)compact.
+ at line 2: <data-about id="data-about2294"> is child #2 of <ol id="error_no_valid_first_child"> which violates rule children_rule2562 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
+ at line 2: id is attribute value of @<ol id="error_children_split_in_wrong_pos">
+      <li><data/></li>
+      <data/>
+      <li><data/></li>
+    </ol> which violates rule value_rule2570 that value of ol must match (yes|no|-dita-use-conref-target)compact.
+ at line 2: <data id="data2286"> is child #2 of <ol id="error_children_split_in_wrong_pos"> which violates rule children_rule2562 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
+ at line 2: id is attribute value of @<ol id="error_many_children_in_wrong_pos">
+      <li><data/></li>
+      <data/>
+      <data/>
+    </ol> which violates rule value_rule2570 that value of ol must match (yes|no|-dita-use-conref-target)compact.
+ at line 2: <data id="data2280"> is child #3 of <ol id="error_many_children_in_wrong_pos"> which violates rule children_rule2562 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
+ at line 2: <data id="data2278"> is child #2 of <ol id="error_many_children_in_wrong_pos"> which violates rule children_rule2562 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
+ at line 2: id is attribute value of @<ol id="error_child_in_wrong_pos">
+      <li><data/></li>
+      <data/>
+    </ol> which violates rule value_rule2570 that value of ol must match (yes|no|-dita-use-conref-target)compact.
+ at line 2: <data id="data2272"> is child #2 of <ol id="error_child_in_wrong_pos"> which violates rule children_rule2562 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
+ at line 2: id is attribute value of @<ol id="error_no_children"/> which violates rule value_rule2570 that value of ol must match (yes|no|-dita-use-conref-target)compact.
+ at line 2: <ol id="error_no_children"> has no children which violates rule children_rule2562 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
+ at line 2: id is attribute value of @<ol id="arbitrary_data_and_child">
+      <data/>
+      <data-about/>
+      <data/>
+      <li><data/></li>
+    </ol> which violates rule value_rule2570 that value of ol must match (yes|no|-dita-use-conref-target)compact.
+ at line 2: id is attribute value of @<ol id="data_and_child">
+      <data/>
+      <li><data/></li>
+    </ol> which violates rule value_rule2570 that value of ol must match (yes|no|-dita-use-conref-target)compact.
+ at line 2: id is attribute value of @<ol id="plural_children">
+      <li><data/></li>
+      <li><data/></li>
+    </ol> which violates rule value_rule2570 that value of ol must match (yes|no|-dita-use-conref-target)compact.
+ at line 2: id is attribute value of @<ol id="single_child">
+      <li><data/></li>
+    </ol> which violates rule value_rule2570 that value of ol must match (yes|no|-dita-use-conref-target)compact.
 initial commit

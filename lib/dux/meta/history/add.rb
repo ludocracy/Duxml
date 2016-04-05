@@ -4,7 +4,7 @@ module Dux
   # created when an object gains a child
   class Add < Change
     def description
-      super || %(Element '#{added.id}' of type '#{added.type}' was added to element '#{subject.id}' of type '#{subject.type}'.)
+      super || %(#{added.description} was added to #{subject.description}.)
     end
 
     def added

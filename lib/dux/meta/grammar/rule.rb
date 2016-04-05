@@ -1,8 +1,26 @@
 require File.expand_path(File.dirname(__FILE__) + '/pattern')
 
 module Dux
+  Struct.new 'Scanner', :match, :operator
   # do not use - must be subclassed!
   class Rule < Pattern
+    @cur_object
+    attr_reader :cur_object
+    # can be initialized from XML Element or Ruby arguments
+    # args[0] must be the subject (e.g. name of element or attribute)
+    # args[1] must be the statement of the rule in Regexp/DTD form
+    #
+    # @cur_object can only be set by the Grammar as it validates a given Change or Pattern
+    # it indicates the Object currently being inspected by this Rule
+    def initialize(*args)
+      super *args
+      unless from_file? args
+        @xml << args[1].gsub(/\s/, '')
+        @xml.remove_attribute 'object'
+      end
+      @cur_object = nil
+    end
+
     # Dux::Rule's #qualify is only used to report errors found by its subclasses' #qualify methods
     def qualify(change_or_pattern)
       type = (change_or_pattern.is_a?(Dux::Change)) ? :qualify_error : :validate_error
@@ -10,20 +28,12 @@ module Dux
     end
 
     def description
-      %(#{id} which states: #{content})
-    end
-
-    private def class_to_xml *args
-      return args.first.xml if args.first.xml
-      xml_node = super *args
-      xml_node.content = args.last.to_s.gsub(/[<>\s]/, '')
-      xml_node.remove_attribute 'object'
-      xml_node
+      %(#{name} that #{relationship} of #{subject} must match #{statement})
     end
 
     # returns the DTD or Ruby code statement that embodies this Rule
     def statement
-      self[:statement] || children.first.content
+      xml.content
     end
 
     # subject of Rule is not an object but a type or
@@ -37,7 +47,5 @@ module Dux
     def object
       self[:object]
     end
-
-    private :class_to_xml
   end # class Rule
 end # module Dux

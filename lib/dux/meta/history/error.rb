@@ -10,13 +10,13 @@ module Dux
 
   # created when grammar detects error from file
   class ValidateError < Error
-    def class_to_xml *args
-      return args.first.xml if args.first.is_a?(Nokogiri::XML::Element)
-      pattern = args.first[:object].xml
-      xml_node = super *args
-      xml_node << pattern
-      xml_node.remove_attribute 'object'
-      xml_node
+    def initialize(*args)
+      pattern = if class_to_xml *args
+        @xml.remove_attribute 'object'
+        args.first[:object]
+      end
+      super()
+      self << pattern if pattern
     end
 
     def affected_parent
@@ -24,11 +24,15 @@ module Dux
     end
 
     def description
-      "#{super} at line #{non_compliant_change.object.line}: #{non_compliant_change.description} which violates rule #{violated_rule.description}."
+      "#{super} at line #{error_line_no}: #{non_compliant_change.description} which violates rule #{violated_rule.description}."
     end
 
     def non_compliant_change
       object
+    end
+
+    def error_line_no
+      object.respond_to?(:line) ? object.line : subject.line
     end
   end
 

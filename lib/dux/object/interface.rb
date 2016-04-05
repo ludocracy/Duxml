@@ -49,7 +49,8 @@ module Dux
 
     # overriding TreeNode::content to point to XML head's content
     def content
-      xml_root_node.content
+      source = children.size == 1 && children.first.text? ? children.first : xml
+      source.content
     end
 
     # returns id i.e. name that is unique among its siblings
@@ -59,7 +60,7 @@ module Dux
 
     # shortcut for accessing XML attributes
     def [](attr=nil)
-      attr.nil? ? xml_root_node.attributes : xml_root_node[attr.to_s]
+      attr.nil? ? xml.attributes : xml[attr.to_s]
     end
 
     # TODO assess if we need this - wasn't it just for debugging?
@@ -74,7 +75,7 @@ module Dux
       objs.each do |node|
         new_kid = coerce node
         add new_kid
-        @xml_root_node.add_child new_kid.xml_root_node if post_init?
+        @xml.add_child new_kid.xml if post_init?
         report :add, node if design_comp?
       end
       self
@@ -84,7 +85,7 @@ module Dux
     def remove(child_or_id)
       return if child_or_id.nil?
       child = child_or_id.respond_to?(:id) ? child_or_id : find_child(child_or_id)
-      child.xml_root_node.remove
+      child.xml.remove
       remove! child
       report :remove, child if design_comp?
       self
@@ -93,7 +94,7 @@ module Dux
     # returns attributes as simple Hash
     def attributes
       h = {}
-      xml_root_node.attributes.each do |attr|
+      xml.attributes.each do |attr|
         h[attr.first.to_sym] = attr.last.value
       end
       h
@@ -109,7 +110,7 @@ module Dux
     def rename(new_id)
       old_id = id
       super new_id
-      @xml_root_node[:id] = new_id
+      @xml[:id] = new_id
       report :change_attribute, {id: old_id} if design_comp?
       self
     end
@@ -119,7 +120,7 @@ module Dux
     def content=(new_content)
       change_type = content.empty? ? :new_content : :change_content
       old_content = content
-      @xml_root_node.content = new_content
+      @xml.content = new_content
       report change_type, old_content
       self
     end
@@ -138,12 +139,12 @@ module Dux
     # note that this differs XML on file as in memory, #PCDATA children are wrapped in a temporary element
     # <p_c_data>. compare to #xml
     def to_s
-      @xml_root_node.to_s
+      xml.to_s
     end
 
     # returns type of object i.e. the xml element's name
     def type
-      xml_root_node.name
+      xml.name
     end
 
     # returns root of metadata
@@ -154,7 +155,7 @@ module Dux
 
     # returns root of this XML document
     def xml_root
-      meta.design.xml_root_node
+      meta.design.xml
     end
 
 
@@ -165,7 +166,7 @@ module Dux
 
     # returns true if this object is descended from an object of the target type or id
     def descended_from?(target)
-      xml_root_node.ancestors.each do |ancestor|
+      xml.ancestors.each do |ancestor|
         return true if ancestor.name == target.to_s
         return true if ancestor.type == target.to_s
       end

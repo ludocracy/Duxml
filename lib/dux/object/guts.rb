@@ -1,5 +1,6 @@
 require 'observer'
 require File.expand_path(File.dirname(__FILE__) + '/../ruby_ext/nokogiri')
+require File.expand_path(File.dirname(__FILE__) + '/../object/p_c_data')
 
 module Dux
   module ObjectGuts
@@ -26,30 +27,37 @@ module Dux
       !caller.any? do |call| call.match(/(?:`)(.)+(?:')/).to_s[1..-2] == 'initialize' end
     end
 
-
+    # returns false if args.first is a Nokogiri::XML::Element or a string that can initialize one
+    # returns true if args are Ruby arguments that need to have new corresponding XML created
+    # either way, @xml is initialized
     def class_to_xml(*args)
-      if args.compact.size == 1 && !args.first.respond_to?(:is_component?) && !args.first.is_a?(Hash)
-        args.first.xml
+      return false if args.empty?
+      if from_file? args
+        @xml = args.first.xml
+        false
       else
         all_str_args = objects2ids args
-        element self.simple_class, *all_str_args
+        @xml = element self.simple_class, *all_str_args
+        true
       end
     end
 
-    def new_id
-      self.simple_class+object_id.to_s
+    def from_file?(args)
+      args.compact.size == 1 && !args.first.respond_to?(:is_component?) && !args.first.is_a?(Hash)
     end
 
     def objects2ids(args)
-      args.collect do |arg|
+      new_args = args.clone.compact
+      new_args.each_with_index do |arg, index|
         if arg.is_a?(Hash)
-          arg.each do |k, v|
-            arg[k] = v[:id] || v.id if v.respond_to?(:element) || v.respond_to?(:is_component?)
+          new_arg = arg.clone
+          new_arg.each do |k, v|
+            new_arg[k] = v[:id] || v.id if v.respond_to?(:element) || v.respond_to?(:is_component?)
           end
-        else
-          arg
+          new_args[index] = new_arg
         end
       end
+      new_args
     end # def objects2ids
 
     def resolve_ref(attr, context_template=nil)
@@ -83,7 +91,7 @@ module Dux
                       change_type = :new_attribute
                       :nil
                     end
-          @xml_root_node[key] = val
+          @xml[key] = val
           report change_type, {old_value: old_val, new_value: val, attr_name: key.to_s}
       end # case key
     end # def change_attr_value

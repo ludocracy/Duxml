@@ -2,19 +2,16 @@ require File.expand_path(File.dirname(__FILE__) + '/change')
 
 module Dux
   # do not use
-  class Edit < Change
-    def description
-      super if super
-    end
-  end
+  class Edit < Change; end
 
   # created when object has no XML children but has text and text has been changed
   class ChangeContent < Edit
-    private def class_to_xml args={}
-      xml_node = super args
-      xml_node.remove_attribute 'object'
-      xml_node << args[:object]
-      xml_node
+    def initialize(*args)
+      if class_to_xml *args
+        @xml_root_node.remove_attribute 'object'
+        @xml_root_node << args.first[:object]
+      end
+      super xml_root_node
     end
 
     def description
@@ -33,10 +30,11 @@ module Dux
 
   # created when object has a given attribute and its value has been changed
   class ChangeAttribute < Edit
-    private def class_to_xml args={}
-      xml_node = super args
-      args[:object].each do |k, v| xml_node[k] = v end if args[:object].is_a?(Hash)
-      xml_node
+    def initialize(*args)
+      if class_to_xml *args
+        args.first[:object].each do |k, v| @xml_root_node[k] = v end if args.first[:object].is_a?(Hash)
+      end
+      super xml_root_node
     end
 
     def description
@@ -59,10 +57,12 @@ module Dux
 
   # created when object gains a new attribute
   class NewAttribute < Edit
-    private def class_to_xml args={}
-      xml_node = super
-      args[:object].each do |k, v| xml_node[k] = v end if args[:object].is_a?(Hash)
-      xml_node
+    #
+    def initialize(*args)
+      if class_to_xml *args
+        args.first[:object].each do |k, v| @xml_root_node[k] = v end if args.first[:object].is_a?(Hash)
+      end
+      super xml_root_node
     end
 
     def description

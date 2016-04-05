@@ -6,5 +6,9 @@ module Dux
     def relationship
       'attribute value'
     end
+
+    def description
+      "#{object} is #{relationship} of @#{subject}"
+    end
   end # class AttrValPattern
 end # module Dux

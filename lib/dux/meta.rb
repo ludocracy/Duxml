@@ -3,6 +3,17 @@ require File.expand_path(File.dirname(__FILE__) + '/../dux/meta/grammar.rb')
 
 module Dux
   class Meta < Object
+    def initialize(xml_node=nil)
+      if xml_node.nil?
+        xml_node = super
+        xml_node << Dux::Grammar.new.xml
+        xml_node << Dux::History.new.xml
+        xml_node
+      else
+        super xml_node
+      end
+    end
+
     # searches entire file plus metadata for an object matching given target
     def find(target)
       n = target.respond_to?(:name) ? target.name : target.to_s
@@ -41,18 +52,5 @@ module Dux
         add Grammar.new(grammar_file), index
       end
     end
-
-    def class_to_xml(xml_node)
-      if xml_node.nil?
-        xml_node = super
-        xml_node << Dux::Grammar.new.xml
-        xml_node << Dux::History.new.xml
-        xml_node
-      else
-        super xml_node
-      end
-    end
-
-    private :class_to_xml
   end # class Meta
 end # module Dux

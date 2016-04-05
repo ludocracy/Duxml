@@ -14,14 +14,11 @@ module Dux
       end.join("\n")
     end
 
-    private def class_to_xml(xml_node)
-      if xml_node.nil?
-        xml_node = super xml_node
-        xml_node << %(<add owner="system" date="#{Time.now.to_s}"><description>file created</description></add>)
-        xml_node
-      else
-        super xml_node
+    def initialize(xml_node=nil)
+      if class_to_xml xml_node
+        @xml << %(<add owner="system" date="#{Time.now.to_s}"><description>file created</description></add>)
       end
+      super()
     end
 
     # receives reports from interface of changes or from Dux::Rule violations
@@ -29,7 +26,7 @@ module Dux
       change_class = Dux::const_get type.to_s.classify
       change_comp = change_class.new change_hash
       add change_comp, 0
-      @xml_root_node.prepend_child change_comp.xml
+      @xml.prepend_child change_comp.xml
       unless change_comp.type[-5..-1] == 'error' || root.grammar.nil?
         root.grammar.qualify change_comp
       end

@@ -2,20 +2,32 @@ require File.expand_path(File.dirname(__FILE__) + '/../../object')
 
 module Dux
   class Pattern < Object
-    private def class_to_xml *args
-              return args.first.xml if args.first.respond_to?(:element?) && args.first.xml
-      if args.any? do |arg| arg.is_a?(Hash) end
-        super *args
+    # Dux::Patterns can be initialized from XML or from arguments that are interpreted as follows:
+    # args[0] must be the subject of the Pattern
+    # args[1] must be the object of the Pattern
+    # args[2] can be the relationship type of the Pattern
+    # the first two arguments ids or names become attributes and the third becomes the content
+    def initialize(*args)
+      if args.empty? || from_file?(args) || args.any? do |arg| arg.is_a?(Hash) end
+        class_to_xml *args
       else
         h = Hash.new
         h[:subject] = args.first if args.first
-        h[:object] = args.last if args.size > 1
-        super h
+        h[:object] = args[1] if args.size > 1
+        content = args.size > 2 ? args[2] : nil
+        class_to_xml h, content
       end
+      super()
     end
 
+    # returns relationship description as string by subtracting super class name
+    # (e.g. 'pattern' or 'rule') from simple_class
+    # Dux::ChildrenRule#relationship => 'children'
+    # Dux::ContentPattern#relationship => 'content'
+    # can be overridden if class name does not match human-readable string
     def relationship
-      simple_class[0..-9]
+      super_class_size = self.class.superclass.to_s.split('::').last.size
+      simple_class[0..-(super_class_size+2)]
     end
 
     def description

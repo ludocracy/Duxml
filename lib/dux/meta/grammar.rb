@@ -2,20 +2,14 @@ require File.expand_path(File.dirname(__FILE__) + '/grammar/pattern/child_patter
 require File.expand_path(File.dirname(__FILE__) + '/grammar/pattern/content_pattern')
 require File.expand_path(File.dirname(__FILE__) + '/grammar/pattern/attr_name_pattern')
 require File.expand_path(File.dirname(__FILE__) + '/grammar/pattern/attr_val_pattern')
-require File.expand_path(File.dirname(__FILE__) + '/grammar/rule/child_rule')
-require File.expand_path(File.dirname(__FILE__) + '/grammar/rule/attr_name_rule')
-require File.expand_path(File.dirname(__FILE__) + '/grammar/rule/attr_val_rule')
+require File.expand_path(File.dirname(__FILE__) + '/grammar/rule/children_rule')
+require File.expand_path(File.dirname(__FILE__) + '/grammar/rule/attributes_rule')
+require File.expand_path(File.dirname(__FILE__) + '/grammar/rule/value_rule')
 require File.expand_path(File.dirname(__FILE__) + '/grammar/rule/content_rule')
 require 'rubyXL'
 
 module Dux
   class Grammar < Object
-    def initialize(xml_node_or_file=nil)
-      xml_node = class_to_xml(xml_node_or_file)
-      xml_node = xml_node[:ref] ? class_to_xml(xml_node[:ref]) : xml_node
-      super xml_node
-    end
-
     # applies grammar rules to all relationships of the given object
     def validate(comp)
       if comp.children.any? do |child| !child.text? end
@@ -28,8 +22,9 @@ module Dux
         qualify Dux::ChildPattern.new comp
       end
       comp.attributes.each do |k, v|
-        qualify Dux::AttrNamePattern.new comp, k
-        qualify Dux::AttrValPattern.new k, v
+        if qualify Dux::AttrNamePattern.new comp, k
+          qualify Dux::AttrValPattern.new comp, k
+        end
       end
     end # def validate
 
@@ -44,8 +39,9 @@ module Dux
     def qualify(change_or_pattern)
       get_rules(change_or_pattern.simple_class).each do |child|
         subj = change_or_pattern.subject meta
-        if subj && child[:subject] == subj.type
-          child.qualify change_or_pattern
+        subj = subj.type if subj.respond_to?(:type)
+        if subj && child[:subject] == subj
+          return child.qualify change_or_pattern
         end
       end
     end # def qualify
@@ -55,33 +51,43 @@ module Dux
                       when 'new_content', 'change_content', 'content_pattern' then
                         :content_rule
                       when 'new_attribute', 'attr_name_pattern' then
-                        :attr_name_rule
+                        :attributes_rule
                       when 'change_attribute', 'attr_val_pattern' then
-                        :attr_val_rule
+                        :value_rule
                       when 'add', 'remove', 'child_pattern' then
-                        :child_rule
+                        :children_rule
                       else # should not happen
                     end
     end
 
     private
 
-    def class_to_xml(xml_node_or_file)
+    def initialize(xml_node_or_file=nil)
       if xml_node_or_file.is_a?(String) && File.exists?(xml_node_or_file)
         worksheet = RubyXL::Parser.parse(xml_node_or_file)[0]
-        new_xml = element simple_class
+        rule_hash = {}
         worksheet.each_with_index do |row, index|
           next if index == 0
           break if row[3].nil? || row[4].nil?
+          element_name = row[3].value
           statement_str = row[4].value
-          new_xml << Dux::ChildRule.new(row[3].value, statement_str).xml
-          #new_xml << element('regexp_rule', {subject: row[3], statement: row[5].value}) unless row[5].nil?
+          rule_hash[element_name+statement_str] = Dux::ChildrenRule.new(element_name, statement_str)
+          row_five = row[5].value.split(/\n/)
+          row[5].value.split(/\n/).each do |rule|
+            next if rule.empty?
+            attr_name, attr_val, attr_req = *rule.split
+            rule_hash[element_name] ||= Dux::AttributesRule.new(element_name, attr_name, attr_req)
+            rule_hash[attr_name] ||= Dux::ValueRule.new(element_name, attr_name, attr_val)
+          end
+        end # worksheet.each_with_index
+        class_to_xml nil
+        rule_hash.each do |k, v|
+          @xml << v.xml
         end
-        new_xml[:id] = new_id
-        new_xml
       else
-        super xml_node_or_file
+        class_to_xml xml_node_or_file
       end # if...else xml_node_or_file is an .xslx file or similar spreadsheet
+      super xml[:ref] || xml
     end # def class_to_xml
   end # class Grammar
 end # module Dux

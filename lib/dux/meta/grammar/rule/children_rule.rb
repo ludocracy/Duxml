@@ -2,33 +2,39 @@ require File.expand_path(File.dirname(__FILE__) + '/../rule')
 
 module Dux
   # rule that states what children and how many a given object is allowed to have
-  class ChildRule < Rule
-    Struct.new 'Scanner', :match, :operator, :counter
-
-    def qualify(change_or_pattern)
-      @cur_object = change_or_pattern.object meta
-      rule_array = statement.split(',').collect do |rule|
-        %w(? * +).include?(rule[-1]) ? [rule[0..-2], rule[-1]] : [rule, '']
+  class ChildrenRule < Rule
+    # child rules are initialized from XML or constructed from DTD element declarations e.g. (zeroOrMore|other-first-child)*,second-child-optional?,third-child-gt1+
+    # args[0] is the name of the element the rule applies to
+    # args[1] is the DTD-style statement of the child rule
+    def initialize(*args)
+      if from_file? args
+        super *args
+      else
+        element_name = args.first
+        statement_str = args.last.gsub('-','_dash_').gsub(/\b/,'\b').gsub('_dash_', '-')
+        statement_str.gsub!(/[\<>]/, '')
+        statement_str.gsub!(/#PCDATA/, 'p_c_data')
+        super element_name, statement_str
       end
-      scanners = get_scanners rule_array
-      super change_or_pattern unless pass scanners
     end
 
-    def description
-      %(#{name} which states that children of <#{subject}> must match #{statement})
+    # evaluates a given change or pattern to see if their children all follow this rule
+    def qualify(change_or_pattern)
+      @cur_object = change_or_pattern.object meta
+      super change_or_pattern unless pass
     end
 
     private
 
-    def get_scanners(rule_array)
-      rule_array.collect do |rule|
-        Struct::Scanner.new Regexp.new(dtd_to_regexp rule.first), rule.last, 0
+    def get_scanners
+      statement.split(',').collect do |rule|
+        rule_args = %w(? * +).include?(rule[-1]) ? [rule[0..-2], rule[-1]] : [rule, '']
+        Struct::Scanner.new Regexp.new(dtd_to_regexp rule_args.first), rule_args.last
       end
     end
 
     def dtd_to_regexp(child_pattern)
-      # add code to add \b when '<>' not present!
-      s = child_pattern.gsub('#PCDATA', 'p_c_data').gsub('-','_dash_').gsub(/\b/,'\b').gsub('_dash_', '-')
+      s = child_pattern.clone
       open = s.match('\(') || []
       close = s.match('\)') || []
       case
@@ -40,17 +46,9 @@ module Dux
       s
     end
 
-    def any_next_type_siblings?(type_pattern, child)
-      sibling = child.next_sibling
-      until sibling.nil? do
-        return true if sibling.type.match type_pattern
-        sibling = sibling.next_sibling
-      end
-      false
-    end
-
-    def pass(scanners)
-      child_stack = @cur_object.nil? ? [] : @cur_object.parent.children.clone
+    def pass
+      child_stack = cur_object.nil? ? [] : cur_object.parent.children.clone
+      scanners = get_scanners
       scanner = scanners.shift
       result = false
       loop do
@@ -73,7 +71,7 @@ module Dux
               result = false # else, this scanner will report false
           end
         end # if child.type.match scanner[:match]
-        break if child.id == @cur_object.id  # don't need to keep looping because we've scanned our target
+        break if child.id == cur_object.id  # don't need to keep looping because we've scanned our target
       end # loop do
       # checking to see if any required children were not present
       result = false if child_stack.empty? && scanners.any? do |scanner|
