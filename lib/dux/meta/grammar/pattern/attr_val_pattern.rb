@@ -8,7 +8,7 @@ module Dux
     end
 
     def description
-      "#{object} is #{relationship} of @#{subject}"
+      "#{subject[object]} is #{relationship} of @#{object}"
     end
   end # class AttrValPattern
 end # module Dux

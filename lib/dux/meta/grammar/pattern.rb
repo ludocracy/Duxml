@@ -8,7 +8,7 @@ module Dux
     # args[2] can be the relationship type of the Pattern
     # the first two arguments ids or names become attributes and the third becomes the content
     def initialize(*args)
-      if args.empty? || from_file?(args) || args.any? do |arg| arg.is_a?(Hash) end
+      if args.empty? || xml?(args) || args.any? do |arg| arg.is_a?(Hash) end
         class_to_xml *args
       else
         h = Hash.new

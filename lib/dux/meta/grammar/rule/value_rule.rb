@@ -9,7 +9,10 @@ module Dux
       super change_or_pattern unless pass
     end
 
+    private
+
     def pass
+      return true # TODO fix this scanner! add attribute data types!
       scanner = get_scanner
       cur_object.attributes.each do |k, v|
         return scanner[:match].match(v).to_s == v if subject == k

@@ -14,7 +14,7 @@ module Dux
     # it indicates the Object currently being inspected by this Rule
     def initialize(*args)
       super *args
-      unless from_file? args
+      unless xml? args
         @xml << args[1].gsub(/\s/, '')
         @xml.remove_attribute 'object'
       end

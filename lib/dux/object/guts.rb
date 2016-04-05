@@ -20,11 +20,12 @@ module Dux
     end
 
     def design_comp?
-      type == 'design' || descended_from?(:design)
+      m = xml.document.root.name
+      m != 'meta'
     end
 
     def post_init?
-      !caller.any? do |call| call.match(/(?:`)(.)+(?:')/).to_s[1..-2] == 'initialize' end
+      node_depth.zero? ? children.any? : !parent.nil?
     end
 
     # returns false if args.first is a Nokogiri::XML::Element or a string that can initialize one
@@ -32,7 +33,7 @@ module Dux
     # either way, @xml is initialized
     def class_to_xml(*args)
       return false if args.empty?
-      if from_file? args
+      if xml? args
         @xml = args.first.xml
         false
       else
@@ -42,7 +43,7 @@ module Dux
       end
     end
 
-    def from_file?(args)
+    def xml?(args)
       args.compact.size == 1 && !args.first.respond_to?(:is_component?) && !args.first.is_a?(Hash)
     end
 

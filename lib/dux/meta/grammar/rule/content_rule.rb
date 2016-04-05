@@ -21,6 +21,8 @@ module Dux
       super change_or_pattern unless pass
     end
 
+    private
+
     def pass
       return false unless cur_object.text?
       scanner = get_scanner

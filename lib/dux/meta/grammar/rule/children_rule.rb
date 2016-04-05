@@ -7,7 +7,7 @@ module Dux
     # args[0] is the name of the element the rule applies to
     # args[1] is the DTD-style statement of the child rule
     def initialize(*args)
-      if from_file? args
+      if xml? args
         super *args
       else
         element_name = args.first
@@ -33,12 +33,16 @@ module Dux
       end
     end
 
+    # fixes annoying DTD multiple parentheses formatting
     def dtd_to_regexp(child_pattern)
+      return child_pattern unless child_pattern.match(/[\(\)]/)
       s = child_pattern.clone
-      open = s.match('\(') || []
-      close = s.match('\)') || []
+      open_match = s.match(/[\(]/)
+      open = (s.match('\(') || []).size
+      close = (s.match('\)') || []).size
+      return s unless (open == 1 && close.zero?) || (open.zero? && close == 1)
       case
-        when open.size == close.size then
+        when open == close then
         when s[0] == '(' && s[-1] != ')' then s = s[1..-1] until s[0] != '('
         when s[0] != '(' && s[-1] == ')' then s = s[0..-2] until s[-1] != ')'
         else

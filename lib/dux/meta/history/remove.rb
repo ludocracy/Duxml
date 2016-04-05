@@ -6,15 +6,15 @@ module Dux
     def initialize(*args)
       if class_to_xml *args
         removed_child = args.first[:object]
-        @xml_root_node.remove_attribute 'object'
+        @xml.remove_attribute 'object'
       end
-      super xml_root_node
+      super()
       self << removed_child if removed_child
     end
 
     def description
       super ||
-          %(Element '#{removed.id}' of type '#{removed.type}' was removed from element '#{subject.id}' of type '#{subject.type}'.)
+          %(#{removed.description} was removed from #{subject.description}.)
     end
 
     def removed

@@ -15,14 +15,14 @@ class HistoryTest < MiniTest::Test
     t.design << new_kid
     c = t.history.first
     assert_equal 'add', c.type
-    assert_equal %(Element 'test_0' of type 'test' was added to element 'design_id' of type 'design'.), c.description
+    assert_equal %(<test id="test_0"> was added to <design id="design_id">.), c.description
   end
 
   def test_remove_child
     t.design.remove 'legal_parent'
     c = t.history.first
     assert_equal 'remove', c.type
-    assert_equal %(Element 'lp_0' of type 'legal_parent' was removed from element 'design_id' of type 'design'.), c.description
+    assert_equal %(<legal_parent id="lp_0"> was removed from <design id="design_id">.), c.description
   end
 
   def test_new_attr
@@ -30,28 +30,28 @@ class HistoryTest < MiniTest::Test
     t.design.find_child(%w(legal_parent also_legal_child))[:new_attribute] = 'new value'
     c = t.history.first
     assert_equal 'new_attribute', c.type
-    assert_equal %(Element 'alc_0' of type 'also_legal_child' given new attribute 'new_attribute' with value 'new value'.), c.description
+    assert_equal %(<also_legal_child id="alc_0"> given new attribute 'new_attribute' with value 'new value'.), c.description
   end
 
   def test_new_content
     t.design.find_child(%w(legal_parent also_legal_child)).content = 'new content'
     c = t.history.first
     assert_equal 'new_content', c.type
-    assert_equal %(Element 'alc_0' of type 'also_legal_child' given new content 'new content'.), c.description
+    assert_equal %(<also_legal_child id="alc_0"> given new content 'new content'.), c.description
   end
 
   def test_change_attr
     t.design.find_child(%w(legal_parent legal_child))[:visible] = 'new value'
     c = t.history.first
     assert_equal 'change_attribute', c.type
-    assert_equal %(Element 'lc_0' of type 'legal_child' changed attribute 'visible' value from 'nope' to 'new value'.), c.description
+    assert_equal %(<legal_child id="lc_0"> changed attribute 'visible' value from 'nope' to 'new value'.), c.description
   end
 
   def test_change_content
-    t.design.find_child(%w(legal_parent legal_child)).content = 'new content'
+    t.design.find_child(%w(legal_parent legal_child)).content = 'changed content'
     c = t.history.first
     assert_equal 'change_content', c.type
-    assert_equal %(Element 'lc_0' of type 'legal_child' changed content from 'text content' to 'new content'.), c.description
+    assert_equal %(<legal_child id="lc_0"> changed content from 'text content' to 'changed content'.), c.description
   end
 
   def tear_down

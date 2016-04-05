@@ -25,6 +25,11 @@ module Dux
       xml
     end
 
+    def content=(new_text)
+      return nil if new_text.xml
+      @xml = new_text
+    end
+
     # this is a text node
     def text?
       true

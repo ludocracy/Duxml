@@ -30,7 +30,7 @@ module Dux
       #attempting to use pattern as index
       return cur_comp.children[pattern] if pattern.is_a?(Fixnum)
       cur_comp.children.each do |cur_child|
-        if cur_child.name == pattern.to_s || cur_child.type == pattern.to_s
+        if cur_child.name == pattern.to_s || cur_child.simple_class == pattern.to_s
           if child_pattern == pattern || child_pattern.size == 1
             return cur_child
           else
@@ -118,10 +118,18 @@ module Dux
     # TODO assess whether we should block user from using this to spawn children
     # changes content of this XML::Element
     def content=(new_content)
-      change_type = content.empty? ? :new_content : :change_content
-      old_content = content
-      @xml.content = new_content
-      report change_type, old_content
+      return nil unless xml.content.empty? || children.size == 1 && children.first.text?
+      if children.size == 1 && children.first.text?
+        change_type = :change_content
+        old_content = content
+        children.first.content = new_content
+      elsif xml.content.empty?
+        change_type = :new_content
+        @xml.content = new_content
+      else
+        return nil
+      end
+      report change_type, old_content || nil
       self
     end
 

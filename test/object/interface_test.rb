@@ -54,7 +54,7 @@ class InterfaceTest < MiniTest::Test
 
   def test_xml
     a = Dux::Object.new(%(<sub id="sub0">some text</sub>))
-    assert_equal 'p_c_data', a.children.first.type
+    assert_equal 'p_c_data', a.children.first.simple_class
     assert_equal %(<sub id="sub0">some text</sub>), a.xml.to_s
   end
 

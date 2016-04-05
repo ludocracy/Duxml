@@ -8,7 +8,7 @@ module Dux
     # args[1] must be the attribute name pattern in Regexp form
     # args[2] can be the requirement level - optional i.e. #IMPLICIT by default
     def initialize(*args)
-      if from_file? args
+      if xml? args
         super *args
       else
         super args.first, args[1].gsub('-', '__dash__').gsub(/\b/, '\b').gsub('-', '__dash__')
@@ -23,6 +23,8 @@ module Dux
       super change_or_pattern unless result
       result
     end
+
+    private
 
     # string describing relationship of
     def relationship

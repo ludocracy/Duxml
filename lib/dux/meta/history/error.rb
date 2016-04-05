@@ -32,7 +32,7 @@ module Dux
     end
 
     def error_line_no
-      object.respond_to?(:line) ? object.line : subject.line
+      non_compliant_change.object.respond_to?(:line) ? non_compliant_change.object.line : non_compliant_change.subject.line
     end
   end
 
