@@ -6,10 +6,12 @@ class GrammarTest < MiniTest::Test
 
   def setup
     @child_rule = Dux::ChildrenRule.new 'legal_parent', %((<legal_child> | <also_legal_child>)+)
+    @value_rule = Dux::ValueRule.new 'legal_parent', 'test_attr', 'NMTOKEN'
+    @attributes_rule = Dux::AttributesRule.new 'legal_parent', 'missing_attr', '#REQUIRED'
     sample_dux = File.expand_path(File.dirname(__FILE__) + '/../../xml/design.xml')
     load sample_dux
   end
-  attr_reader :child_rule
+  attr_reader :child_rule, :value_rule, :attributes_rule
 
   def test_xlsx_grammar
     grammar_file = File.expand_path(File.dirname(__FILE__) + '/../../xml/Dita 1.3 Manual Spec Conversion.xlsx')
@@ -39,22 +41,26 @@ class GrammarTest < MiniTest::Test
   def test_grammar_qualify
     sample_dux = File.expand_path(File.dirname(__FILE__) + '/../../xml/design.xml')
     load sample_dux
-    current_meta.grammar << child_rule
+    current_meta.grammar << [child_rule, value_rule]
     target = current_meta.design.find_child(:legal_parent)
     target << Dux::Object.new(element 'legal_child')
     target << Dux::Object.new(element 'nothing')
+    target[:test_attr] = 'fsd ff'
     assert_equal 'qualify_error', current_meta.history.first.type
-    assert_equal 'nothing', current_meta.history.first.non_compliant_change.object.type
+    assert_equal 'nothing', current_meta.history[2].non_compliant_change.object.type
+    assert_equal 'value_rule', current_meta.history.first.violated_rule.type
   end
 
   def test_grammar_validate_node
     sample_dux = File.expand_path(File.dirname(__FILE__) + '/../../xml/design.xml')
     load sample_dux
     current_meta.grammar << child_rule
+    current_meta.grammar << attributes_rule
     target = current_meta.design.find_child(:legal_parent)
     current_meta.grammar.validate target
     assert_equal 'validate_error', current_meta.history.first.type
-    assert_equal 'illegal_child', current_meta.history.first.non_compliant_change.object.type
+    assert_equal 'illegal_child', current_meta.history[1].non_compliant_change.object.type
+    assert_equal 'attributes_rule', current_meta.history.first.violated_rule.type
   end
 
   def tear_down

@@ -25,7 +25,7 @@ module Dux
     end
 
     def post_init?
-      node_depth.zero? ? children.any? : !parent.nil?
+      !caller.any? do |call| call.to_s.include?('initialize') end
     end
 
     # returns false if args.first is a Nokogiri::XML::Element or a string that can initialize one

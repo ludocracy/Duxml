@@ -1,4 +1,3 @@
-/test/log.txt
 #################
 ## RubyMine
 #################
@@ -7,8 +6,12 @@
 .project
 .buildpath
 .idea/
+
 #output files
 trace.txt
 output*
 result*
+doc
+xml/~*
+log.txt
 #backup zip

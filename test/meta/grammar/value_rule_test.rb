@@ -6,9 +6,10 @@ class ValueRuleTest < MiniTest::Test
   end
 
   def test_init_value_rule
-    rule = Dux::ValueRule.new 'legal_parent', 'statement | of | rule'
+    rule = Dux::ValueRule.new 'legal_parent', 'attr_name', 'statement | of | rule'
     assert_equal 'value_rule', rule.type
     assert_equal 'legal_parent', rule.subject
+    assert_equal 'attr_name', rule[:attr_name]
     assert_equal 'statement|of|rule', rule.statement
     assert_equal nil, rule.object
   end

@@ -6,7 +6,7 @@ module Dux
     # args[0] must be the element to which this rule applies
     # args[1] must be the Regexp that will be matched against the given element's content
     def initialize(*args)
-      if from_file? args
+      if xml? args
         super *args
       else
         element_name = args.first

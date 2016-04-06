@@ -39,7 +39,8 @@ class InterfaceTest < MiniTest::Test
 
   def test_add_child
     answer = %(<birdhouse color="red" id="birdhouse0" size="large"><material id="id0">pine</material></birdhouse>)
-    @e << Dux::Object.new(%(<material id="id0">pine</material>))
+    new_child = Dux::Object.new(%(<material id="id0">pine</material>))
+    @e << new_child
     assert_equal answer, e.to_s
   end
 
@@ -50,6 +51,10 @@ class InterfaceTest < MiniTest::Test
     assert_equal 0, e.children[0].position
     assert_equal 'sub1', e.children[1].type
     assert_equal 'sub2', e.children[2].type
+  end
+
+  def test_line
+
   end
 
   def test_xml

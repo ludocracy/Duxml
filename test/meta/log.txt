@@ -1,8 +1,8 @@
 history follows: 
- at line 15: <data-about id="data-about2300"> is child #2 of <ol id="error_no_valid_first_child"> which violates rule children_rule2306 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
- at line 14: <data id="data2292"> is child #2 of <ol id="error_children_split_in_wrong_pos"> which violates rule children_rule2306 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
- at line 14: <data id="data2286"> is child #3 of <ol id="error_many_children_in_wrong_pos"> which violates rule children_rule2306 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
- at line 13: <data id="data2284"> is child #2 of <ol id="error_many_children_in_wrong_pos"> which violates rule children_rule2306 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
- at line 12: <data id="data2278"> is child #2 of <ol id="error_child_in_wrong_pos"> which violates rule children_rule2306 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
- at line 9: <ol id="error_no_children"> has no children which violates rule children_rule2306 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
+ at line 39: <data-about id="data-about2268"> is child #2 of <ol id="error_no_valid_first_child"> which violates rule children_rule2274 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
+ at line 34: <data id="data2260"> is child #2 of <ol id="error_children_split_in_wrong_pos"> which violates rule children_rule2274 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
+ at line 30: <data id="data2254"> is child #3 of <ol id="error_many_children_in_wrong_pos"> which violates rule children_rule2274 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
+ at line 29: <data id="data2252"> is child #2 of <ol id="error_many_children_in_wrong_pos"> which violates rule children_rule2274 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
+ at line 25: <data id="data2246"> is child #2 of <ol id="error_child_in_wrong_pos"> which violates rule children_rule2274 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
+ at line 22: <ol id="error_no_children"> has no children which violates rule children_rule2274 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
 initial commit

@@ -54,7 +54,8 @@ module Dux
 
     # applies applicable rule type and subject to a given change or pattern and generates errors when disqualified
     def qualify(change_or_pattern)
-      get_rules(change_or_pattern.simple_class).each do |child|
+      rules = get_rules(change_or_pattern.simple_class)
+      rules.each do |child|
         subj = change_or_pattern.subject meta
         subj = subj.type if subj.respond_to?(:type)
         if subj && child[:subject] == subj
@@ -83,17 +84,20 @@ module Dux
     end # def sheet_to_xml
 
     def get_rules(type)
-      find_children case type
+      rule_types = case type
                       when 'new_content', 'change_content', 'content_pattern' then
                         :content_rule
-                      when 'new_attribute', 'attr_name_pattern' then
+                      when 'new_attribute'
+                        [:attributes_rule, :value_rule]
+                      when 'attr_name_pattern'
                         :attributes_rule
                       when 'change_attribute', 'attr_val_pattern' then
                         :value_rule
                       when 'add', 'remove', 'child_pattern' then
                         :children_rule
                       else # should not happen
-                    end
+                   end
+      find_children *rule_types
     end # def get_rules
   end # class Grammar
 end # module Dux

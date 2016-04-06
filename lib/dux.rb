@@ -17,6 +17,7 @@ module Dux
   def dux(meta_xml, xml)
     @current_meta = Meta.new meta_xml
     @current_meta << xml
+    @current_design = current_meta.design
   end
 
   # loads given file and finds metadata file e.g. '.xml_file.dux'

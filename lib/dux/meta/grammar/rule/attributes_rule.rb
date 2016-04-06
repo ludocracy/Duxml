@@ -26,7 +26,7 @@ module Dux
 
     private
 
-    # string describing relationship of
+    # string describing relationship of rule objects to subjects
     def relationship
       'attributes'
     end
@@ -35,7 +35,14 @@ module Dux
       scanner = get_scanner
       result = false
       cur_object.attributes.each do |k, v|
-        result = true; break if scanner[:match].match(k.to_s).to_s == k.to_s
+        if scanner[:match].match(k.to_s).to_s == k.to_s
+          if result
+            result = false
+            break
+          else
+            result = true
+          end
+        end
       end
       case scanner[:operator]
         when '#IMPLIED' then true

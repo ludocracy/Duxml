@@ -4,11 +4,11 @@ module Dux
     include Comparable
 
     public
-    # returns an array of this object's children that match the given type i.e. element name
-    def find_children(type)
+    # returns an array of this object's children that match the given type(s) i.e. element name
+    def find_children(*types)
       a = []
       children.each do |child|
-        a << child if child.type == type.to_s
+        a << child if types.include?(child.type.to_sym) || types.include?(child.type)
       end
       a
     end
@@ -19,32 +19,30 @@ module Dux
     # Symbol - for id
     # Array - allows application of one pattern per generation
     def find_child(child_pattern, cur_comp = nil)
-      pattern = if child_pattern.is_a?(Array)
-                  child_pattern.any? ? child_pattern.first : nil
-                else
-                  child_pattern
-                end
-      return nil unless pattern
-      #attempting to match by name
+      pattern_array = case
+                        when child_pattern.is_a?(Array)
+                          child_pattern.clone
+                        when child_pattern.is_a?(Fixnum) || child_pattern.to_s.gsub('-','_').identifier?
+                          [child_pattern]
+                        else
+                          child_pattern.split(' ')
+                      end
       cur_comp ||= self
+      pattern = pattern_array.shift
+      return pattern unless pattern
       #attempting to use pattern as index
       return cur_comp.children[pattern] if pattern.is_a?(Fixnum)
       cur_comp.children.each do |cur_child|
         if cur_child.name == pattern.to_s || cur_child.simple_class == pattern.to_s
-          if child_pattern == pattern || child_pattern.size == 1
+          if pattern_array.empty?
             return cur_child
           else
-            return find_child(child_pattern[1..-1], cur_child)
+            return find_child(pattern_array, cur_child)
           end
         end
       end
       #attempting to use pattern as key
-      if cur_comp.children_hash[pattern]
-        cur_comp.children_hash[pattern]
-      else
-        find_child(child_pattern[1..-1]) if child_pattern.is_a?(Array)
-      end
-      nil
+      cur_comp.children_hash[pattern]
     end #def find_child
 
     # overriding TreeNode::content to point to XML head's content

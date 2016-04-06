@@ -14,6 +14,12 @@ class DuxTest < MiniTest::Test
     assert_equal 'add', current_meta.history.first.type
   end
 
+  def test_line
+    target = current_design.find_child 'legal_parent legal_child'
+    assert_equal 6, target.line
+  end
+
   def tear_down
+
   end
 end

@@ -15,7 +15,7 @@ module Dux
     def initialize(*args)
       super *args
       unless xml? args
-        @xml << args[1].gsub(/\s/, '')
+        @xml << xml[:object].gsub(/\s/, '')
         @xml.remove_attribute 'object'
       end
       @cur_object = nil

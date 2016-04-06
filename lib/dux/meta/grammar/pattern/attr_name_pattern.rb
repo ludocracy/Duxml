@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../grammar/pattern')
 
 module Dux
-  # pattern representing relationship between an object and its child
+  # pattern representing relationship between an object and one of its attributes
   class AttrNamePattern < Pattern
     def object context_root=nil
       self[:object]
