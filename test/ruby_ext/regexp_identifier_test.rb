@@ -1,4 +1,4 @@
-require_relative '../../lib/dux/ruby_ext/regexp'
+require_relative '../../lib/duxml/ruby_ext/regexp'
 require 'minitest/autorun'
 
 # test term formatting - without regard to validity of evaluation

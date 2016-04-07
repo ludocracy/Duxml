@@ -1,4 +1,4 @@
-require_relative '../../lib/dux/ruby_ext/object'
+require_relative '../../lib/duxml/ruby_ext/object'
 require 'minitest/autorun'
 
 class MooMoo; end

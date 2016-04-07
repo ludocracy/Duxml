@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../../lib/dux/meta/history/error')
+require File.expand_path(File.dirname(__FILE__) + '/../../../lib/duxml/meta/history/error')
 require 'minitest/autorun'
 
 class ValidateErrorTest < MiniTest::Test

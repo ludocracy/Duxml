@@ -1,13 +1,13 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../lib/dux')
+require File.expand_path(File.dirname(__FILE__) + '/../../lib/duxml')
 require 'minitest/autorun'
 
 class GrammarTest < MiniTest::Test
-  include Dux
+  include Duxml
 
   def setup
-    @child_rule = Dux::ChildrenRule.new 'legal_parent', %((<legal_child> | <also_legal_child>)+)
-    @value_rule = Dux::ValueRule.new 'legal_parent', 'test_attr', 'NMTOKEN'
-    @attributes_rule = Dux::AttributesRule.new 'legal_parent', 'missing_attr', '#REQUIRED'
+    @child_rule = Duxml::ChildrenRule.new 'legal_parent', %((<legal_child> | <also_legal_child>)+)
+    @value_rule = Duxml::ValueRule.new 'legal_parent', 'test_attr', 'NMTOKEN'
+    @attributes_rule = Duxml::AttributesRule.new 'legal_parent', 'missing_attr', '#REQUIRED'
     sample_dux = File.expand_path(File.dirname(__FILE__) + '/../../xml/design.xml')
     load sample_dux
   end
@@ -31,7 +31,7 @@ class GrammarTest < MiniTest::Test
 
   def test_init_pattern
     target = current_meta.design.find_child %w(legal_parent legal_child)
-    p = Dux::ChildPattern.new target.parent, target
+    p = Duxml::ChildPattern.new target.parent, target
     assert_equal 'child_pattern', p.type
     assert_equal 'lp_0', p.subject(current_meta).id
     assert_equal 'lc_0', p.object(current_meta).id
@@ -43,8 +43,8 @@ class GrammarTest < MiniTest::Test
     load sample_dux
     current_meta.grammar << [child_rule, value_rule]
     target = current_meta.design.find_child(:legal_parent)
-    target << Dux::Object.new(element 'legal_child')
-    target << Dux::Object.new(element 'nothing')
+    target << Duxml::Object.new(element 'legal_child')
+    target << Duxml::Object.new(element 'nothing')
     target[:test_attr] = 'fsd ff'
     assert_equal 'qualify_error', current_meta.history.first.type
     assert_equal 'nothing', current_meta.history[2].non_compliant_change.object.type

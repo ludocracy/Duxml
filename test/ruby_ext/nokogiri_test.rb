@@ -1,4 +1,4 @@
-require_relative '../../lib/dux/ruby_ext/nokogiri'
+require_relative '../../lib/duxml/ruby_ext/nokogiri'
 require 'minitest/autorun'
 
 class NokogiriTest < MiniTest::Test

@@ -1,12 +1,12 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../lib/dux/meta')
+require File.expand_path(File.dirname(__FILE__) + '/../../lib/duxml/meta')
 require 'minitest/autorun'
 
 class MetaTest < MiniTest::Test
   attr_reader :meta
 
   def setup
-    sample_template = File.expand_path(File.dirname(__FILE__) + '/../../xml/.design.dux')
-    @meta = Dux::Meta.new sample_template
+    sample_template = File.expand_path(File.dirname(__FILE__) + '/../../xml/.design.duxml')
+    @meta = Duxml::Meta.new sample_template
   end
 
   def test_meta_history

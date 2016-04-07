@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../../lib/dux/meta/grammar/rule/content_rule')
+require File.expand_path(File.dirname(__FILE__) + '/../../../lib/duxml/meta/grammar/rule/content_rule')
 require 'minitest/autorun'
 
 class ContentRuleTest < MiniTest::Test
@@ -6,7 +6,7 @@ class ContentRuleTest < MiniTest::Test
   end
 
   def test_init_content_rule
-    rule = Dux::ContentRule.new 'legal_parent', 'statement of rule'
+    rule = Duxml::ContentRule.new 'legal_parent', 'statement of rule'
     assert_equal 'content_rule', rule.type
     assert_equal 'legal_parent', rule.subject
     assert_equal 'statementofrule', rule.statement

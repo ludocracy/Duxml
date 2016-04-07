@@ -1,15 +1,15 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../lib/dux')
+require File.expand_path(File.dirname(__FILE__) + '/../../lib/duxml')
 require 'minitest/autorun'
 
 class HistoryTest < MiniTest::Test
-  include Dux
+  include Duxml
   def setup
     f = File.expand_path(File.dirname(__FILE__) + '/../../xml/design.xml')
     load f
   end
 
   def test_add_child
-    new_kid = Dux::Object.new(%(<test id="test_0"/>))
+    new_kid = Duxml::Object.new(%(<test id="test_0"/>))
     current_meta.design << new_kid
     c = current_meta.history.first
     assert_equal 'add', c.type

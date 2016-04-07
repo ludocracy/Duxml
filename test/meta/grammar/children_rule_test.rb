@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../../lib/dux/meta/grammar/rule/children_rule')
+require File.expand_path(File.dirname(__FILE__) + '/../../../lib/duxml/meta/grammar/rule/children_rule')
 require 'minitest/autorun'
 
 class ChildrenRuleTest < MiniTest::Test
@@ -6,8 +6,8 @@ class ChildrenRuleTest < MiniTest::Test
   end
 
   def test_init_child_rule
-    rule = Dux::ChildrenRule.new 'legal_parent', '<statement> | of-rule'
-    rule0 = Dux::ChildrenRule.new rule.xml
+    rule = Duxml::ChildrenRule.new 'legal_parent', '<statement> | of-rule'
+    rule0 = Duxml::ChildrenRule.new rule.xml
     assert_equal rule.to_s, rule0.to_s
     assert_equal 'children_rule', rule.type
     assert_equal 'legal_parent', rule.subject

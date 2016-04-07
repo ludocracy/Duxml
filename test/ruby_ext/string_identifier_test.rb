@@ -1,4 +1,4 @@
-require_relative '../../lib/dux/ruby_ext/string'
+require_relative '../../lib/duxml/ruby_ext/string'
 require 'minitest/autorun'
 
 class StringIdentifierTest < MiniTest::Test
