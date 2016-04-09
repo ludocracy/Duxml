@@ -64,6 +64,17 @@ module Duxml
       end
     end # def qualify
 
+    # @return [Nokogiri::XML::RelaxNG] RelaxNG schema object
+    def relaxng(*args)
+      # TODO how to get root_name?? first rule? pass in from args?
+      return args.first if args.first.is_a?(Nokogiri::XML::RelaxNG)
+      schema_xml = element(simple_class, {combine: 'choice'}, element('start', name: root_name))
+      children.each do |rule|
+        rule.relaxng schema_xml
+      end
+      Nokogiri::XML::RelaxNG.new schema_xml
+    end
+
     private
 
     def sheet_to_xml(spreadsheet)
@@ -73,13 +84,14 @@ module Duxml
         break if row[3].nil? || row[4].nil?
         element_name = row[3].value
         statement_str = row[4].value
-        self << Duxml::ChildrenRule.new(element_name, statement_str)
+        ary = [Duxml::ChildrenRule.new(element_name, statement_str)]
         row[5].value.split(/\n/).each do |rule| # looping through attribute rules
           next if rule.empty?
           attr_name, value_expr, attr_req = *rule.split
-          self << Duxml::AttributesRule.new(element_name, attr_name, attr_req)
-          self << Duxml::ValueRule.new(element_name, attr_name, value_expr)
+          ary << Duxml::AttributesRule.new(element_name, attr_name, attr_req)
+          ary << Duxml::ValueRule.new(element_name, attr_name, value_expr)
         end
+        ary.each do |rule| self << rule; @xml << rule.xml end
       end # worksheet.each_with_index
     end # def sheet_to_xml
 

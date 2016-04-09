@@ -24,7 +24,7 @@ module Duxml
     end
 
     def description
-      %(#{name} that #{relationship} of <#{subject}>'s @#{self[:attr_name]} must match #{statement})
+      %(#{name} that #{relationship} of <#{subject}>'s @#{attr_name} must match #{statement})
     end
 
     # checks an attribute of with name #subject to see if it is allowed to have a value of type #object
@@ -33,6 +33,24 @@ module Duxml
       @cur_object = change_or_pattern.subject meta
       super change_or_pattern unless pass change_or_pattern.value(meta)
     end
+
+    # @param [Nokogiri::XML::Node] parent node in RelaxNG document, NOT this Rule's document
+    # @return [Nokogiri::XML::Node] rule transformed into RelaxNG define element
+    # TODO this assumes that attributes are always GLOBAL!!!
+    def relaxng(parent)
+      parent.element_children.each do |attr_def|
+        if attr_def[:name] == attr_name
+          attr_def << element('data', type: statement)
+          return parent
+        end
+      end
+    end
+
+    # @return [String] name of the attribute to which this Rule applies
+    def attr_name
+      self[:attr_name]
+    end
+
 
     private
 
@@ -84,7 +102,7 @@ module Duxml
         else                    # '|'-separated list of allowable values i.e. Regexp-style DTD declaration
           Regexp.new(s)
       end
-    end
+    end # def find_method_or_expr
 
     def separate_list(spc_sep_vals, &block)
       spc_sep_vals.split(' ').any? do |sub_val|
@@ -92,5 +110,5 @@ module Duxml
         !result
       end
     end
-  end # class ContentRule
+  end # class ValueRule
 end # module Duxml

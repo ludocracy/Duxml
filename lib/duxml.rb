@@ -61,4 +61,9 @@ module Duxml
     end
     current_meta
   end # def validate
+
+  # @return [Nokogiri::XML::RelaxNG] current metadata's grammar as a relaxng file
+  def relaxng
+    current_meta.grammar.relaxng
+  end
 end # module Duxml

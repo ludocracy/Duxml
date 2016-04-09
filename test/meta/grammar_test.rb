@@ -29,6 +29,16 @@ class GrammarTest < MiniTest::Test
     assert_equal 'error_no_valid_first_child', current_meta.history[0].affected_parent.id
   end
 
+  def test_relaxng
+    grammar_file = File.expand_path(File.dirname(__FILE__) + '/../../xml/Dita 1.3 Manual Spec Conversion.xlsx')
+    sample_dux = File.expand_path(File.dirname(__FILE__) + '/../../xml/dita_test.xml')
+    load sample_dux
+    current_meta.grammar = grammar_file
+    g = current_meta.grammar
+    rng = g.relaxng
+    File.write 'test.rng', rng.to_xml
+  end
+
   def test_init_pattern
     target = current_meta.design.find_child %w(legal_parent legal_child)
     p = Duxml::ChildPattern.new target.parent, target

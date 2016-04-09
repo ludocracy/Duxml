@@ -16,12 +16,40 @@ module Duxml
       end
     end
 
-    # checks an element of type #subject to see if it is allowed to have a given attribute with name #object
+    # @param change_or_pattern [Dux::Pattern] checks an element of type change_or_pattern.subject against change_or_pattern
+    # @return [Boolean] whether or not given pattern passed this test
     def qualify(change_or_pattern)
       @cur_object = change_or_pattern.subject meta
       result = pass
       super change_or_pattern unless result
       result
+    end
+
+    def relaxng(parent)
+      # if new attribute declaratio needed
+      unless parent.element_children.any? do |attr_def| attr_def[:name] == attr_name end
+        parent << element('define', {name: attr_name}, element('attribute', name: attr_name))
+      end
+
+      # update element with ref
+      parent.element_children.reverse.each do |define|
+        if define[:name] == subject
+          element_def = define.element_children.first
+          if get_scanner[:operator]=='#IMPLIED'
+            cur_element = element 'optional'
+            element_def << cur_element
+          else
+            cur_element = element_def
+          end
+          cur_element << element('ref', name: attr_name)
+          break
+        end
+      end
+      parent
+    end # def relaxng
+
+    def attr_name
+      statement.gsub('\b','')
     end
 
     private
@@ -55,5 +83,5 @@ module Duxml
     def get_scanner
       Struct::Scanner.new Regexp.new(statement), self[:requirement]
     end
-  end # class AttrRule
+  end # class AttributesRule
 end # module Duxml

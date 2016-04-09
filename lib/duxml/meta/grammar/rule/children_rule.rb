@@ -24,6 +24,32 @@ module Duxml
       super change_or_pattern unless pass
     end
 
+    # @param parent [Nokogiri::XML::Node] parent from RelaxNG document under construction (should be <grammar/>)
+    def relaxng(parent)
+      element_def = element 'element', name: subject
+      define = element('define', name: subject) << element_def
+      parent << define
+      get_scanners.each do |scanner|
+        operator_name = case scanner[:operator]
+                          when ''  then nil
+                          when '?' then :optional
+                          when '*' then :zeroOrMore
+                          when '+' then :oneOrMore
+                        end
+        if operator_name
+          cur_element = element(operator_name.to_s)
+          element_def << cur_element
+        else
+          cur_element = element_def
+        end
+        element_array = scanner[:match].to_s[6..-1].gsub('\b', '').split(/[\(\)\s\|\:]/).keep_if do |s| !s.empty? end
+        element_array.each do |match_data|
+          cur_element << element('ref', name: match_data.to_s)
+        end
+      end # get_scanners.each
+      parent
+    end # def relaxng
+
     private
 
     def get_scanners
@@ -48,7 +74,7 @@ module Duxml
         else
       end
       s
-    end
+    end # def dtd_to_regexp
 
     def pass
       child_stack = cur_object.nil? ? [] : cur_object.parent.children.clone
@@ -84,6 +110,6 @@ module Duxml
         end
       end
       result
-    end # def scan
-  end # class ChildRule
+    end # def pass
+  end # class ChildrenRule
 end # module Duxml
