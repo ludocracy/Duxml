@@ -87,7 +87,7 @@ module Duxml
         new_kid = coerce node
         add new_kid
         @xml.add_child new_kid.xml if post_init?
-        report :add, node if design_comp?
+        report :add, new_kid if design_comp?
       end
       self
     end

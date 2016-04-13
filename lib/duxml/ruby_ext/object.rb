@@ -12,13 +12,13 @@ class Object
   # shortcut for turning object's class name into snake_case string
   def simple_class
     str = self.class.to_s.split('::').last
-    str.split(//).collect do |char|
-      if char == '_'
-        '-'
-      else
-        char == char.upcase ? "_#{char.downcase!}" : char.downcase
+    str.gsub!(/[A-Z_]/) do |char|
+      case char
+        when /[A-Z]/ then "_#{char.downcase!}"
+        when '_' then '-'
       end
-    end.join[1..-1]
+    end
+    str[1..-1]
   end
 
   private def new_id

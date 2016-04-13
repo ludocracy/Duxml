@@ -20,8 +20,7 @@ module Duxml
     end
 
     def design_comp?
-      m = xml.document.root.name
-      m != 'meta'
+      !%w(meta grammar).include?(xml.document.root.name)
     end
 
     def post_init?

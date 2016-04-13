@@ -40,6 +40,7 @@ module Duxml
     #   interpreted as the second and third arguments for #element in order to create new XML
     def initialize(*xml_or_args)
       result = class_to_xml *xml_or_args
+      raise Exception, "#class_to_xml failed to produce XML given args=[#{xml_or_args.to_s}]" if xml.nil?
       @line = xml.line+1 unless result
       super xml[:id] || new_id
       return if text?

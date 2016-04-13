@@ -4,14 +4,23 @@ require 'minitest/autorun'
 class DuxMlTest < MiniTest::Test
   include Duxml
 
+  attr_accessor :sample_file, :meta_file
+
   def setup
-    sample_dux = File.expand_path(File.dirname(__FILE__) + '/../xml/design.xml')
-    load sample_dux
+    @sample_file = File.expand_path(File.dirname(__FILE__) + '/../xml/design.xml')
+    @meta_file = File.expand_path(File.dirname(__FILE__) + '/../xml/.design.duxml')
+    load sample_file
   end
 
-  def test_grammar_validate
-    validate
-    assert_equal 'add', current_meta.history.first.type
+  def test_save_metadata
+    m = Meta.new File.read meta_file
+    @current_design << '<temporary/>'
+    save
+    m = Meta.new File.read meta_file
+    assert_equal 'temporary', m.history.first.added(current_meta).type
+    @current_design.remove 'temporary'
+    assert_equal 'temporary', m.history.first.added(current_meta).type
+    save
   end
 
   def test_line

@@ -25,6 +25,8 @@ module Duxml
       result
     end
 
+    # @param parent [Nokogiri::XML::Node] should be <grammar>
+    # @return [Nokogiri::XML::Node] parent, but with additions of <define><attribute> to parent if does not already exist and <ref> to respective <define><element>
     def relaxng(parent)
       # if new attribute declaratio needed
       unless parent.element_children.any? do |attr_def| attr_def[:name] == attr_name end
@@ -48,13 +50,14 @@ module Duxml
       parent
     end # def relaxng
 
+    # @return [String] name of attribute to which this rule applies
     def attr_name
       statement.gsub('\b','')
     end
 
     private
 
-    # string describing relationship of rule objects to subjects
+    # @return [String] describes relationship of rule objects to subjects
     def relationship
       'attributes'
     end

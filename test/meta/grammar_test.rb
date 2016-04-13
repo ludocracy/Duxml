@@ -20,8 +20,6 @@ class GrammarTest < MiniTest::Test
     current_meta.grammar = grammar_file
 
     validate
-    log 'log.txt'
-    assert_equal 7, current_meta.history.size
     assert_equal 'error_no_children', current_meta.history[5].affected_parent.id
     assert_equal 'error_child_in_wrong_pos', current_meta.history[4].affected_parent.id
     assert_equal 'error_many_children_in_wrong_pos', current_meta.history[3].affected_parent.id
@@ -74,5 +72,6 @@ class GrammarTest < MiniTest::Test
   end
 
   def tear_down
+
   end
 end

@@ -4,8 +4,8 @@ module Duxml
   # rule that states what children and how many a given object is allowed to have
   class ChildrenRule < Rule
     # child rules are initialized from XML or constructed from DTD element declarations e.g. (zeroOrMore|other-first-child)*,second-child-optional?,third-child-gt1+
-    # args[0] is the name of the element the rule applies to
-    # args[1] is the DTD-style statement of the child rule
+    #
+    # @param *args [String] name of the element the rule applies to and DTD-style statement of the rule
     def initialize(*args)
       if xml? args
         super *args
@@ -18,10 +18,14 @@ module Duxml
       end
     end
 
-    # evaluates a given change or pattern to see if their children all follow this rule
+    # @param change_or_pattern [Duxml::Pattern, Duxml::Change] to be evaluated to see if it follows this rule
+    # @return [Boolean] whether or not change_or_pattern#subject is allowed to have #object as its child
+    #   if false, Error is reported to History
     def qualify(change_or_pattern)
       @cur_object = change_or_pattern.object meta
-      super change_or_pattern unless pass
+      result = pass
+      super change_or_pattern unless result
+      result
     end
 
     # @param parent [Nokogiri::XML::Node] parent from RelaxNG document under construction (should be <grammar/>)

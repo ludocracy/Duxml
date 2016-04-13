@@ -28,20 +28,21 @@ module Duxml
 
     # applies grammar rules to all relationships of the given object
     def validate(comp)
+      rels = []
       if comp.children.any? do |child| !child.text? end
         comp.children.each do |child|
-          qualify Duxml::ChildPattern.new comp, child
+          rels << Duxml::ChildPattern.new(comp, child)
         end
       elsif comp.children.any?
-        qualify Duxml::ContentPattern.new comp, comp.content
+        rels << Duxml::ContentPattern.new(comp, comp.content)
       else
-        qualify Duxml::ChildPattern.new comp
+        rels << Duxml::ChildPattern.new(comp)
       end
       comp.attributes.each do |k, v|
-        if qualify Duxml::AttrNamePattern.new comp, k
-          qualify Duxml::AttrValPattern.new comp, k
-        end
+        rels << Duxml::AttrNamePattern.new(comp, k)
+        rels << Duxml::AttrValPattern.new(comp, k)
       end
+      rels.collect do |rel| qualify rel end.any? do |result| !result end
     end # def validate
 
     # lists XML schema and content rules in order of precedence
@@ -62,8 +63,10 @@ module Duxml
           return rule.qualify change_or_pattern
         end
       end
+      true
     end # def qualify
 
+    # @param *args [nil]
     # @return [Nokogiri::XML::RelaxNG] RelaxNG schema object
     def relaxng(*args)
       # TODO how to get root_name?? first rule? pass in from args?

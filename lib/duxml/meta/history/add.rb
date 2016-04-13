@@ -8,8 +8,8 @@ module Duxml
     end
 
     # returns object that was added
-    def added
-      resolve_ref :object, root
+    def added(context_root=root)
+      resolve_ref :object, context_root
     end
   end # class Add
 end # module Duxml

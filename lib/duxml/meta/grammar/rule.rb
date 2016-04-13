@@ -10,8 +10,9 @@ module Duxml
     # args[0] must be the subject (e.g. name of element or attribute)
     # args[1] must be the statement of the rule in Regexp/DTD form
     #
-    # @cur_object can only be set by the Grammar as it validates a given Change or Pattern
+    # Rule@cur_object can only be set by the Grammar as it validates a given Change or Pattern
     # it indicates the Object currently being inspected by this Rule
+    # @param *args [several_variants]
     def initialize(*args)
       super *args
       unless xml? args
@@ -22,28 +23,32 @@ module Duxml
     end
 
     # Duxml::Rule's #qualify is only used to report errors found by its subclasses' #qualify methods
+    # @param change_or_pattern [Duxml::Pattern, Duxml::Change] Change or Pattern to be reported for Rule violation
+    # @return [Boolean] always false; this method should always be subclassed to apply that specific rule type's #qualify
     def qualify(change_or_pattern)
       type = (change_or_pattern.is_a?(Duxml::Change)) ? :qualify_error : :validate_error
       report type, change_or_pattern
+      false
     end
 
+    # @return [String] default description for a Rule
     def description
       %(#{name} that #{relationship} of #{subject} must match #{statement})
     end
 
-    # returns the DTD or Ruby code statement that embodies this Rule
+    # @return [String] DTD or Ruby code statement that embodies this Rule
     def statement
       xml.content
     end
 
     # subject of Rule is not an object but a type or
-    # class simple name e.g. XML element or attribute name
+    # @return [Stringaa] name of XML element or attribute to which this rule applies
     def subject
       self[:subject]
     end
 
-    # object of Rule is nil but during #qualify can be the object matching type given by #subject
-    # that is then being qualified
+    # @return [NilClass, Duxml::Object] object of Rule is nil but during #qualify
+    #   can be the object matching type given by #subject that is currently being qualified
     def object
       self[:object]
     end

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class Duxml::Rule - RDoc Documentation</title>
+
+<link href="../fonts.css" rel="stylesheet">
+<link href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/navigation.js"></script>
+<script src="../js/search_index.js"></script>
+<script src="../js/search.js"></script>
+<script src="../js/searcher.js"></script>
+<script src="../js/darkfish.js"></script>
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Pattern.html">Duxml::Pattern</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li class="calls-super" ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-description">#description</a>
+    
+    <li ><a href="#method-i-object">#object</a>
+    
+    <li ><a href="#method-i-qualify">#qualify</a>
+    
+    <li ><a href="#method-i-statement">#statement</a>
+    
+    <li ><a href="#method-i-subject">#subject</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Duxml::Rule">
+  <h1 id="class-Duxml::Rule" class="class">
+    class Duxml::Rule
+  </h1>
+
+  <section class="description">
+    
+<p>do not use - must be subclassed!</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-cur_object" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">cur_object</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>can be initialized from XML Element or Ruby arguments <a href="0">args</a>
+must be the subject (e.g. name of element or attribute) <a
+href="1">args</a> must be the statement of the rule in Regexp/DTD form</p>
+
+<p><a href="Rule.html#label-cur_object">cur_object at Rule</a> can only be set
+by the <a href="Grammar.html">Grammar</a> as it validates a given <a
+href="Change.html">Change</a> or <a href="Pattern.html">Pattern</a> it
+indicates the <a href="Object.html">Object</a> currently being inspected by
+this <a href="Rule.html">Rule</a> @param *args [several_variants]</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="Pattern.html#method-c-new">Duxml::Pattern.new</a>
+            </div>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 16</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-keyword">super</span> <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">xml?</span> <span class="ruby-identifier">args</span>
+    <span class="ruby-ivar">@xml</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">xml</span>[<span class="ruby-value">:object</span>].<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/\s/</span>, <span class="ruby-string">&#39;&#39;</span>)
+    <span class="ruby-ivar">@xml</span>.<span class="ruby-identifier">remove_attribute</span> <span class="ruby-string">&#39;object&#39;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@cur_object</span> = <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-description" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">description</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [String] default description for a <a href="Rule.html">Rule</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="description-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
+  <span class="ruby-node">%Q(#{name} that #{relationship} of #{subject} must match #{statement})</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-object" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">object</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [NilClass, Duxml::Object] object of <a href="Rule.html">Rule</a> is
+nil but during <a href="Rule.html#method-i-qualify">qualify</a></p>
+
+<pre>can be the object matching type given by #subject that is currently being qualified</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="object-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 52</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">object</span>
+  <span class="ruby-keyword">self</span>[<span class="ruby-value">:object</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-qualify" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">qualify</span><span
+            class="method-args">(change_or_pattern)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Duxml::Rule&#39;s <a href="Rule.html#method-i-qualify">qualify</a> is only
+used to report errors found by its subclasses&#39; <a
+href="Rule.html#method-i-qualify">qualify</a> methods @param
+change_or_pattern [Duxml::Pattern, Duxml::Change] <a
+href="Change.html">Change</a> or <a href="Pattern.html">Pattern</a> to be
+reported for <a href="Rule.html">Rule</a> violation @return [Boolean]
+always false; this method should always be subclassed to apply that
+specific rule type&#39;s <a href="Rule.html#method-i-qualify">qualify</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="qualify-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 28</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">change_or_pattern</span>)
+  <span class="ruby-identifier">type</span> = (<span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Duxml</span><span class="ruby-operator">::</span><span class="ruby-constant">Change</span>)) <span class="ruby-operator">?</span> <span class="ruby-value">:qualify_error</span> <span class="ruby-operator">:</span> <span class="ruby-value">:validate_error</span>
+  <span class="ruby-identifier">report</span> <span class="ruby-identifier">type</span>, <span class="ruby-identifier">change_or_pattern</span>
+  <span class="ruby-keyword">false</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-statement" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">statement</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [String] DTD or Ruby code statement that embodies this <a
+href="Rule.html">Rule</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="statement-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 40</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">statement</span>
+  <span class="ruby-identifier">xml</span>.<span class="ruby-identifier">content</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-subject" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">subject</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>subject of <a href="Rule.html">Rule</a> is not an object but a type or
+@return [Stringaa] name of XML element or attribute to which this rule
+applies</p>
+          
+          
+
+          
+          <div class="method-source-code" id="subject-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 46</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">subject</span>
+  <span class="ruby-keyword">self</span>[<span class="ruby-value">:subject</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

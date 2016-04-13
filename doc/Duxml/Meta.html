@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class Duxml::Meta - RDoc Documentation</title>
+
+<link href="../fonts.css" rel="stylesheet">
+<link href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/navigation.js"></script>
+<script src="../js/search_index.js"></script>
+<script src="../js/search.js"></script>
+<script src="../js/searcher.js"></script>
+<script src="../js/darkfish.js"></script>
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../Object.html">Object</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li class="calls-super" ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-3C-3C">#&lt;&lt;</a>
+    
+    <li ><a href="#method-i-design">#design</a>
+    
+    <li ><a href="#method-i-find">#find</a>
+    
+    <li ><a href="#method-i-grammar">#grammar</a>
+    
+    <li ><a href="#method-i-grammar-3D">#grammar=</a>
+    
+    <li ><a href="#method-i-history">#history</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Duxml::Meta">
+  <h1 id="class-Duxml::Meta" class="class">
+    class Duxml::Meta
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(xml_node=nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>TODO code looks a little dated; use xml? ? can only be initialized from XML
+or created as anonymous detached metadata to be attached to content by
+external entity</p>
+
+<p>@param xml_node [Nokogiri::XML::Node] XML from metadata (e.g. for file.xml,
+.file.duxml) file</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta.rb, line 10</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">xml_node</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">xml_node</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">xml_node</span> = <span class="ruby-keyword">super</span>
+    <span class="ruby-identifier">xml_node</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Duxml</span><span class="ruby-operator">::</span><span class="ruby-constant">Grammar</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">xml</span>
+    <span class="ruby-identifier">xml_node</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Duxml</span><span class="ruby-operator">::</span><span class="ruby-constant">History</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">xml</span>
+    <span class="ruby-identifier">xml_node</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">super</span> <span class="ruby-identifier">xml_node</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-3C-3C" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">&lt;&lt;</span><span
+            class="method-args">(obj)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>adding Duxml::Design or XML to <a href="Meta.html">Duxml::Meta</a> will add
+it to object tree but not to XML to retain properties of original XML
+document TODO should this add XML some times? for file-specific metadata
+clearly yes… @param obj [String|Nokogiri::XML::Node|Duxml::Object] @return
+[Duxml::Object] self</p>
+          
+          
+
+          
+          <div class="method-source-code" id="3C-3C-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta.rb, line 46</span>
+<span class="ruby-keyword">def</span> <span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-identifier">obj</span>)
+  <span class="ruby-identifier">add</span> <span class="ruby-identifier">coerce</span> <span class="ruby-identifier">obj</span>
+  <span class="ruby-ivar">@xml</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">xml</span> <span class="ruby-keyword">if</span> <span class="ruby-node">%w{name owner grammar history}</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">obj</span>.<span class="ruby-identifier">simple_class</span>)
+  <span class="ruby-keyword">self</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-design" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">design</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Duxml::Object] root node of XML design content</p>
+          
+          
+
+          
+          <div class="method-source-code" id="design-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta.rb, line 53</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">design</span>
+  <span class="ruby-identifier">last_child</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-find" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find</span><span
+            class="method-args">(target)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param target [String|Symbol] name of desired <a
+href="Object.html">Object</a> @return [Duxml::Object] found <a
+href="Object.html">Object</a> or nil</p>
+          
+          
+
+          
+          <div class="method-source-code" id="find-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find</span>(<span class="ruby-identifier">target</span>)
+  <span class="ruby-identifier">n</span> = <span class="ruby-identifier">target</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:name</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">target</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">target</span>.<span class="ruby-identifier">to_s</span>
+  <span class="ruby-identifier">last_child</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">node</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">node</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">n</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-grammar" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">grammar</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Duxml::Grammar]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="grammar-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">grammar</span>
+  <span class="ruby-identifier">find_child</span> <span class="ruby-string">&#39;grammar&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-grammar-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">grammar=</span><span
+            class="method-args">(grammar_file)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>add an external grammar</p>
+
+<p>@param grammar_file [String] external grammar definition file</p>
+          
+          
+
+          
+          <div class="method-source-code" id="grammar-3D-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta.rb, line 60</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">grammar=</span>(<span class="ruby-identifier">grammar_file</span>)
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">grammar</span>.<span class="ruby-identifier">has_children?</span>
+    <span class="ruby-identifier">index</span> = <span class="ruby-identifier">grammar</span>.<span class="ruby-identifier">position</span>
+    <span class="ruby-identifier">remove</span> <span class="ruby-string">&#39;grammar&#39;</span>
+    <span class="ruby-identifier">add</span> <span class="ruby-constant">Grammar</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">grammar_file</span>), <span class="ruby-identifier">index</span>
+    <span class="ruby-comment"># TODO implement this: grammar[:ref] = grammar_file</span>
+    <span class="ruby-ivar">@xml</span>.<span class="ruby-identifier">xpath</span>(<span class="ruby-string">&#39;//grammar&#39;</span>).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">replace</span> <span class="ruby-identifier">grammar</span>.<span class="ruby-identifier">xml</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-history" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">history</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Duxml::History]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="history-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">history</span>
+  <span class="ruby-identifier">find_child</span> <span class="ruby-string">&#39;history&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

@@ -45,6 +45,7 @@ module Duxml
     # @return [Duxml::Object] self
     def <<(obj)
       add coerce obj
+      @xml << obj.xml if %w{name owner grammar history}.include?(obj.simple_class)
       self
     end
 
@@ -61,6 +62,8 @@ module Duxml
         index = grammar.position
         remove 'grammar'
         add Grammar.new(grammar_file), index
+        # TODO implement this: grammar[:ref] = grammar_file
+        @xml.xpath('//grammar').first.replace grammar.xml
       end
     end
   end # class Meta

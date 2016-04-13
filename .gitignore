@@ -11,7 +11,8 @@
 trace.txt
 output*
 result*
-doc
 xml/~*
 *log.txt
+*profile.txt
+*.rng
 #backup zip

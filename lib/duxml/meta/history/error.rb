@@ -5,7 +5,9 @@ module Duxml
   class Error < Change
     # returns rule from Grammar that found this Error
     def violated_rule
-      root.grammar.find_child(self[:subject])
+      result = root.grammar.find_child(self[:subject])
+      raise Exception if result.nil?
+      result
     end
   end # class Error
 end # module Duxml

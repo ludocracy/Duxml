@@ -2,7 +2,7 @@ require_relative 'regexp'
 
 class String
   def identifier?
-    self.match(Regexp.identifier).to_s == self
+    self.match(Regexp.identifier).to_s.length == length
   end
 
   def classify

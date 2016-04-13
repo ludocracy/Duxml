@@ -13,6 +13,8 @@ module Duxml
     # args[0] must be the name of the element this rule applies to
     # args[1] must be the attribute name
     # args[2] must be an expression of the rule for the given attribute's value
+    #
+    # @param *args [*several_variants]
     def initialize(*args)
       if xml? args
         super *args
@@ -23,15 +25,20 @@ module Duxml
       end
     end
 
+    # @return [String] description of this rule
     def description
       %(#{name} that #{relationship} of <#{subject}>'s @#{attr_name} must match #{statement})
     end
 
-    # checks an attribute of with name #subject to see if it is allowed to have a value of type #object
+    # @param change_or_pattern [Duxml::Pattern, Duxml::Change] change or pattern to be evaluated
+    # @return [Boolean] whether change_or_pattern#subject is allowed to have value of type #object
+    #   if false, reports Error to History
     def qualify(change_or_pattern)
       return true unless change_or_pattern.attr_name == self[:attr_name]
       @cur_object = change_or_pattern.subject meta
-      super change_or_pattern unless pass change_or_pattern.value(meta)
+      result = pass change_or_pattern.value(meta)
+      super change_or_pattern unless result
+      result
     end
 
     # @param [Nokogiri::XML::Node] parent node in RelaxNG document, NOT this Rule's document

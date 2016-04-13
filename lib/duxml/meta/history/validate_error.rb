@@ -9,10 +9,13 @@ module Duxml
     def initialize(*args)
       pattern = if class_to_xml *args
                   @xml.remove_attribute 'object'
-                  args.first[:object]
+                  pattern = args.first[:object]
                 end
       super()
-      self << pattern if pattern
+      if pattern
+        self << pattern
+        @xml << pattern.xml
+      end
     end
 
     # returns object that is parent of the pattern e.g. the parent of a child node, the parent of the attribute, etc.
@@ -21,12 +24,12 @@ module Duxml
     end
 
     def description
-      "#{super} at line #{error_line_no}: #{non_compliant_change.description} which violates rule #{violated_rule.description}."
+      "#{simple_class.gsub('_', ' ')} at line #{error_line_no}: #{non_compliant_change.description} which violates rule #{violated_rule.description}."
     end
 
     # returns Duxml::Pattern that was found to be in error
     def non_compliant_change
-      object
+      children.first
     end
 
     # returns XML file line number of error causing object (or subject if no object exists)

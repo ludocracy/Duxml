@@ -13,8 +13,13 @@ module Duxml
 
   # @param file [String] saves current content XML to given file path (Duxml@current_file by default)
   def save(file = current_file)
-    s = cu.xml.document.remove_empty_lines!.to_xml.gsub!('><', ">\n<")
-    File.write file_name, s
+    s = current_design.xml.document.remove_empty_lines!.to_xml.gsub!('><', ">\n<")
+    File.write file, s
+    File.write get_meta_file, current_meta.xml.to_xml.gsub!('><', ">\n<")
+  end
+
+  def get_meta_file
+    File.dirname(current_file)+"/.#{File.basename(current_file, '.*')}.duxml"
   end
 
   # @param meta_xml [Nokogiri::XML::Node] metadata XML
@@ -31,17 +36,23 @@ module Duxml
   # @return [Duxml::Meta] combined Object tree from metadata root (metadata and content's XML documents are kept separate)
   def load(file)
     raise Exception unless File.exists? file
-    current_file = file
-    dux_meta_file_path = File.dirname(file)+"/.#{File.basename(file, '.*')}.duxml"
-    f = File.read(file).to_s
+    @current_file = file
+    dux_meta_file_path = get_meta_file
+    f = File.read(current_file).to_s
     xml = Nokogiri::XML(f).root
     unless File.exists?(dux_meta_file_path)
       File.new dux_meta_file_path, 'w+'
-      File.write(dux_meta_file_path, Meta.new.xml)
+      File.write(dux_meta_file_path, Meta.new.xml.to_xml)
     end
-    meta_xml = Nokogiri::XML File.open(dux_meta_file_path)
+    meta_xml = Nokogiri::XML(File.open(dux_meta_file_path)).root
     dux meta_xml, xml
   end # def load
+
+  # @param file [String] path to file to be used as or converted to Duxml::Grammar
+  # @return [Duxml::Grammar] grammar, now attached to @current_meta
+  def grammar(file)
+    @current_meta.grammar = file
+  end
 
   # @param file [String] output file path for logging human-readable validation error messages
   def log(file)
@@ -49,17 +60,19 @@ module Duxml
   end
 
   # @param file [String] path of XML file to be validated
-  # @return metadata [Duxml::Meta] which then contains any validation errors
+  # @return [Boolean] whether file passed validation
   def validate(file=nil)
     if file.nil?
-      current_meta.design.each do |node|
-        current_meta.grammar.validate node unless node.text?
+      results = current_meta.design.collect do |node|
+        node.text? || current_meta.grammar.validate(node)
       end
+      result = !results.any? do |val| !val end
     else
       load file
-      validate
+      result = validate
     end
-    current_meta
+    File.write get_meta_file, current_meta.xml.to_xml unless result
+    result
   end # def validate
 
   # @return [Nokogiri::XML::RelaxNG] current metadata's grammar as a relaxng file

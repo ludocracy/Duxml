@@ -1,7 +1,7 @@
 # coding: utf-8
 Gem::Specification.new do |spec|
   spec.name          = "duxml"
-  spec.version       = "0.5.0-rc0"
+  spec.version       = "0.5.1-rc1"
   spec.summary       = "Dynamic Universal XML"
   spec.description   = "execute 'validate_xml --help' for more info"
   spec.authors       = ["Peter Kong"]

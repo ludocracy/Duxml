@@ -10,8 +10,8 @@ class MetaTest < MiniTest::Test
   end
 
   def test_meta_history
-    a = meta.history.children.first.type
-    assert_equal 'add', a
+    meta.history.children.first
+    assert meta.history.children.first
   end
 
   def test_meta_grammar

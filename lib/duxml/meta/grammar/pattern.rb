@@ -43,7 +43,7 @@ module Duxml
     # context_root is the root for the Duxml::Object tree in which this object can be found since Duxml::Pattern
     # objects do not exist in a tree context, this value must normally be provided
     def object context_root=root
-      has_children? ? children.first : resolve_ref(:object, context_root) || self[:object]
+      has_children? ? children.first : resolve_ref(:object, context_root)
     end
 
     def <=>(pattern)

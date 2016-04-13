@@ -14,12 +14,29 @@ end
 
 # creates instance of Nokogiri::XML::Element using args as starting values.
 # first argument must be provided and be a String for name of the desired element.
+#                               or can be an Array and initialize a chain of nested nodes
+#                               e.g. [['leaf'], ['pile']] => <leaf><pile/></leaf>
 # second argument can be either be: if a Hash, then attributes and their values
 #                                   if not, then content String
 # if there is a third argument, then the second must be the attribute Hash, and third the content String
 def element(*args)
-  raise ArgumentError unless args.first.identifier?
-  name = args.first
+  if args.first.is_a?(Array)
+    cur_node = nil
+    args.first.each do |each_arg|
+      next if each_arg.is_a?(Array) && each_arg.empty?
+      new_node = element *each_arg
+      if cur_node.nil?
+        cur_node = new_node
+        next
+      else
+        cur_node << new_node
+        cur_node = new_node
+      end
+    end
+    return cur_node.document.root
+  end # if args.first.is_a?(Array)
+  raise ArgumentError unless args.first.to_s.identifier?
+  name = args.first.to_s
   attrs = Hash.new
   content = ''
   if args.size == 3
@@ -36,4 +53,4 @@ def element(*args)
     e[attr]=val
   end unless attrs.nil?
   e
-end
+end # def element
