@@ -69,13 +69,20 @@ module Duxml
     # @param *args [nil]
     # @return [Nokogiri::XML::RelaxNG] RelaxNG schema object
     def relaxng(*args)
-      # TODO how to get root_name?? first rule? pass in from args?
       return args.first if args.first.is_a?(Nokogiri::XML::RelaxNG)
-      schema_xml = element(simple_class, {combine: 'choice'}, element('start', name: root_name))
+      cur_element = element [[:grammar, {xmlns: 'http://relaxng.org/ns/structure/1.0',
+                                       datatypeLibrary: 'http://www.w3.org/2001/XMLSchema-datatypes'}],
+                              [:start, {combine: 'choice'}],
+                              [:ref, {name: children.first.subject}]]
       children.each do |rule|
-        rule.relaxng schema_xml
+        rule.relaxng cur_element.document.root
       end
-      Nokogiri::XML::RelaxNG.new schema_xml
+      # TODO these are for testing only!! remove later!!!
+      File.write 'test.rng', cur_element.document.to_xml
+      File.write 'grammar.xml', xml.to_xml
+      # TODO back to valid code
+
+      Nokogiri::XML::RelaxNG.new cur_element.document.to_s
     end
 
     private

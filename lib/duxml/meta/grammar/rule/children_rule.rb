@@ -28,17 +28,27 @@ module Duxml
       result
     end
 
+    # TODO either make RelaxNG module or get parent.xpath to find needed element_def
     # @param parent [Nokogiri::XML::Node] parent from RelaxNG document under construction (should be <grammar/>)
+    # @return [Nokogiri::XML::Node] same parent but with addition of <define><element> with #statement converted into <ref>'s
+    #   these are wrapped as needed in <zeroOrMore>,<oneOrMore>, or <optional>
     def relaxng(parent)
-      element_def = element 'element', name: subject
-      define = element('define', name: subject) << element_def
-      parent << define
+      s = subject
+      element_def = parent.document.xpath("//element[@name='#{subject}']")[0]
+      if element_def.nil?
+        element_def ||= element 'element', name: subject
+        define = element('define', name: subject) << element_def
+        parent << define
+      else
+        sleep 0
+      end
+
       get_scanners.each do |scanner|
         operator_name = case scanner[:operator]
-                          when ''  then nil
                           when '?' then :optional
                           when '*' then :zeroOrMore
                           when '+' then :oneOrMore
+                          else nil
                         end
         if operator_name
           cur_element = element(operator_name.to_s)
@@ -46,10 +56,24 @@ module Duxml
         else
           cur_element = element_def
         end
-        element_array = scanner[:match].to_s[6..-1].gsub('\b', '').split(/[\(\)\s\|\:]/).keep_if do |s| !s.empty? end
-        element_array.each do |match_data|
-          cur_element << element('ref', name: match_data.to_s)
+
+        element_array = scanner[:match].source.gsub('\b','').scan(Regexp.nmtoken).flatten
+        if element_array.size > 1
+          cur_element = element 'choice'
+          element_def << cur_element
         end
+        element_array.each do |element_name|
+          unless parent.xpath("//element[@name='#{element_name}']")
+            new_def = element [[:define, {name: element_name}],[:element, {name: element_name}]]
+            parent << new_def
+          end
+
+          if element_name == 'PCDATA'
+            cur_element << element('text')
+          else
+            cur_element << element('ref', name: element_name)
+          end
+        end # element_array.each
       end # get_scanners.each
       parent
     end # def relaxng
@@ -58,27 +82,12 @@ module Duxml
 
     def get_scanners
       statement.split(',').collect do |rule|
-        rule_args = %w(? * +).include?(rule[-1]) ? [rule[0..-2], rule[-1]] : [rule, '']
-        Struct::Scanner.new Regexp.new(dtd_to_regexp rule_args.first), rule_args.last
+        r = rule.gsub(/[\(\)]/, '')
+        r = r[0..-2] if r[-1].match(/[\?\+\*]/)
+        operator = %w(? * +).include?(rule[-1]) ? rule[-1] : ''
+        Struct::Scanner.new Regexp.new(r), operator
       end
     end
-
-    # fixes annoying DTD multiple parentheses formatting
-    def dtd_to_regexp(child_pattern)
-      return child_pattern unless child_pattern.match(/[\(\)]/)
-      s = child_pattern.clone
-      open_match = s.match(/[\(]/)
-      open = (s.match('\(') || []).size
-      close = (s.match('\)') || []).size
-      return s unless (open == 1 && close.zero?) || (open.zero? && close == 1)
-      case
-        when open == close then
-        when s[0] == '(' && s[-1] != ')' then s = s[1..-1] until s[0] != '('
-        when s[0] != '(' && s[-1] == ')' then s = s[0..-2] until s[-1] != ')'
-        else
-      end
-      s
-    end # def dtd_to_regexp
 
     def pass
       child_stack = cur_object.nil? ? [] : cur_object.parent.children.clone

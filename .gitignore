@@ -11,6 +11,7 @@
 trace.txt
 output*
 result*
+*.duxml
 xml/~*
 *log.txt
 *profile.txt
