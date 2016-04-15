@@ -132,11 +132,10 @@
 
         <div class="method-description">
           
-          <p>validation method creates <a href="Pattern.html">Duxml::Pattern</a> objects
-to stand in for <a href="Change.html">Duxml::Change</a> objects (since no
-actual changes are happening when validating static XML file) <a
-href="Pattern.html">Pattern</a> is then made child of this <a
-href="Error.html">Error</a> for reference</p>
+          <p>@param *args [*several_variants] if args.first is not XML,</p>
+
+<pre>args[0] must be violated Rule,
+args[1] must be violating Pattern</pre>
           
           
             <div class="method-calls-super">
@@ -149,14 +148,11 @@ href="Error.html">Error</a> for reference</p>
           <div class="method-source-code" id="new-source">
             <pre><span class="ruby-comment"># File lib/duxml/meta/history/validate_error.rb, line 9</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
-  <span class="ruby-identifier">pattern</span> = <span class="ruby-keyword">if</span> <span class="ruby-identifier">class_to_xml</span> <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>
-              <span class="ruby-ivar">@xml</span>.<span class="ruby-identifier">remove_attribute</span> <span class="ruby-string">&#39;object&#39;</span>
-              <span class="ruby-identifier">pattern</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>[<span class="ruby-value">:object</span>]
-            <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">super</span>()
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">pattern</span>
-    <span class="ruby-keyword">self</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">pattern</span>
-    <span class="ruby-ivar">@xml</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">pattern</span>.<span class="ruby-identifier">xml</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">xml?</span> <span class="ruby-identifier">args</span>
+    <span class="ruby-keyword">super</span> <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">!=</span> <span class="ruby-value">2</span>
+    <span class="ruby-keyword">super</span>({<span class="ruby-identifier">subject</span><span class="ruby-operator">:</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>}, <span class="ruby-identifier">args</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">xml</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -197,7 +193,7 @@ node, the parent of the attribute, etc.</p>
 
           
           <div class="method-source-code" id="affected_parent-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/history/validate_error.rb, line 22</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/validate_error.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">affected_parent</span>
   <span class="ruby-identifier">object</span>.<span class="ruby-identifier">subject</span>
 <span class="ruby-keyword">end</span></pre>
@@ -230,7 +226,7 @@ node, the parent of the attribute, etc.</p>
 
           
           <div class="method-source-code" id="description-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/history/validate_error.rb, line 26</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/validate_error.rb, line 23</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
   <span class="ruby-node">&quot;#{simple_class.gsub(&#39;_&#39;, &#39; &#39;)} at line #{error_line_no}: #{non_compliant_change.description} which violates rule #{violated_rule.description}.&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -264,7 +260,7 @@ object exists)</p>
 
           
           <div class="method-source-code" id="error_line_no-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/history/validate_error.rb, line 36</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/validate_error.rb, line 33</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">error_line_no</span>
   <span class="ruby-identifier">non_compliant_change</span>.<span class="ruby-identifier">object</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:line</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">non_compliant_change</span>.<span class="ruby-identifier">object</span>.<span class="ruby-identifier">line</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">non_compliant_change</span>.<span class="ruby-identifier">subject</span>.<span class="ruby-identifier">line</span>
 <span class="ruby-keyword">end</span></pre>
@@ -298,7 +294,7 @@ error</p>
 
           
           <div class="method-source-code" id="non_compliant_change-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/history/validate_error.rb, line 31</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/validate_error.rb, line 28</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">non_compliant_change</span>
   <span class="ruby-identifier">children</span>.<span class="ruby-identifier">first</span>
 <span class="ruby-keyword">end</span></pre>

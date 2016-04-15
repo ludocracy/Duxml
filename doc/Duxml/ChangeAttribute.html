@@ -79,6 +79,12 @@
     
     <li class="calls-super" ><a href="#method-i-description">#description</a>
     
+    <li ><a href="#method-i-new_value">#new_value</a>
+    
+    <li ><a href="#method-i-old_value">#old_value</a>
+    
+    <li ><a href="#method-i-value">#value</a>
+    
   </ul>
 </div>
 
@@ -128,7 +134,12 @@
 
         <div class="method-description">
           
-          
+          <p>@param *args [*several_variants] XML or</p>
+
+<pre class="ruby"><span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>] =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">object</span> <span class="ruby-identifier">whose</span> <span class="ruby-identifier">attribute</span> <span class="ruby-identifier">changed</span>
+<span class="ruby-identifier">args</span>[<span class="ruby-value">1</span>] =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">name</span> <span class="ruby-identifier">of</span> <span class="ruby-identifier">the</span> <span class="ruby-identifier">changed</span> <span class="ruby-identifier">attribute</span>
+<span class="ruby-identifier">args</span>[<span class="ruby-value">2</span>] =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">old</span> <span class="ruby-identifier">attribute</span> <span class="ruby-identifier">value</span>
+</pre>
           
           
             <div class="method-calls-super">
@@ -139,12 +150,14 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/history/change_attribute.rb, line 6</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/change_attribute.rb, line 10</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">class_to_xml</span> <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>
-    <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>[<span class="ruby-value">:object</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-ivar">@xml</span>[<span class="ruby-identifier">k</span>] = <span class="ruby-identifier">v</span> <span class="ruby-keyword">end</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>[<span class="ruby-value">:object</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">xml?</span> <span class="ruby-identifier">args</span>
+    <span class="ruby-keyword">super</span> <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">!=</span> <span class="ruby-value">3</span>
+    <span class="ruby-keyword">super</span>({<span class="ruby-identifier">subject</span><span class="ruby-operator">:</span> <span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">attr_name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">args</span>[<span class="ruby-value">1</span>], <span class="ruby-identifier">old_value</span><span class="ruby-operator">:</span> <span class="ruby-identifier">args</span>[<span class="ruby-value">2</span>], <span class="ruby-identifier">new_value</span><span class="ruby-operator">:</span> <span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>][<span class="ruby-identifier">args</span>[<span class="ruby-value">1</span>]]})
   <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">super</span>()
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -177,13 +190,13 @@
 
         <div class="method-description">
           
-          <p>name of the attribute that was changed</p>
+          <p>@return [String] name of the attribute that was changed</p>
           
           
 
           
           <div class="method-source-code" id="attr_name-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/history/change_attribute.rb, line 14</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/change_attribute.rb, line 20</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">attr_name</span>
   <span class="ruby-keyword">self</span>[<span class="ruby-value">:attr_name</span>]
 <span class="ruby-keyword">end</span></pre>
@@ -210,7 +223,7 @@
 
         <div class="method-description">
           
-          
+          <p>@return [String] self description</p>
           
           
             <div class="method-calls-super">
@@ -221,15 +234,113 @@
 
           
           <div class="method-source-code" id="description-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/history/change_attribute.rb, line 18</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/change_attribute.rb, line 37</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
   <span class="ruby-keyword">super</span>
-  <span class="ruby-node">&quot;#{subject.description} changed attribute &#39;#{attr_name}&#39; value from &#39;#{self[:old_value]}&#39; to &#39;#{self[:new_value]}&#39;.&quot;</span>
+  <span class="ruby-node">&quot;#{subject.description} changed attribute &#39;#{attr_name}&#39; value from &#39;#{old_value}&#39; to &#39;#{value}&#39;.&quot;</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
 
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-new_value" class="method-detail method-alias">
+        
+        <div class="method-heading">
+          <span class="method-name">new_value</span><span
+            class="method-args">()</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+        </div>
+
+        
+
+        
+        <div class="aliases">
+          Alias for: <a href="ChangeAttribute.html#method-i-value">value</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="method-i-old_value" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">old_value</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [String] old value of the attribute</p>
+          
+          
+
+          
+          <div class="method-source-code" id="old_value-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/change_attribute.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">old_value</span>
+  <span class="ruby-keyword">self</span>[<span class="ruby-value">:old_value</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-value" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">value</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [String] new value of attribute</p>
+          
+          
+
+          
+          <div class="method-source-code" id="value-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/change_attribute.rb, line 31</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">value</span>
+  <span class="ruby-keyword">self</span>[<span class="ruby-value">:new_value</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="ChangeAttribute.html#method-i-new_value">new_value</a>
+        </div>
         
 
         

@@ -77,6 +77,8 @@
     
     <li ><a href="#method-i-3C-3D-3E">#&lt;=&gt;</a>
     
+    <li ><a href="#method-i-abstract-3F">#abstract?</a>
+    
     <li ><a href="#method-i-description">#description</a>
     
     <li ><a href="#method-i-object">#object</a>
@@ -192,13 +194,15 @@ arguments ids or names become attributes and the third becomes the content</p>
 
         <div class="method-description">
           
-          
+          <p>@param pattern [Duxml::Pattern] pattern or any subclass object @return
+[Fixnum] first applies &lt;=&gt; to subjects, and if equal, applies
+&lt;=&gt; to objects</p>
           
           
 
           
           <div class="method-source-code" id="3C-3D-3E-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern.rb, line 49</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern.rb, line 63</span>
 <span class="ruby-keyword">def</span> <span class="ruby-operator">&lt;=&gt;</span>(<span class="ruby-identifier">pattern</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-value">1</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">pattern</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:subject</span>)
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">subject</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">pattern</span>.<span class="ruby-identifier">subject</span>
@@ -209,6 +213,47 @@ arguments ids or names become attributes and the third becomes the content</p>
     <span class="ruby-keyword">else</span>
       <span class="ruby-value">-1</span>
   <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-abstract-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">abstract?</span><span
+            class="method-args">(context_root)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param context_root [Duxml::Meta] context_root is the root for the <a
+href="Object.html">Duxml::Object</a> tree in which this object can be found
+since <a href="Pattern.html">Duxml::Pattern</a></p>
+
+<pre>this value must normally be provided if pattern is not part of object&#39;s tree</pre>
+
+<p>@return [Boolean] whether or not both subject and object are concrete i.e.
+can be resolved to actual <a href="Object.html">Duxml::Object</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="abstract-3F-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern.rb, line 26</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">abstract?</span>(<span class="ruby-identifier">context_root</span>)
+  <span class="ruby-keyword">false</span>
+  <span class="ruby-comment">#!(subject(context_root).respond_to?(:is_component?) &amp;&amp; object(context_root).respond_to?(:is_component?))</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -233,13 +278,14 @@ arguments ids or names become attributes and the third becomes the content</p>
 
         <div class="method-description">
           
-          
+          <p>@return [String] “#{object.description} is #{relationship} of
+#{subject.description}”</p>
           
           
 
           
           <div class="method-source-code" id="description-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern.rb, line 33</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern.rb, line 43</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
   <span class="ruby-node">&quot;#{object.description} is #{relationship} of #{subject.description}&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -266,18 +312,21 @@ arguments ids or names become attributes and the third becomes the content</p>
 
         <div class="method-description">
           
-          <p>object of pattern; almost always the inferior object in the relationship,
-e.g. child object context_root is the root for the <a
+          <p>@param context_root [Duxml::Meta] context_root is the root for the <a
 href="Object.html">Duxml::Object</a> tree in which this object can be found
-since <a href="Pattern.html">Duxml::Pattern</a> objects do not exist in a
-tree context, this value must normally be provided</p>
+since <a href="Pattern.html">Duxml::Pattern</a></p>
+
+<pre>this value must normally be provided if pattern is not part of object&#39;s tree</pre>
+
+<p>@return [Duxml::Object] object of pattern; almost always the inferior
+object in the relationship, e.g. child object</p>
           
           
 
           
           <div class="method-source-code" id="object-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern.rb, line 45</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">object</span> <span class="ruby-identifier">context_root</span>=<span class="ruby-identifier">root</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern.rb, line 57</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">object</span>(<span class="ruby-identifier">context_root</span>=<span class="ruby-identifier">root</span>)
   <span class="ruby-identifier">has_children?</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">children</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">resolve_ref</span>(<span class="ruby-value">:object</span>, <span class="ruby-identifier">context_root</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -309,13 +358,14 @@ href="Pattern.html#method-i-relationship">#relationship</a> =&gt;
 &#39;children&#39; <a
 href="Pattern.html#method-i-relationship">#relationship</a> =&gt;
 &#39;content&#39; can be overridden if class name does not match
-human-readable string</p>
+human-readable string @return [String] single word to describe relationship
+of subject to object</p>
           
           
 
           
           <div class="method-source-code" id="relationship-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern.rb, line 28</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern.rb, line 37</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">relationship</span>
   <span class="ruby-identifier">super_class_size</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">superclass</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;::&#39;</span>).<span class="ruby-identifier">last</span>.<span class="ruby-identifier">size</span>
   <span class="ruby-identifier">simple_class</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-operator">-</span>(<span class="ruby-identifier">super_class_size</span><span class="ruby-operator">+</span><span class="ruby-value">2</span>)]
@@ -343,14 +393,20 @@ human-readable string</p>
 
         <div class="method-description">
           
-          <p>subject of pattern; almost always the superior object in the relationship,
-e.g. parent object</p>
+          <p>@param context_root [Duxml::Meta] context_root is the root for the <a
+href="Object.html">Duxml::Object</a> tree in which this object can be found
+since <a href="Pattern.html">Duxml::Pattern</a></p>
+
+<pre>this value must normally be provided if pattern is not part of object&#39;s tree</pre>
+
+<p>@return [Duxml::Object, String] subject of pattern; almost always the
+superior object in the relationship, e.g. parent object</p>
           
           
 
           
           <div class="method-source-code" id="subject-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern.rb, line 38</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern.rb, line 50</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">subject</span>(<span class="ruby-identifier">context_root</span>=<span class="ruby-identifier">root</span>)
   <span class="ruby-identifier">resolve_ref</span>(<span class="ruby-value">:subject</span>, <span class="ruby-identifier">context_root</span>) <span class="ruby-operator">||</span> <span class="ruby-keyword">self</span>[<span class="ruby-value">:subject</span>]
 <span class="ruby-keyword">end</span></pre>

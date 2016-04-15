@@ -131,7 +131,10 @@ changed</p>
 
         <div class="method-description">
           
-          
+          <p>@param *args [*several_variants] XML or</p>
+
+<pre>args[0] [Duxml::Object] object whose content has changed
+args[1] [String] the old content</pre>
           
           
             <div class="method-calls-super">
@@ -142,13 +145,11 @@ changed</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/history/change_content.rb, line 6</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/change_content.rb, line 9</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">class_to_xml</span> <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>
-    <span class="ruby-ivar">@xml</span>.<span class="ruby-identifier">remove_attribute</span> <span class="ruby-string">&#39;object&#39;</span>
-    <span class="ruby-ivar">@xml</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>[<span class="ruby-value">:object</span>]
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">super</span>()
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">super</span> <span class="ruby-operator">*</span><span class="ruby-identifier">args</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">xml?</span> <span class="ruby-identifier">args</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">!=</span> <span class="ruby-value">2</span>
+  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">subject</span><span class="ruby-operator">:</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>, <span class="ruby-identifier">old_content</span><span class="ruby-operator">:</span> <span class="ruby-identifier">args</span>[<span class="ruby-value">1</span>], <span class="ruby-identifier">new_content</span><span class="ruby-operator">:</span> <span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">content</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -181,7 +182,7 @@ changed</p>
 
         <div class="method-description">
           
-          
+          <p>@return [String] self description</p>
           
           
             <div class="method-calls-super">
@@ -192,7 +193,7 @@ changed</p>
 
           
           <div class="method-source-code" id="description-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/history/change_content.rb, line 14</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/change_content.rb, line 16</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
   <span class="ruby-keyword">super</span>
   <span class="ruby-node">&quot;#{subject.description} changed content from &#39;#{old_content}&#39; to &#39;#{new_content}&#39;.&quot;</span>
@@ -220,16 +221,16 @@ changed</p>
 
         <div class="method-description">
           
-          <p>content of element after change TODO have this update if subsequent change
-affects content?</p>
+          <p>@return [String] new content (subsequent changes may mean this new content
+no longer exists in its original form!)</p>
           
           
 
           
           <div class="method-source-code" id="new_content-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/history/change_content.rb, line 26</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/change_content.rb, line 27</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new_content</span>
-  <span class="ruby-identifier">subject</span>.<span class="ruby-identifier">content</span>
+  <span class="ruby-keyword">self</span>[<span class="ruby-value">:new_content</span>]
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -254,15 +255,15 @@ affects content?</p>
 
         <div class="method-description">
           
-          <p>content of element prior to change</p>
+          <p>@return [String] old content</p>
           
           
 
           
           <div class="method-source-code" id="old_content-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/history/change_content.rb, line 20</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/change_content.rb, line 22</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">old_content</span>
-  <span class="ruby-identifier">content</span>
+  <span class="ruby-keyword">self</span>[<span class="ruby-value">:old_content</span>]
 <span class="ruby-keyword">end</span></pre>
           </div>
           

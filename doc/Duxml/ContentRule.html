@@ -75,6 +75,8 @@
     
     <li class="calls-super" ><a href="#method-c-new">::new</a>
     
+    <li class="calls-super" ><a href="#method-i-applies_to-3F">#applies_to?</a>
+    
     <li class="calls-super" ><a href="#method-i-qualify">#qualify</a>
     
   </ul>
@@ -166,6 +168,47 @@ element&#39;s content</p>
        </header>
 
     
+      <div id="method-i-applies_to-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">applies_to?</span><span
+            class="method-args">(change_or_pattern)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param change_or_pattern [Duxml::Change, Duxml::Pattern] change or pattern
+that rule may apply to @return [Boolean] whether this rule does in fact
+apply</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="Rule.html#method-i-applies_to-3F">Duxml::Rule#applies_to?</a>
+            </div>
+          
+
+          
+          <div class="method-source-code" id="applies_to-3F-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/content_rule.rb, line 20</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">applies_to?</span>(<span class="ruby-identifier">change_or_pattern</span>)
+  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">change_or_pattern</span>) <span class="ruby-operator">&amp;&amp;</span>
+      <span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:new_content</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
       <div id="method-i-qualify" class="method-detail ">
         
         <div class="method-heading">
@@ -191,7 +234,7 @@ this node; returns false if content has XML</p>
 
           
           <div class="method-source-code" id="qualify-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/content_rule.rb, line 19</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/content_rule.rb, line 26</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">change_or_pattern</span>)
   <span class="ruby-ivar">@cur_object</span> = <span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">subject</span> <span class="ruby-identifier">meta</span>
   <span class="ruby-keyword">super</span> <span class="ruby-identifier">change_or_pattern</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">pass</span>

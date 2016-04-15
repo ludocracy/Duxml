@@ -95,6 +95,8 @@
     
     <li class="calls-super" ><a href="#method-i-each">#each</a>
     
+    <li ><a href="#method-i-file">#file</a>
+    
     <li ><a href="#method-i-find_child">#find_child</a>
     
     <li ><a href="#method-i-find_children">#find_children</a>
@@ -367,17 +369,18 @@ href="Object.html">Object</a> to new_content @return [Duxml::Object] self</p>
             <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 138</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">content=</span>(<span class="ruby-identifier">new_content</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">xml</span>.<span class="ruby-identifier">content</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">children</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">children</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">text?</span>
+  <span class="ruby-identifier">args</span> = []
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">children</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">children</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">text?</span>
-    <span class="ruby-identifier">change_type</span> = <span class="ruby-value">:change_content</span>
-    <span class="ruby-identifier">old_content</span> = <span class="ruby-identifier">content</span>
+    <span class="ruby-identifier">args</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:change_content</span>
+    <span class="ruby-identifier">args</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">content</span>
     <span class="ruby-identifier">children</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">content</span> = <span class="ruby-identifier">new_content</span>
   <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">xml</span>.<span class="ruby-identifier">content</span>.<span class="ruby-identifier">empty?</span>
-    <span class="ruby-identifier">change_type</span> = <span class="ruby-value">:new_content</span>
+    <span class="ruby-identifier">args</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:new_content</span>
     <span class="ruby-ivar">@xml</span>.<span class="ruby-identifier">content</span> = <span class="ruby-identifier">new_content</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">report</span> <span class="ruby-identifier">change_type</span>, <span class="ruby-identifier">old_content</span> <span class="ruby-operator">||</span> <span class="ruby-keyword">nil</span>
+  <span class="ruby-identifier">report</span> <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>
   <span class="ruby-keyword">self</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -411,7 +414,7 @@ from referenced object</p>
 
           
           <div class="method-source-code" id="descended_from-3F-source">
-            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 199</span>
+            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 205</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">descended_from?</span>(<span class="ruby-identifier">idref</span>)
   <span class="ruby-identifier">xml</span>.<span class="ruby-identifier">ancestors</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ancestor</span><span class="ruby-operator">|</span>
     <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">ancestor</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">idref</span>.<span class="ruby-identifier">to_s</span>
@@ -448,7 +451,7 @@ from referenced object</p>
 
           
           <div class="method-source-code" id="description-source">
-            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 193</span>
+            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 199</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
   <span class="ruby-node">%Q(&lt;#{type} id=&quot;#{id}&quot;&gt;)</span>
 <span class="ruby-keyword">end</span></pre>
@@ -492,6 +495,39 @@ href="../Tree/TreeNode.html#method-i-each">Tree::TreeNode#each</a></p>
             <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 76</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">each</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
   <span class="ruby-keyword">super</span> <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-file" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">file</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [String] name of file that initialized this object</p>
+          
+          
+
+          
+          <div class="method-source-code" id="file-source">
+            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 182</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">file</span>
+  <span class="ruby-ivar">@file</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">parent</span>.<span class="ruby-identifier">file</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -663,7 +699,7 @@ href="Duxml::Object">Array</a>] array of children that match</p>
 
           
           <div class="method-source-code" id="is_component-3F-source">
-            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 157</span>
+            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 158</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">is_component?</span>
   <span class="ruby-keyword">true</span>
 <span class="ruby-keyword">end</span></pre>
@@ -696,7 +732,7 @@ href="Duxml::Object">Array</a>] array of children that match</p>
 
           
           <div class="method-source-code" id="meta-source">
-            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 181</span>
+            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 187</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">meta</span>
   <span class="ruby-keyword">return</span> <span class="ruby-identifier">root</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">root</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;meta&#39;</span>
   <span class="ruby-keyword">nil</span>
@@ -730,7 +766,7 @@ href="Duxml::Object">Array</a>] array of children that match</p>
 
           
           <div class="method-source-code" id="position-source">
-            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 208</span>
+            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 214</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">position</span>
   <span class="ruby-identifier">parent</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">child</span>, <span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
     <span class="ruby-keyword">return</span> <span class="ruby-identifier">index</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">child</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">self</span>
@@ -855,7 +891,7 @@ represent XML elements are are therefore not text</p>
 
           
           <div class="method-source-code" id="text-3F-source">
-            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 164</span>
+            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 165</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">text?</span>
   <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
@@ -890,7 +926,7 @@ a temporary element &lt;p_c_data&gt;. compare to xml</p>
 
           
           <div class="method-source-code" id="to_s-source">
-            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 171</span>
+            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 172</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">to_s</span>
   <span class="ruby-identifier">xml</span>.<span class="ruby-identifier">to_s</span>
 <span class="ruby-keyword">end</span></pre>
@@ -923,7 +959,7 @@ a temporary element &lt;p_c_data&gt;. compare to xml</p>
 
           
           <div class="method-source-code" id="type-source">
-            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 176</span>
+            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 177</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">type</span>
   <span class="ruby-identifier">xml</span>.<span class="ruby-identifier">name</span>
 <span class="ruby-keyword">end</span></pre>
@@ -956,7 +992,7 @@ a temporary element &lt;p_c_data&gt;. compare to xml</p>
 
           
           <div class="method-source-code" id="xml_root-source">
-            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 187</span>
+            <pre><span class="ruby-comment"># File lib/duxml/object/interface.rb, line 193</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">xml_root</span>
   <span class="ruby-identifier">meta</span>.<span class="ruby-identifier">design</span>.<span class="ruby-identifier">xml</span>
 <span class="ruby-keyword">end</span></pre>

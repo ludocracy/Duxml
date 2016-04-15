@@ -205,22 +205,15 @@ and third the content <a href="String.html">String</a></p>
 
         <div class="method-description">
           
-          <p>shortcut for turning object&#39;s class name into snake_case string</p>
+          
           
           
 
           
           <div class="method-source-code" id="simple_class-source">
-            <pre><span class="ruby-comment"># File lib/duxml/ruby_ext/object.rb, line 13</span>
+            <pre><span class="ruby-comment"># File lib/duxml/ruby_ext/object.rb, line 26</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">simple_class</span>
-  <span class="ruby-identifier">str</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;::&#39;</span>).<span class="ruby-identifier">last</span>
-  <span class="ruby-identifier">str</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">/[A-Z_]/</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">char</span><span class="ruby-operator">|</span>
-    <span class="ruby-keyword">case</span> <span class="ruby-identifier">char</span>
-      <span class="ruby-keyword">when</span> <span class="ruby-regexp">/[A-Z]/</span> <span class="ruby-keyword">then</span> <span class="ruby-node">&quot;_#{char.downcase!}&quot;</span>
-      <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;_&#39;</span> <span class="ruby-keyword">then</span> <span class="ruby-string">&#39;-&#39;</span>
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">str</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>]
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">simple_class</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -254,9 +247,9 @@ href="Nokogiri/XML/Document.html">Nokogiri::XML::Document</a></p>
 
           
           <div class="method-source-code" id="xml-source">
-            <pre><span class="ruby-comment"># File lib/duxml/ruby_ext/object.rb, line 7</span>
+            <pre><span class="ruby-comment"># File lib/duxml/ruby_ext/object.rb, line 21</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">xml</span>
-  <span class="ruby-keyword">return</span> <span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">XML</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span> <span class="ruby-keyword">self</span>).<span class="ruby-identifier">root</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">to_s</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">XML</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">to_s</span>).<span class="ruby-identifier">root</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">to_s</span>)
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">XML</span><span class="ruby-operator">::</span><span class="ruby-constant">Element</span>) <span class="ruby-operator">?</span> <span class="ruby-keyword">self</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">XML</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">to_s</span>).<span class="ruby-identifier">root</span>
 <span class="ruby-keyword">end</span></pre>
           </div>

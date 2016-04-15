@@ -73,6 +73,8 @@
 
   <ul class="link-list" role="directory">
     
+    <li class="calls-super" ><a href="#method-c-new">::new</a>
+    
     <li ><a href="#method-i-attr_name">#attr_name</a>
     
     <li ><a href="#method-i-description">#description</a>
@@ -112,6 +114,58 @@ value</p>
     
 
     
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param *args [*several_variants] XML or</p>
+
+<pre class="ruby"><span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>] =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">subject</span> <span class="ruby-identifier">element</span>
+<span class="ruby-identifier">args</span>[<span class="ruby-value">1</span>] =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">name</span> <span class="ruby-identifier">of</span> <span class="ruby-identifier">attribute</span>
+</pre>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="Pattern.html#method-c-new">Duxml::Pattern.new</a>
+            </div>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern/attr_val_pattern.rb, line 9</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">super</span> <span class="ruby-operator">*</span><span class="ruby-identifier">args</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">xml?</span> <span class="ruby-identifier">args</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">2</span>
+  <span class="ruby-keyword">super</span>({<span class="ruby-identifier">subject</span><span class="ruby-operator">:</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>, <span class="ruby-identifier">attr_name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">last</span>})
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
      <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
        <header>
          <h3>Public Instance Methods</h3>
@@ -138,9 +192,9 @@ href="Pattern.html">Pattern</a></p>
 
           
           <div class="method-source-code" id="attr_name-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern/attr_val_pattern.rb, line 15</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern/attr_val_pattern.rb, line 24</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">attr_name</span>
-  <span class="ruby-identifier">object</span>
+  <span class="ruby-keyword">self</span>[<span class="ruby-value">:attr_name</span>]
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -171,7 +225,7 @@ href="Pattern.html">Pattern</a></p>
 
           
           <div class="method-source-code" id="description-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern/attr_val_pattern.rb, line 10</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern/attr_val_pattern.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
   <span class="ruby-node">&quot;#{subject.description}&#39;s @#{attr_name} #{relationship} is #{value}&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -204,7 +258,7 @@ href="Pattern.html">Pattern</a></p>
 
           
           <div class="method-source-code" id="relationship-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern/attr_val_pattern.rb, line 6</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern/attr_val_pattern.rb, line 15</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">relationship</span>
   <span class="ruby-string">&#39;attribute value&#39;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -237,7 +291,7 @@ href="Pattern.html">Pattern</a></p>
 
           
           <div class="method-source-code" id="value-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern/attr_val_pattern.rb, line 20</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern/attr_val_pattern.rb, line 29</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">value</span>(<span class="ruby-identifier">meta</span>=<span class="ruby-identifier">root</span>)
   <span class="ruby-identifier">subject</span>(<span class="ruby-identifier">meta</span>)[<span class="ruby-identifier">attr_name</span>]
 <span class="ruby-keyword">end</span></pre>

@@ -73,6 +73,8 @@
 
   <ul class="link-list" role="directory">
     
+    <li ><a href="#method-i-abstract-3F">#abstract?</a>
+    
     <li class="calls-super" ><a href="#method-i-description">#description</a>
     
     <li ><a href="#method-i-relationship">#relationship</a>
@@ -113,6 +115,42 @@
        </header>
 
     
+      <div id="method-i-abstract-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">abstract?</span><span
+            class="method-args">(context_root=meta)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param context_root [Duxml::Meta] context in which pattern subject/object
+are to be evaluated @return [Boolean] whether this pattern refers to actual
+objects or is hypothetical e.g. object is nil or is name of a
+Duxml#simple_class</p>
+          
+          
+
+          
+          <div class="method-source-code" id="abstract-3F-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern/child_pattern.rb, line 16</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">abstract?</span>(<span class="ruby-identifier">context_root</span>=<span class="ruby-identifier">meta</span>)
+  <span class="ruby-identifier">object</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-constant">Duxml</span><span class="ruby-operator">::</span><span class="ruby-identifier">const_defined?</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">classify</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
       <div id="method-i-description" class="method-detail ">
         
         <div class="method-heading">
@@ -137,9 +175,11 @@
 
           
           <div class="method-source-code" id="description-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern/child_pattern.rb, line 12</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern/child_pattern.rb, line 21</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
-  <span class="ruby-identifier">object</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">super</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{subject.description} has no children&quot;</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">super</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">abstract?</span>
+  <span class="ruby-identifier">ph</span> = <span class="ruby-identifier">object</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">?</span> <span class="ruby-string">&#39; has no children&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot; is missing &lt;#{self[:object]}&gt;&quot;</span>
+  <span class="ruby-node">&quot;#{affected_parent.description} #{ph}&quot;</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           

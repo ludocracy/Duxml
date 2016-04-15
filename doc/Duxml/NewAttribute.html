@@ -130,9 +130,11 @@
 
         <div class="method-description">
           
-          <p>TODO simplify args! currently i believe it&#39;s a hash of a hash e.g. args
-=&gt; [{subject: subj, object: {attr_name: attr, old_value: nil, new_value:
-new_val}}] TODO could simplify to… args =&gt; [subj, attr, new_val]</p>
+          <p>@param *args [*several_variants] can be XML or</p>
+
+<pre class="ruby"><span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>] =<span class="ruby-operator">&gt;</span> [<span class="ruby-constant">Duxml</span><span class="ruby-operator">::</span><span class="ruby-constant">Object</span>] <span class="ruby-identifier">parent</span> <span class="ruby-identifier">object</span>
+<span class="ruby-identifier">args</span>[<span class="ruby-value">1</span>] =<span class="ruby-operator">&gt;</span> [<span class="ruby-constant">String</span>, <span class="ruby-constant">Symbol</span>] <span class="ruby-identifier">name</span> <span class="ruby-identifier">of</span> <span class="ruby-identifier">attribute</span>
+</pre>
           
           
             <div class="method-calls-super">
@@ -143,14 +145,14 @@ new_val}}] TODO could simplify to… args =&gt; [subj, attr, new_val]</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/history/new_attribute.rb, line 8</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/new_attribute.rb, line 9</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">class_to_xml</span> <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>
-    <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>[<span class="ruby-value">:object</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-ivar">@xml</span>[<span class="ruby-identifier">k</span>] = <span class="ruby-identifier">v</span> <span class="ruby-keyword">end</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>[<span class="ruby-value">:object</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
-    <span class="ruby-ivar">@xml</span>.<span class="ruby-identifier">remove_attribute</span> <span class="ruby-string">&#39;object&#39;</span>
-    <span class="ruby-ivar">@xml</span>.<span class="ruby-identifier">remove_attribute</span> <span class="ruby-string">&#39;old_value&#39;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">xml?</span> <span class="ruby-identifier">args</span>
+    <span class="ruby-keyword">super</span> <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">!=</span> <span class="ruby-value">2</span>
+    <span class="ruby-keyword">super</span>({<span class="ruby-identifier">subject</span><span class="ruby-operator">:</span> <span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>],<span class="ruby-identifier">attr_name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">args</span>[<span class="ruby-value">1</span>], <span class="ruby-identifier">new_value</span><span class="ruby-operator">:</span> <span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>][<span class="ruby-identifier">args</span>[<span class="ruby-value">1</span>]]})
   <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">super</span>()
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -183,13 +185,13 @@ new_val}}] TODO could simplify to… args =&gt; [subj, attr, new_val]</p>
 
         <div class="method-description">
           
-          <p>name of new attribute</p>
+          <p>@return [String] name of new attribute</p>
           
           
 
           
           <div class="method-source-code" id="attr_name-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/history/new_attribute.rb, line 23</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/new_attribute.rb, line 25</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">attr_name</span>
   <span class="ruby-keyword">self</span>[<span class="ruby-value">:attr_name</span>]
 <span class="ruby-keyword">end</span></pre>
@@ -216,7 +218,7 @@ new_val}}] TODO could simplify to… args =&gt; [subj, attr, new_val]</p>
 
         <div class="method-description">
           
-          
+          <p>@return [String] self description</p>
           
           
             <div class="method-calls-super">
@@ -227,7 +229,7 @@ new_val}}] TODO could simplify to… args =&gt; [subj, attr, new_val]</p>
 
           
           <div class="method-source-code" id="description-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/history/new_attribute.rb, line 27</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/new_attribute.rb, line 30</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
   <span class="ruby-keyword">super</span>
   <span class="ruby-node">&quot;#{subject.description} given new attribute &#39;#{self[:attr_name]}&#39; with value &#39;#{self[:new_value]}&#39;.&quot;</span>
@@ -246,7 +248,7 @@ new_val}}] TODO could simplify to… args =&gt; [subj, attr, new_val]</p>
         
         <div class="method-heading">
           <span class="method-name">value</span><span
-            class="method-args">(meta)</span>
+            class="method-args">(context_root=meta)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -255,15 +257,16 @@ new_val}}] TODO could simplify to… args =&gt; [subj, attr, new_val]</p>
 
         <div class="method-description">
           
-          <p>value of the new attribute</p>
+          <p>@param context_root [Duxml::Meta] context in which to evaluate the new
+attribute @return [String] value of the new attribute</p>
           
           
 
           
           <div class="method-source-code" id="value-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/history/new_attribute.rb, line 18</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">value</span>(<span class="ruby-identifier">meta</span>)
-  <span class="ruby-identifier">subject</span>(<span class="ruby-identifier">meta</span>)[<span class="ruby-identifier">attr_name</span>]
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/new_attribute.rb, line 20</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">value</span>(<span class="ruby-identifier">context_root</span>=<span class="ruby-identifier">meta</span>)
+  <span class="ruby-identifier">subject</span>(<span class="ruby-identifier">context_root</span>)[<span class="ruby-identifier">attr_name</span>]
 <span class="ruby-keyword">end</span></pre>
           </div>
           

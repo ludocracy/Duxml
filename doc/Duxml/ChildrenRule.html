@@ -75,9 +75,11 @@
     
     <li class="calls-super" ><a href="#method-c-new">::new</a>
     
+    <li class="calls-super" ><a href="#method-i-applies_to-3F">#applies_to?</a>
+    
     <li class="calls-super" ><a href="#method-i-qualify">#qualify</a>
     
-    <li ><a href="#method-i-relaxng">#relaxng</a>
+    <li ><a href="#method-i-required_children">#required_children</a>
     
   </ul>
 </div>
@@ -151,9 +153,12 @@ statement of the rule</p>
     <span class="ruby-keyword">super</span> <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-identifier">element_name</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>
-    <span class="ruby-identifier">statement_str</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&#39;-&#39;</span>,<span class="ruby-string">&#39;_dash_&#39;</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/\b/</span>,<span class="ruby-string">&#39;\b&#39;</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&#39;_dash_&#39;</span>, <span class="ruby-string">&#39;-&#39;</span>)
-    <span class="ruby-identifier">statement_str</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">/[\&lt;&gt;]/</span>, <span class="ruby-string">&#39;&#39;</span>)
-    <span class="ruby-identifier">statement_str</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-node">/#PCDATA/</span>, <span class="ruby-string">&#39;p_c_data&#39;</span>)
+    <span class="ruby-identifier">statement_str</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">last</span>
+                        .<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/[\&lt;&gt;]/</span>, <span class="ruby-string">&#39;&#39;</span>)
+                        .<span class="ruby-identifier">gsub</span>(<span class="ruby-node">/#PCDATA/</span>, <span class="ruby-string">&#39;p_c_data&#39;</span>)
+                        .<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&#39;-&#39;</span>,<span class="ruby-string">&#39;_dash_&#39;</span>)
+                        .<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/\b/</span>,<span class="ruby-string">&#39;\b&#39;</span>)
+                        .<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&#39;_dash_&#39;</span>, <span class="ruby-string">&#39;-&#39;</span>)
     <span class="ruby-keyword">super</span> <span class="ruby-identifier">element_name</span>, <span class="ruby-identifier">statement_str</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
@@ -175,6 +180,49 @@ statement of the rule</p>
        </header>
 
     
+      <div id="method-i-applies_to-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">applies_to?</span><span
+            class="method-args">(change_or_pattern)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param change_or_pattern [Duxml::Pattern, Duxml::Change] change or pattern
+to be evaluated @return [Boolean] whether subjects agree, and change or
+pattern is not a <a href="Rule.html">Rule</a> and responds to
+affected_parent</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="Rule.html#method-i-applies_to-3F">Duxml::Rule#applies_to?</a>
+            </div>
+          
+
+          
+          <div class="method-source-code" id="applies_to-3F-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/children_rule.rb, line 44</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">applies_to?</span>(<span class="ruby-identifier">change_or_pattern</span>)
+  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">change_or_pattern</span>) <span class="ruby-operator">&amp;&amp;</span>
+      <span class="ruby-operator">!</span><span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:violated_rule</span>) <span class="ruby-operator">&amp;&amp;</span>
+      <span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:affected_parent</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
       <div id="method-i-qualify" class="method-detail ">
         
         <div class="method-heading">
@@ -188,8 +236,9 @@ statement of the rule</p>
 
         <div class="method-description">
           
-          <p>@param change_or_pattern [Duxml::Pattern, Duxml::Change] to be evaluated to
-see if it follows this rule @return [Boolean] whether or not
+          <p>@param change_or_pattern [Duxml::ChildPattern, <a
+href="Add.html">Duxml::Add</a>, Duxml::Remove] to be evaluated to see if it
+follows this rule @return [Boolean] whether or not
 change_or_pattern#subject is allowed to have <a
 href="Rule.html#method-i-object">object</a> as its child</p>
 
@@ -204,7 +253,7 @@ href="Rule.html#method-i-object">object</a> as its child</p>
 
           
           <div class="method-source-code" id="qualify-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/children_rule.rb, line 24</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/children_rule.rb, line 27</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">change_or_pattern</span>)
   <span class="ruby-ivar">@cur_object</span> = <span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">object</span> <span class="ruby-identifier">meta</span>
   <span class="ruby-identifier">result</span> = <span class="ruby-identifier">pass</span>
@@ -221,11 +270,11 @@ href="Rule.html#method-i-object">object</a> as its child</p>
       </div>
 
     
-      <div id="method-i-relaxng" class="method-detail ">
+      <div id="method-i-required_children" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">relaxng</span><span
-            class="method-args">(parent)</span>
+          <span class="method-name">required_children</span><span
+            class="method-args">()</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -234,37 +283,19 @@ href="Rule.html#method-i-object">object</a> as its child</p>
 
         <div class="method-description">
           
-          <p>@param parent [Nokogiri::XML::Node] parent from RelaxNG document under
-construction (should be &lt;grammar/&gt;)</p>
+          <p>@return [<a href="String">Array</a>] in order, array of child element types
+required by this rule</p>
           
           
 
           
-          <div class="method-source-code" id="relaxng-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/children_rule.rb, line 32</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">relaxng</span>(<span class="ruby-identifier">parent</span>)
-  <span class="ruby-identifier">element_def</span> = <span class="ruby-identifier">element</span> <span class="ruby-string">&#39;element&#39;</span>, <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">subject</span>
-  <span class="ruby-identifier">define</span> = <span class="ruby-identifier">element</span>(<span class="ruby-string">&#39;define&#39;</span>, <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">subject</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">element_def</span>
-  <span class="ruby-identifier">parent</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">define</span>
-  <span class="ruby-identifier">get_scanners</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">scanner</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">operator_name</span> = <span class="ruby-keyword">case</span> <span class="ruby-identifier">scanner</span>[<span class="ruby-value">:operator</span>]
-                      <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;&#39;</span>  <span class="ruby-keyword">then</span> <span class="ruby-keyword">nil</span>
-                      <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;?&#39;</span> <span class="ruby-keyword">then</span> <span class="ruby-value">:optional</span>
-                      <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;*&#39;</span> <span class="ruby-keyword">then</span> <span class="ruby-value">:zeroOrMore</span>
-                      <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;+&#39;</span> <span class="ruby-keyword">then</span> <span class="ruby-value">:oneOrMore</span>
-                    <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">operator_name</span>
-      <span class="ruby-identifier">cur_element</span> = <span class="ruby-identifier">element</span>(<span class="ruby-identifier">operator_name</span>.<span class="ruby-identifier">to_s</span>)
-      <span class="ruby-identifier">element_def</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">cur_element</span>
-    <span class="ruby-keyword">else</span>
-      <span class="ruby-identifier">cur_element</span> = <span class="ruby-identifier">element_def</span>
-    <span class="ruby-keyword">end</span>
-    <span class="ruby-identifier">element_array</span> = <span class="ruby-identifier">scanner</span>[<span class="ruby-value">:match</span>].<span class="ruby-identifier">to_s</span>[<span class="ruby-value">6</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&#39;\b&#39;</span>, <span class="ruby-string">&#39;&#39;</span>).<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/[\(\)\s\|\:]/</span>).<span class="ruby-identifier">keep_if</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span> <span class="ruby-operator">!</span><span class="ruby-identifier">s</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-keyword">end</span>
-    <span class="ruby-identifier">element_array</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">match_data</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">cur_element</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">element</span>(<span class="ruby-string">&#39;ref&#39;</span>, <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">match_data</span>.<span class="ruby-identifier">to_s</span>)
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span> <span class="ruby-comment"># get_scanners.each</span>
-  <span class="ruby-identifier">parent</span>
+          <div class="method-source-code" id="required_children-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/children_rule.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">required_children</span>
+  <span class="ruby-identifier">req_scans</span> = <span class="ruby-identifier">get_scanners</span>.<span class="ruby-identifier">select</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">scanner</span><span class="ruby-operator">|</span> <span class="ruby-identifier">scanner</span>[<span class="ruby-value">:operator</span>].<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/[\*\?]/</span>).<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">req_scans</span>.<span class="ruby-identifier">collect</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">req_scan</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">req_scan</span>[<span class="ruby-value">:match</span>].<span class="ruby-identifier">inspect</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/[\/(\b)]/</span>).<span class="ruby-identifier">select</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">word</span><span class="ruby-operator">|</span> <span class="ruby-operator">!</span><span class="ruby-identifier">word</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-keyword">end</span>.<span class="ruby-identifier">first</span>
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           

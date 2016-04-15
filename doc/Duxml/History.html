@@ -285,7 +285,7 @@ children</p>
         
         <div class="method-heading">
           <span class="method-name">update</span><span
-            class="method-args">(type, change_hash)</span>
+            class="method-args">(type, *args)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -302,12 +302,12 @@ href="Rule.html">Duxml::Rule</a> violations</p>
           
           <div class="method-source-code" id="update-source">
             <pre><span class="ruby-comment"># File lib/duxml/meta/history.rb, line 30</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">change_hash</span>)
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>(<span class="ruby-identifier">type</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
   <span class="ruby-identifier">change_class</span> = <span class="ruby-constant">Duxml</span><span class="ruby-operator">::</span><span class="ruby-identifier">const_get</span> <span class="ruby-identifier">type</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">classify</span>
-  <span class="ruby-identifier">change_comp</span> = <span class="ruby-identifier">change_class</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">change_hash</span>
+  <span class="ruby-identifier">change_comp</span> = <span class="ruby-identifier">change_class</span>.<span class="ruby-identifier">new</span> <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>
   <span class="ruby-identifier">add</span> <span class="ruby-identifier">change_comp</span>, <span class="ruby-value">0</span>
   <span class="ruby-ivar">@xml</span>.<span class="ruby-identifier">prepend_child</span> <span class="ruby-identifier">change_comp</span>.<span class="ruby-identifier">xml</span>
-  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">change_comp</span>.<span class="ruby-identifier">type</span>[<span class="ruby-value">-5</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;error&#39;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">root</span>.<span class="ruby-identifier">grammar</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">meta</span>.<span class="ruby-identifier">grammar</span>.<span class="ruby-identifier">defined?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">change_comp</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Duxml</span><span class="ruby-operator">::</span><span class="ruby-constant">Error</span>)
     <span class="ruby-identifier">root</span>.<span class="ruby-identifier">grammar</span>.<span class="ruby-identifier">qualify</span> <span class="ruby-identifier">change_comp</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">sleep</span> <span class="ruby-value">0</span>

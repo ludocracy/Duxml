@@ -75,6 +75,8 @@
     
     <li class="calls-super" ><a href="#method-c-new">::new</a>
     
+    <li ><a href="#method-i-applies_to-3F">#applies_to?</a>
+    
     <li ><a href="#method-i-description">#description</a>
     
     <li ><a href="#method-i-object">#object</a>
@@ -201,6 +203,42 @@ this <a href="Rule.html">Rule</a> @param *args [several_variants]</p>
        </header>
 
     
+      <div id="method-i-applies_to-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">applies_to?</span><span
+            class="method-args">(change_or_pattern)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param change_or_pattern [Duxml::Change, Duxml::Pattern] change or pattern
+that rule may apply to @return [Boolean] whether this rule does in fact
+apply</p>
+          
+          
+
+          
+          <div class="method-source-code" id="applies_to-3F-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 36</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">applies_to?</span>(<span class="ruby-identifier">change_or_pattern</span>)
+  <span class="ruby-identifier">pattern_type</span> = <span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">subject</span>(<span class="ruby-identifier">meta</span>).<span class="ruby-identifier">simple_class</span>
+  <span class="ruby-identifier">subject</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">pattern_type</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
       <div id="method-i-description" class="method-detail ">
         
         <div class="method-heading">
@@ -220,9 +258,9 @@ this <a href="Rule.html">Rule</a> @param *args [several_variants]</p>
 
           
           <div class="method-source-code" id="description-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 35</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 42</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
-  <span class="ruby-node">%Q(#{name} that #{relationship} of #{subject} must match #{statement})</span>
+  <span class="ruby-node">%Q(#{name} that #{relationship} of #{subject} must match #{statement.gsub(&#39;\b&#39;,&#39;&#39;)})</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -238,7 +276,7 @@ this <a href="Rule.html">Rule</a> @param *args [several_variants]</p>
         
         <div class="method-heading">
           <span class="method-name">object</span><span
-            class="method-args">()</span>
+            class="method-args">(context_root=nil)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -256,8 +294,8 @@ nil but during <a href="Rule.html#method-i-qualify">qualify</a></p>
 
           
           <div class="method-source-code" id="object-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 52</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">object</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 59</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">object</span>(<span class="ruby-identifier">context_root</span>=<span class="ruby-keyword">nil</span>)
   <span class="ruby-keyword">self</span>[<span class="ruby-value">:object</span>]
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -332,7 +370,7 @@ href="Rule.html">Rule</a></p>
 
           
           <div class="method-source-code" id="statement-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 40</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 47</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">statement</span>
   <span class="ruby-identifier">xml</span>.<span class="ruby-identifier">content</span>
 <span class="ruby-keyword">end</span></pre>
@@ -350,7 +388,7 @@ href="Rule.html">Rule</a></p>
         
         <div class="method-heading">
           <span class="method-name">subject</span><span
-            class="method-args">()</span>
+            class="method-args">(context_root=nil)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -367,8 +405,8 @@ applies</p>
 
           
           <div class="method-source-code" id="subject-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 46</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">subject</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 53</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">subject</span>(<span class="ruby-identifier">context_root</span>=<span class="ruby-keyword">nil</span>)
   <span class="ruby-keyword">self</span>[<span class="ruby-value">:subject</span>]
 <span class="ruby-keyword">end</span></pre>
           </div>

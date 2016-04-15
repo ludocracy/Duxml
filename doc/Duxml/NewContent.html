@@ -73,6 +73,8 @@
 
   <ul class="link-list" role="directory">
     
+    <li class="calls-super" ><a href="#method-c-new">::new</a>
+    
     <li class="calls-super" ><a href="#method-i-description">#description</a>
     
     <li ><a href="#method-i-new_content">#new_content</a>
@@ -107,6 +109,57 @@
     
 
     
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param *args [*several_variants] XML or</p>
+
+<pre class="ruby"><span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>] =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Duxml</span><span class="ruby-operator">::</span><span class="ruby-constant">Object</span> <span class="ruby-identifier">that</span> <span class="ruby-identifier">has</span> <span class="ruby-identifier">gained</span> <span class="ruby-identifier">new</span> <span class="ruby-identifier">content</span>
+</pre>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="Change.html#method-c-new">Duxml::Change.new</a>
+            </div>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/new_content.rb, line 8</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">super</span> <span class="ruby-operator">*</span><span class="ruby-identifier">args</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">xml?</span> <span class="ruby-identifier">args</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">!=</span> <span class="ruby-value">1</span>
+  <span class="ruby-keyword">super</span>({<span class="ruby-identifier">subject</span><span class="ruby-operator">:</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>, <span class="ruby-identifier">new_content</span><span class="ruby-operator">:</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">content</span>})
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
      <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
        <header>
          <h3>Public Instance Methods</h3>
@@ -126,7 +179,7 @@
 
         <div class="method-description">
           
-          
+          <p>@return [String] self description</p>
           
           
             <div class="method-calls-super">
@@ -137,7 +190,7 @@
 
           
           <div class="method-source-code" id="description-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/history/new_content.rb, line 6</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/new_content.rb, line 15</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
   <span class="ruby-keyword">super</span>
   <span class="ruby-node">&quot;#{subject.description} given new content &#39;#{new_content}&#39;.&quot;</span>
@@ -165,15 +218,15 @@
 
         <div class="method-description">
           
-          <p>new content TODO update if subsequent changes to content?</p>
+          <p>@return [String] new content</p>
           
           
 
           
           <div class="method-source-code" id="new_content-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/history/new_content.rb, line 13</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history/new_content.rb, line 21</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new_content</span>
-  <span class="ruby-identifier">subject</span>.<span class="ruby-identifier">content</span>
+  <span class="ruby-keyword">self</span>[<span class="ruby-value">:new_content</span>]
 <span class="ruby-keyword">end</span></pre>
           </div>
           

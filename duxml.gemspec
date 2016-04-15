@@ -1,7 +1,7 @@
 # coding: utf-8
 Gem::Specification.new do |spec|
   spec.name          = "duxml"
-  spec.version       = "0.6.0-rc0"
+  spec.version       = "0.5.2"
   spec.summary       = "Dynamic Universal XML"
   spec.description   = "execute 'validate_xml --help' for more info"
   spec.authors       = ["Peter Kong"]
@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   # packaged gem, the default should hit everything in most cases but this will
   # need to be added to if you have any custom directories
   spec.files         = Dir["lib/**/*.rb", "lib/tasks/**/*.rake"]
-  spec.executables   = ["bin/*"]
+  spec.executables   = ["validate_xml"]
   spec.require_paths = ["lib"]
 
   # Add any gems that your plugin needs to run within a host application
