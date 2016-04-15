@@ -8,6 +8,10 @@ module Duxml
       content
     end
 
+    def new_content
+      content
+    end
+
     def description
       "#{relationship} of #{subject.description}"
     end

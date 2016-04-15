@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <design id="design_id">
-  <legal_parent id="lp_0">
-    <also_legal_child id="alc_0"/>
-    <illegal_child id="ic_0"/>
-    <legal_child id="lc_0" visible="nope">text content</legal_child>
+  <legal_parent>
+    <also_legal_child/>
+    <illegal_child/>
+    <legal_child visible="nope">text content</legal_child>
   </legal_parent>
 
+<temporary/>
 <temporary/>
 <temporary/>
 <temporary/>

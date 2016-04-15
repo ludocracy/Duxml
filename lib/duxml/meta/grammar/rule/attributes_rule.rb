@@ -12,55 +12,39 @@ module Duxml
         super *args
       else
         super args.first, args[1].gsub('-', '__dash__').gsub(/\b/, '\b').gsub('-', '__dash__')
-        @xml[:requirement] = args[2] || '#IMPLICIT'
+        @xml[:requirement] = args[2] || '#IMPLIED'
       end
     end
 
-    # @param change_or_pattern [Dux::Pattern] checks an element of type change_or_pattern.subject against change_or_pattern
+    # @param change_or_pattern [Duxml::Pattern] checks an element of type change_or_pattern.subject against change_or_pattern
     # @return [Boolean] whether or not given pattern passed this test
     def qualify(change_or_pattern)
-      @cur_object = change_or_pattern.subject meta
-      result = pass
+      result = pass change_or_pattern
       super change_or_pattern unless result
       result
     end
 
-    # @param parent [Nokogiri::XML::Node] should be <grammar>
-    # @return [Nokogiri::XML::Node] parent, but with additions of <define><attribute> to parent if does not already exist and <ref> to respective <define><element>
-    def relaxng(parent)
-      # TODO this is here just to skip generation from namespaced attributes - fix later!!!
-      return parent if attr_name.include?(':')
-      # TODO
+    # @param change_or_pattern [Duxml::Change, Duxml::Pattern] change or pattern that rule may apply to
+    # @return [Boolean] whether this rule does in fact apply
+    def applies_to?(change_or_pattern)
+      return false unless change_or_pattern.respond_to?(:attr_name)
+      return false unless super(change_or_pattern)
+      change_or_pattern.attr_name == attr_name
+    end
 
-      # if new attribute declaration needed
-      unless parent.element_children.any? do |attr_def| attr_def[:name] == attr_name end
-        parent << element('define', {name: attr_name}, element('attribute', name: attr_name))
-      end
-
-      # update element with ref, updating previous <optional> if available
-      parent.element_children.reverse.each do |define|
-        if define[:name] == subject
-          element_def = define.element_children.first
-          if get_scanner[:operator]=='#IMPLIED'
-            if element_def.element_children.last.name == 'optional'
-              cur_element = element_def.element_children.last
-            else
-              cur_element = element 'optional'
-              element_def << cur_element
-            end
-          else
-            cur_element = element_def
-          end
-          cur_element << element('ref', name: attr_name)
-          break
-        end
-      end
-      parent
-    end # def relaxng
+    # @return [Boolean] whether or not this attribute is required
+    def required?
+      self[:requirement] == '#REQUIRED'
+    end
 
     # @return [String] name of attribute to which this rule applies
     def attr_name
       statement.gsub('\b','')
+    end
+
+    # @return [String] description of self; overrides super to account for cases of missing, required attributes
+    def description
+      %(#{name} that #{relationship} of #{subject} #{required? ? 'must':'can'} include #{attr_name})
     end
 
     private
@@ -70,29 +54,11 @@ module Duxml
       'attributes'
     end
 
-    def pass
-      scanner = get_scanner
-      result = false
-      cur_object.attributes.each do |k, v|
-        if scanner[:match].match(k.to_s).to_s == k.to_s
-          if result
-            result = false
-            break
-          else
-            result = true
-          end
-        end
-      end
-      case scanner[:operator]
-        when '#IMPLIED' then true
-        when '#REQUIRED' then result
-        when '#FIXED' then true # TODO assess how to handle this case better
-        else true
-      end
-    end
-
-    def get_scanner
-      Struct::Scanner.new Regexp.new(statement), self[:requirement]
-    end
+    # @param change_or_pattern [Duxml::Change, Duxml::Pattern] change or pattern to be evaluated
+    # @return [Boolean] true if this rule does not apply to param; false if pattern is for a missing required attribute
+    #   otherwise returns whether or not any illegal attributes exist
+    def pass(change_or_pattern)
+      !change_or_pattern.abstract?(meta)
+    end # def pass
   end # class AttributesRule
 end # module Duxml

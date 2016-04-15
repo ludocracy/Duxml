@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../lib/duxml')
 require 'minitest/autorun'
 
-class DuxMlTest < MiniTest::Test
+class DuxmlTest < MiniTest::Test
   include Duxml
 
   attr_accessor :sample_file, :meta_file

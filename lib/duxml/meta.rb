@@ -9,10 +9,10 @@ module Duxml
     # @param xml_node [Nokogiri::XML::Node] XML from metadata (e.g. for file.xml, .file.duxml) file
     def initialize(xml_node=nil)
       if xml_node.nil?
-        xml_node = super
-        xml_node << Duxml::Grammar.new.xml
-        xml_node << Duxml::History.new.xml
-        xml_node
+        @xml = element simple_class
+        @xml << Duxml::Grammar.new.xml
+        @xml << Duxml::History.new.xml
+        super xml
       else
         super xml_node
       end
@@ -40,12 +40,12 @@ module Duxml
 
     # adding Duxml::Design or XML to Duxml::Meta will add it to object tree but not to XML
     # to retain properties of original XML document
-    # TODO should this add XML some times? for file-specific metadata clearly yes...
+    # also updates XML if updates are to file-specific metadata
     # @param obj [String|Nokogiri::XML::Node|Duxml::Object]
     # @return [Duxml::Object] self
     def <<(obj)
       add coerce obj
-      @xml << obj.xml if %w{name owner grammar history}.include?(obj.simple_class)
+      @xml << obj.xml if %w{name owner history}.include?(obj.simple_class)
       self
     end
 
@@ -56,14 +56,22 @@ module Duxml
 
     # add an external grammar
     #
-    # @param grammar_file [String] external grammar definition file
-    def grammar=(grammar_file)
-      unless grammar.has_children?
+    # @param grammar_or_file [Duxml::Grammar, String] a grammar object or external grammar definition file
+    #   for now, if grammar already defined, will ignore this method
+    def grammar=(grammar_or_file)
+      unless grammar.defined?
         index = grammar.position
         remove 'grammar'
-        add Grammar.new(grammar_file), index
-        # TODO implement this: grammar[:ref] = grammar_file
-        @xml.xpath('//grammar').first.replace grammar.xml
+        if grammar_or_file.respond_to?(:qualify)
+          new_grammar = grammar_or_file
+          file = new_grammar.file
+        else
+          new_grammar = Grammar.new(grammar_or_file)
+          file = grammar_or_file
+        end
+        add new_grammar, index
+        @xml.element_children.last.add_previous_sibling element('grammar')
+        @xml.xpath("//grammar").first[:ref] = file
       end
     end
   end # class Meta

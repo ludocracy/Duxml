@@ -15,6 +15,13 @@ module Duxml
       end
     end
 
+    # @param change_or_pattern [Duxml::Change, Duxml::Pattern] change or pattern that rule may apply to
+    # @return [Boolean] whether this rule does in fact apply
+    def applies_to?(change_or_pattern)
+      super(change_or_pattern) &&
+          change_or_pattern.respond_to?(:new_content)
+    end
+
     # applies Regexp statement to text content of this node; returns false if content has XML
     def qualify(change_or_pattern)
       @cur_object = change_or_pattern.subject meta

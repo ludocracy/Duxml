@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<topic id="topic7">
+  <title>simple dita validation test</title>
+  <body>
+    <ol id="error_children_split_in_wrong_pos">
+      <li>text</li>
+      <data>data</data>
+      <li>text</li>
+    </ol>
+  </body>
+</topic>

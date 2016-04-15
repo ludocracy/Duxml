@@ -3,18 +3,15 @@ require File.expand_path(File.dirname(__FILE__) + '/error')
 module Duxml
   # created when grammar detects error from file
   class ValidateError < Error
-    # validation method creates Duxml::Pattern objects to stand in for
-    # Duxml::Change objects (since no actual changes are happening when validating static XML file)
-    # Pattern is then made child of this Error for reference
+    # @param *args [*several_variants] if args.first is not XML,
+    #   args[0] must be violated Rule,
+    #   args[1] must be violating Pattern
     def initialize(*args)
-      pattern = if class_to_xml *args
-                  @xml.remove_attribute 'object'
-                  pattern = args.first[:object]
-                end
-      super()
-      if pattern
-        self << pattern
-        @xml << pattern.xml
+      if xml? args
+        super *args
+      else
+        raise Exception if args.size != 2
+        super({subject: args.first}, args.last.xml)
       end
     end
 

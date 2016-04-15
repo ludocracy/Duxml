@@ -23,7 +23,12 @@ module Duxml
       xml
     end
 
+    def type
+      simple_class
+    end
+
     alias_method :content, :to_s
+    alias_method :id, :name
 
     # change text value
     def content=(new_text)

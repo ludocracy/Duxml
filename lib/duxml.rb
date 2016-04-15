@@ -33,8 +33,9 @@ module Duxml
   end
 
   # @param file [String] loads given file and finds or creates corresponding metadata file e.g. '.xml_file.duxml'
+  # @param grammar [nil, String, Duxml::Grammar] optional - provide an external grammar file or object
   # @return [Duxml::Meta] combined Object tree from metadata root (metadata and content's XML documents are kept separate)
-  def load(file)
+  def load(file, grammar=nil)
     raise Exception unless File.exists? file
     @current_file = file
     dux_meta_file_path = get_meta_file
@@ -62,15 +63,12 @@ module Duxml
   # @param file [String] path of XML file to be validated
   # @return [Boolean] whether file passed validation
   def validate(file=nil)
-    if file.nil?
-      results = current_meta.design.collect do |node|
-        node.text? || current_meta.grammar.validate(node)
-      end
-      result = !results.any? do |val| !val end
-    else
-      load file
-      result = validate
+    load file if file
+    current_meta.grammar &&= current_meta.grammar[:ref] unless current_meta.grammar.defined?
+    results = current_meta.design.collect do |node|
+      node.text? || current_meta.grammar.validate(node)
     end
+    result = !results.any? do |val| !val end
     File.write get_meta_file, current_meta.xml.to_xml unless result
     result
   end # def validate

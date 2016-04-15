@@ -7,6 +7,10 @@ module Duxml
       super || %(#{added.description} was added to #{subject.description}.)
     end
 
+    def affected_parent
+      subject
+    end
+
     # returns object that was added
     def added(context_root=root)
       resolve_ref :object, context_root

@@ -6,44 +6,127 @@ class GrammarTest < MiniTest::Test
 
   def setup
     @child_rule = Duxml::ChildrenRule.new 'legal_parent', %((<legal_child> | <also_legal_child>)+)
-    @value_rule = Duxml::ValueRule.new 'legal_parent', 'test_attr', 'NMTOKEN'
+    @value_rule = Duxml::ValueRule.new 'test_attr', 'NMTOKEN'
     @attributes_rule = Duxml::AttributesRule.new 'legal_parent', 'missing_attr', '#REQUIRED'
-    sample_dux = File.expand_path(File.dirname(__FILE__) + '/../../xml/design.xml')
-    load sample_dux
+    @test_grammar = Grammar.new File.expand_path(File.dirname(__FILE__) + '/../../xml/test_grammar.xml')
   end
-  attr_reader :child_rule, :value_rule, :attributes_rule
+  attr_reader :child_rule, :value_rule, :attributes_rule, :test_grammar
 
   def test_xlsx_grammar
-    grammar_file = File.expand_path(File.dirname(__FILE__) + '/../../xml/Dita 1.3 Manual Spec Conversion.xlsx')
-    sample_dux = File.expand_path(File.dirname(__FILE__) + '/../../xml/dita_test.xml')
-    load sample_dux
-    current_meta.grammar = grammar_file
+    xlsx_grammar = File.expand_path(File.dirname(__FILE__) + '/../../xml/Dita 1.3 Manual Spec Conversion.xlsx')
+    g = Grammar.new xlsx_grammar
+    assert_equal 'topic', g.children.first.subject
+    assert_equal 'children_rule', g.children.first.simple_class
+    File.write File.expand_path(File.dirname(__FILE__) + '/../../xml/test_grammar.xml'), g.xml.to_xml
+  end # def test_xlsx_grammar
 
-    validate
-    assert_equal 'error_no_children', current_meta.history[5].affected_parent.id
-    assert_equal 'error_child_in_wrong_pos', current_meta.history[4].affected_parent.id
-    assert_equal 'error_many_children_in_wrong_pos', current_meta.history[3].affected_parent.id
-    assert_equal 'error_children_split_in_wrong_pos', current_meta.history[1].affected_parent.id
-    assert_equal 'error_no_valid_first_child', current_meta.history[0].affected_parent.id
+  def test_arbitrary_data_and_child
+    sample_dux = File.expand_path(File.dirname(__FILE__) + "/../../xml/dtd_rule_test/arbitrary_data_and_child.xml")
+    load sample_dux
+    current_meta.grammar = test_grammar
+    assert_equal true, validate
+  end
+
+  def test_data_and_child
+    sample_dux = File.expand_path(File.dirname(__FILE__) + "/../../xml/dtd_rule_test/data_and_child.xml")
+    load sample_dux
+    current_meta.grammar = test_grammar
+    assert_equal true, validate
+  end
+
+  def test_error_child_in_wrong_pos
+    sample_dux = File.expand_path(File.dirname(__FILE__) + "/../../xml/dtd_rule_test/error_child_in_wrong_pos.xml")
+    load sample_dux
+    current_meta.grammar = test_grammar
+    assert_equal false, validate
+  end
+
+  def test_error_children_split_in_wrong_pos
+    sample_dux = File.expand_path(File.dirname(__FILE__) + "/../../xml/dtd_rule_test/error_children_split_in_wrong_pos.xml")
+    load sample_dux
+    current_meta.grammar = test_grammar
+    assert_equal false, validate
+  end
+
+  def test_error_interleaved_invalid_child_text
+    sample_dux = File.expand_path(File.dirname(__FILE__) + "/../../xml/dtd_rule_test/error_interleaved_invalid_child_text.xml")
+    load sample_dux
+    current_meta.grammar = test_grammar
+    assert_equal false, validate
+  end
+
+  def test_error_invalid_attr
+    sample_dux = File.expand_path(File.dirname(__FILE__) + "/../../xml/dtd_rule_test/error_invalid_attr.xml")
+    load sample_dux
+    current_meta.grammar = test_grammar
+    assert_equal false, validate
+  end
+
+  def test_error_invalid_attr_val
+    sample_dux = File.expand_path(File.dirname(__FILE__) + "/../../xml/dtd_rule_test/error_invalid_attr_val.xml")
+    load sample_dux
+    current_meta.grammar = test_grammar
+    assert_equal false, validate
+  end
+
+  def test_error_many_children_in_wrong_pos
+    sample_dux = File.expand_path(File.dirname(__FILE__) + "/../../xml/dtd_rule_test/error_many_children_in_wrong_pos.xml")
+    load sample_dux
+    current_meta.grammar = test_grammar
+    assert_equal false, validate
+  end
+
+  def test_error_missing_attr
+    sample_dux = File.expand_path(File.dirname(__FILE__) + "/../../xml/dtd_rule_test/error_missing_attr.xml")
+    load sample_dux
+    current_meta.grammar = test_grammar
+    assert_equal false, validate
+  end
+
+  def test_error_no_children
+    sample_dux = File.expand_path(File.dirname(__FILE__) + "/../../xml/dtd_rule_test/error_no_children.xml")
+    load sample_dux
+    current_meta.grammar = test_grammar
+    assert_equal false, validate
+  end
+
+  def test_error_no_valid_first_child
+    sample_dux = File.expand_path(File.dirname(__FILE__) + "/../../xml/dtd_rule_test/error_no_valid_first_child.xml")
+    load sample_dux
+    current_meta.grammar = test_grammar
+    assert_equal false, validate
+  end
+
+  def test_interleaved_valid_children_text
+    sample_dux = File.expand_path(File.dirname(__FILE__) + "/../../xml/dtd_rule_test/interleaved_valid_children_text.xml")
+    load sample_dux
+    current_meta.grammar = test_grammar
+    assert_equal true, validate
+  end
+
+  def test_plural_children
+    sample_dux = File.expand_path(File.dirname(__FILE__) + "/../../xml/dtd_rule_test/plural_children.xml")
+    load sample_dux
+    current_meta.grammar = test_grammar
+    assert_equal true, validate
+  end
+
+  def test_single_child
+    sample_dux = File.expand_path(File.dirname(__FILE__) + "/../../xml/dtd_rule_test/single_child.xml")
+    load sample_dux
+    current_meta.grammar = test_grammar
+    assert_equal true, validate
   end
 
   def test_relaxng
-    grammar_file = File.expand_path(File.dirname(__FILE__) + '/../../xml/Dita 1.3 Manual Spec Conversion.xlsx')
+    skip
+    test_grammar = File.expand_path(File.dirname(__FILE__) + '/../../xml/Dita 1.3 Manual Spec Conversion.xlsx')
     sample_dux = File.expand_path(File.dirname(__FILE__) + '/../../xml/dita_test.xml')
     load sample_dux
-    current_meta.grammar = grammar_file
+    current_meta.grammar = test_grammar
     g = current_meta.grammar
     rng = g.relaxng
     File.write 'test.rng', rng.to_xml
-  end
-
-  def test_init_pattern
-    target = current_meta.design.find_child %w(legal_parent legal_child)
-    p = Duxml::ChildPattern.new target.parent, target
-    assert_equal 'child_pattern', p.type
-    assert_equal 'lp_0', p.subject(current_meta).id
-    assert_equal 'lc_0', p.object(current_meta).id
-    # test <=>
   end
 
   def test_grammar_qualify

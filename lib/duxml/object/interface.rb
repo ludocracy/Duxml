@@ -137,17 +137,18 @@ module Duxml
     # @return [Duxml::Object] self
     def content=(new_content)
       return nil unless xml.content.empty? || children.size == 1 && children.first.text?
+      args = []
       if children.size == 1 && children.first.text?
-        change_type = :change_content
-        old_content = content
+        args << :change_content
+        args << content
         children.first.content = new_content
       elsif xml.content.empty?
-        change_type = :new_content
+        args << :new_content
         @xml.content = new_content
       else
         return nil
       end
-      report change_type, old_content || nil
+      report *args
       self
     end
 
@@ -175,6 +176,11 @@ module Duxml
     # @return [String] type of object i.e. the xml element's name
     def type
       xml.name
+    end
+
+    # @return [String] name of file that initialized this object
+    def file
+      @file || parent.file
     end
 
     # @return [Duxml::Meta] root of metadata

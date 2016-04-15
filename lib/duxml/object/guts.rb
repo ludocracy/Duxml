@@ -33,6 +33,7 @@ module Duxml
     def class_to_xml(*args)
       return false if args.empty?
       if xml? args
+        @file = args.first if File.exists?(args.first)
         @xml = args.first.xml
         false
       else
@@ -52,7 +53,7 @@ module Duxml
         if arg.is_a?(Hash)
           new_arg = arg.clone
           new_arg.each do |k, v|
-            new_arg[k] = v[:id] || v.id if v.respond_to?(:element) || v.respond_to?(:is_component?)
+            new_arg[k] = v[:id] || v.id if v.respond_to?(:id)
           end
           new_args[index] = new_arg
         end
@@ -70,12 +71,11 @@ module Duxml
       end
     end
 
-    def report(type, obj)
+    def report(type, *args)
       if post_init? || respond_to?(:qualify)
         add_observer meta.history if meta && count_observers == 0
         changed
-        h = {subject: self, object: obj}
-        notify_observers type, h
+        notify_observers type, self, *args
       end
     end
 
@@ -84,15 +84,11 @@ module Duxml
         when :id, :if then
           return
         else
-          old_val = if self[key]
-                      change_type = :change_attribute
-                      self[key]
-                    else
-                      change_type = :new_attribute
-                      :nil
-                    end
+          args = [key]
+          args.unshift xml[key] ? :change_attribute : :new_attribute
+          args << xml[key] if xml[key]
           @xml[key] = val
-          report change_type, {old_value: old_val, new_value: val, attr_name: key.to_s}
+          report *args
       end # case key
     end # def change_attr_value
   end # module ObjectGuts

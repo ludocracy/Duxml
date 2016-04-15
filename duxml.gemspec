@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   # packaged gem, the default should hit everything in most cases but this will
   # need to be added to if you have any custom directories
   spec.files         = Dir["lib/**/*.rb", "lib/tasks/**/*.rake"]
-  spec.executables   = ["validate_xml"]
+  spec.executables   = ["bin/*"]
   spec.require_paths = ["lib"]
 
   # Add any gems that your plugin needs to run within a host application

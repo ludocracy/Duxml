@@ -11,14 +11,17 @@ module Duxml
         super *args
       else
         element_name = args.first
-        statement_str = args.last.gsub('-','_dash_').gsub(/\b/,'\b').gsub('_dash_', '-')
-        statement_str.gsub!(/[\<>]/, '')
-        statement_str.gsub!(/#PCDATA/, 'p_c_data')
+        statement_str = args.last
+                            .gsub(/[\<>]/, '')
+                            .gsub(/#PCDATA/, 'p_c_data')
+                            .gsub('-','_dash_')
+                            .gsub(/\b/,'\b')
+                            .gsub('_dash_', '-')
         super element_name, statement_str
       end
     end
 
-    # @param change_or_pattern [Duxml::Pattern, Duxml::Change] to be evaluated to see if it follows this rule
+    # @param change_or_pattern [Duxml::ChildPattern, Duxml::Add, Duxml::Remove] to be evaluated to see if it follows this rule
     # @return [Boolean] whether or not change_or_pattern#subject is allowed to have #object as its child
     #   if false, Error is reported to History
     def qualify(change_or_pattern)
@@ -28,63 +31,29 @@ module Duxml
       result
     end
 
-    # TODO either make RelaxNG module or get parent.xpath to find needed element_def
-    # @param parent [Nokogiri::XML::Node] parent from RelaxNG document under construction (should be <grammar/>)
-    # @return [Nokogiri::XML::Node] same parent but with addition of <define><element> with #statement converted into <ref>'s
-    #   these are wrapped as needed in <zeroOrMore>,<oneOrMore>, or <optional>
-    def relaxng(parent)
-      s = subject
-      element_def = parent.document.xpath("//element[@name='#{subject}']")[0]
-      if element_def.nil?
-        element_def ||= element 'element', name: subject
-        define = element('define', name: subject) << element_def
-        parent << define
-      else
-        sleep 0
+    # @return [Array[String]] in order, array of child element types required by this rule
+    def required_children
+      req_scans = get_scanners.select do |scanner| scanner[:operator].match(/[\*\?]/).nil? end
+      req_scans.collect do |req_scan|
+        req_scan[:match].inspect.split(/[\/(\\b)]/).select do |word| !word.empty? end.first
       end
+    end
 
-      get_scanners.each do |scanner|
-        operator_name = case scanner[:operator]
-                          when '?' then :optional
-                          when '*' then :zeroOrMore
-                          when '+' then :oneOrMore
-                          else nil
-                        end
-        if operator_name
-          cur_element = element(operator_name.to_s)
-          element_def << cur_element
-        else
-          cur_element = element_def
-        end
-
-        element_array = scanner[:match].source.gsub('\b','').scan(Regexp.nmtoken).flatten
-        if element_array.size > 1
-          cur_element = element 'choice'
-          element_def << cur_element
-        end
-        element_array.each do |element_name|
-          unless parent.xpath("//element[@name='#{element_name}']")
-            new_def = element [[:define, {name: element_name}],[:element, {name: element_name}]]
-            parent << new_def
-          end
-
-          if element_name == 'PCDATA'
-            cur_element << element('text')
-          else
-            cur_element << element('ref', name: element_name)
-          end
-        end # element_array.each
-      end # get_scanners.each
-      parent
-    end # def relaxng
+    # @param change_or_pattern [Duxml::Pattern, Duxml::Change] change or pattern to be evaluated
+    # @return [Boolean] whether subjects agree, and change or pattern is not a Rule and responds to #affected_parent
+    def applies_to?(change_or_pattern)
+      super(change_or_pattern) &&
+          !change_or_pattern.respond_to?(:violated_rule) &&
+          change_or_pattern.respond_to?(:affected_parent)
+    end
 
     private
 
     def get_scanners
       statement.split(',').collect do |rule|
         r = rule.gsub(/[\(\)]/, '')
-        r = r[0..-2] if r[-1].match(/[\?\+\*]/)
-        operator = %w(? * +).include?(rule[-1]) ? rule[-1] : ''
+        operator = r[-1].match(/[\?\+\*]/) ? r[-1] : ''
+        r = r[0..-2] unless operator.empty?
         Struct::Scanner.new Regexp.new(r), operator
       end
     end
@@ -114,7 +83,7 @@ module Duxml
               result = false # else, this scanner will report false
           end
         end # if child.type.match scanner[:match]
-        break if child.id == cur_object.id  # don't need to keep looping because we've scanned our target
+        return result if child.id == cur_object.id  # don't need to keep looping because we've scanned our target
       end # loop do
       # checking to see if any required children were not present
       result = false if child_stack.empty? && scanners.any? do |scanner|

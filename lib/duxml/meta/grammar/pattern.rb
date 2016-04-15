@@ -20,32 +20,46 @@ module Duxml
       super()
     end
 
+    # @param context_root [Duxml::Meta] context_root is the root for the Duxml::Object tree in which this object can be found since Duxml::Pattern
+    #   this value must normally be provided if pattern is not part of object's tree
+    # @return [Boolean] whether or not both subject and object are concrete i.e. can be resolved to actual Duxml::Object
+    def abstract?(context_root)
+      false
+      #!(subject(context_root).respond_to?(:is_component?) && object(context_root).respond_to?(:is_component?))
+    end
+
     # returns relationship description as string by subtracting super class name
     # (e.g. 'pattern' or 'rule') from simple_class
     # Duxml::ChildrenRule#relationship => 'children'
     # Duxml::ContentPattern#relationship => 'content'
     # can be overridden if class name does not match human-readable string
+    # @return [String] single word to describe relationship of subject to object
     def relationship
       super_class_size = self.class.superclass.to_s.split('::').last.size
       simple_class[0..-(super_class_size+2)]
     end
 
+    # @return [String] "#{object.description} is #{relationship} of #{subject.description}"
     def description
       "#{object.description} is #{relationship} of #{subject.description}"
     end
 
-    # subject of pattern; almost always the superior object in the relationship, e.g. parent object
+    # @param context_root [Duxml::Meta] context_root is the root for the Duxml::Object tree in which this object can be found since Duxml::Pattern
+    #   this value must normally be provided if pattern is not part of object's tree
+    # @return [Duxml::Object, String] subject of pattern; almost always the superior object in the relationship, e.g. parent object
     def subject(context_root=root)
       resolve_ref(:subject, context_root) || self[:subject]
     end
 
-    # object of pattern; almost always the inferior object in the relationship, e.g. child object
-    # context_root is the root for the Duxml::Object tree in which this object can be found since Duxml::Pattern
-    # objects do not exist in a tree context, this value must normally be provided
-    def object context_root=root
+    # @param context_root [Duxml::Meta] context_root is the root for the Duxml::Object tree in which this object can be found since Duxml::Pattern
+    #   this value must normally be provided if pattern is not part of object's tree
+    # @return [Duxml::Object] object of pattern; almost always the inferior object in the relationship, e.g. child object
+    def object(context_root=root)
       has_children? ? children.first : resolve_ref(:object, context_root)
     end
 
+    # @param pattern [Duxml::Pattern] pattern or any subclass object
+    # @return [Fixnum] first applies <=> to subjects, and if equal, applies <=> to objects
     def <=>(pattern)
       return 1 unless pattern.respond_to?(:subject)
       case subject <=> pattern.subject

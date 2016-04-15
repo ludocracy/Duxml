@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<topic id="topic9">
+  <title>simple dita validation test</title>
+  <body>
+    <ol>
+      <li>text</li>
+      <data>data</data>
+    </ol>
+  </body>
+</topic>

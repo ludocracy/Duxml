@@ -19,63 +19,48 @@ module Duxml
       if xml? args
         super *args
       else
-        raise Exception unless args.size == 3
-        h = {subject: args.first, attr_name: args[1], object: args[2]}
+        raise Exception unless args.size == 2
+        h = {subject: args[0], object: args[1]}
         super h
       end
     end
 
+    # @return [true]
+    def abstract?
+      true
+    end
+
+    # @return [String] name of the attribute to which this Rule applies
+    def attr_name
+      self[:subject]
+    end
+
     # @return [String] description of this rule
     def description
-      %(#{name} that #{relationship} of <#{subject}>'s @#{attr_name} must match #{statement})
+      %(#{name} that #{relationship} of @#{attr_name} must match #{statement})
     end
 
     # @param change_or_pattern [Duxml::Pattern, Duxml::Change] change or pattern to be evaluated
     # @return [Boolean] whether change_or_pattern#subject is allowed to have value of type #object
     #   if false, reports Error to History
     def qualify(change_or_pattern)
-      return true unless change_or_pattern.attr_name == self[:attr_name]
-      @cur_object = change_or_pattern.subject meta
       result = pass change_or_pattern.value(meta)
       super change_or_pattern unless result
       result
     end
 
-    # @param parent [Nokogiri::XML::Node] <grammar> i.e. parent node in RelaxNG document, NOT this Rule's document
-    # @return [Nokogiri::XML::Node] parent, but adds to corresponding <define><attribute> a child <data type="#{statement}">
-    #   where #statement can be 'CDATA', 'NMTOKEN', etc.
-    def relaxng(parent)
-      parent.element_children.each do |define|
-        if define[:name] == attr_name
-          attr_def = define.element_children.first
-          unless attr_def.element_children.any?
-            data_type = statement == 'CDATA' ? 'string' : statement
-            if data_type.include?('|')
-              choice_node = element('choice')
-              attr_def << choice_node
-              data_type.split(/[\(\|\)]/).each do |en_val|
-                choice_node << element('value', en_val) if Regexp.nmtoken.match(en_val)
-              end
-            else
-              attr_def << element('data', type: data_type)
-            end
-          end
-          return parent
-        end
-      end # parent.element_children.each
-    end # def relaxng
-
-    # @return [String] name of the attribute to which this Rule applies
-    def attr_name
-      self[:attr_name]
+    # @param change_or_pattern [Duxml::Change, Duxml::Pattern] change or pattern that rule may apply to
+    # @return [Boolean] whether this rule does in fact apply
+    def applies_to?(change_or_pattern)
+          return false unless change_or_pattern.respond_to?(:attr_name)
+          return false unless change_or_pattern.respond_to?(:value)
+          change_or_pattern.attr_name == attr_name
     end
-
 
     private
 
     def pass(value)
-      scanner = get_scanner
-      matcher = scanner[:match]
+      matcher = find_method_or_expr
       if matcher.respond_to?(:match)
         matcher.match(value).to_s == value
       else
@@ -83,17 +68,12 @@ module Duxml
       end
     end
 
-    def get_scanner
-      Struct::Scanner.new find_method_or_expr, ''
-    end
-
     def find_method_or_expr
       s = statement
       case s
         when 'CDATA'                      # unparsed character data e.g. '<not-xml>'; may not contain string ']]>'
           proc do |val| val.match(CDATA_EXPR).nil? end
-        when 'ID'                         # unique id among siblings, i.e. TreeNode#name
-          proc do |val| val.match(ID_EXPR) && val == subject.id end
+        when 'ID'       then ID_EXPR # does not check for uniqueness!
         when 'IDREF'                      # id of another element
           proc do |val| val.match(ID_EXPR) && resolve_ref(val, subject.meta) end
         when 'IDREFS'                     # ids of other elements

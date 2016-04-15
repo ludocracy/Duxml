@@ -27,12 +27,12 @@ module Duxml
     end
 
     # receives reports from interface of changes or from Duxml::Rule violations
-    def update(type, change_hash)
+    def update(type, *args)
       change_class = Duxml::const_get type.to_s.classify
-      change_comp = change_class.new change_hash
+      change_comp = change_class.new *args
       add change_comp, 0
       @xml.prepend_child change_comp.xml
-      unless change_comp.type[-5..-1] == 'error' || root.grammar.nil?
+      if meta.grammar.defined? && !change_comp.is_a?(Duxml::Error)
         root.grammar.qualify change_comp
       end
       sleep 0

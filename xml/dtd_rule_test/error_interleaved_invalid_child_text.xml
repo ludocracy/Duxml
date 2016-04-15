@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<topic id="topic_0">
+  <title>simple dita validation test</title>
+  <body>
+    <p>valid text<invalid_child/>more valid text</p>
+  </body>
+</topic>
