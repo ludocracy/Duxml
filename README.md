@@ -1,5 +1,5 @@
 # Duxml for JRuby
-Duxml binds XML to Ruby objects and classes, allowing validation of structure and content using Ruby statements.
+Duxml binds XML to Ruby objects and classes, allowing validation of structure and content using Ruby statements, implemented as a wrapper for Ox XML parser.
 
 
 Examples:
