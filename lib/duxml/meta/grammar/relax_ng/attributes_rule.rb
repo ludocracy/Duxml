@@ -20,16 +20,16 @@ module Duxml
       parent.element_children.reverse.each do |define|
         if define[:name] == subject
           element_def = define.element_children.first
-          if self[:requirement]=='#IMPLIED'
+          if self[:requirement]=='#REQUIRED'
+            cur_element = element_def
+          else
             if element_def.element_children.last.name == 'optional'
               cur_element = element_def.element_children.last
             else
               cur_element = element 'optional'
               element_def << cur_element
             end
-          else
-            cur_element = element_def
-          end # if self[:requirement]=='#IMPLIED'
+          end # if self[:requirement]=='#REQUIRED'
           cur_element << element('ref', name: attr_name)
           break
         end # if define[:name] == subject

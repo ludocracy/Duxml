@@ -66,10 +66,10 @@ module Duxml
       loop do
         child = child_stack.shift
         break if child.nil? || scanner.nil?
-        if child.type.match scanner[:match] # scanner matches this child
+        if child.name.match scanner[:match] # scanner matches this child
           if ['?', ''].any? do |op| op == scanner[:operator] end # shift scanners if we only need one child of this type
             scanner = scanners.shift
-            result = child.previous_sibling.nil? || (child.previous_sibling.type != child.type)
+            result = child.previous_sibling.nil? || (child.previous_sibling.name != child.name)
           else
             result = true
           end
@@ -82,7 +82,7 @@ module Duxml
             else
               result = false # else, this scanner will report false
           end
-        end # if child.type.match scanner[:match]
+        end # if child.name.match scanner[:match]
         return result if child.id == cur_object.id  # don't need to keep looping because we've scanned our target
       end # loop do
       # checking to see if any required children were not present

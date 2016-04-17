@@ -1,8 +1,0 @@
-history follows: 
-validate error at line 39: <data-about id="data-about2270"> is child #2 of <ol id="error_no_valid_first_child"> which violates rule children_rule2276 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
-validate error at line 34: <data id="data2262"> is child #2 of <ol id="error_children_split_in_wrong_pos"> which violates rule children_rule2276 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
-validate error at line 30: <data id="data2256"> is child #3 of <ol id="error_many_children_in_wrong_pos"> which violates rule children_rule2276 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
-validate error at line 29: <data id="data2254"> is child #2 of <ol id="error_many_children_in_wrong_pos"> which violates rule children_rule2276 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
-validate error at line 25: <data id="data2248"> is child #2 of <ol id="error_child_in_wrong_pos"> which violates rule children_rule2276 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
-validate error at line 22: <ol id="error_no_children"> has no children which violates rule children_rule2276 that children of ol must match (\bdata\b|\bsort-as\b|\bdata-about\b)*,\bli\b+.
-initial commit

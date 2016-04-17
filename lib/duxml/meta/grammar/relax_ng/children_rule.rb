@@ -7,17 +7,19 @@ module Duxml
     # @return [Nokogiri::XML::Node] same parent but with addition of <define><element> with #statement converted into <ref>'s
     #   these are wrapped as needed in <zeroOrMore>,<oneOrMore>, or <optional>
     def relaxng(parent)
-      s = subject
-      element_def = parent.document.xpath("//element[@name='#{subject}']")[0]
+      nodes = parent.css("element[@name='#{subject}']")
+      raise Exception if nodes.size > 1
+      element_def = nodes.first
+
       if element_def.nil?
         element_def ||= element 'element', name: subject
         define = element('define', name: subject) << element_def
         parent << define
-      else
-        sleep 0
       end
 
+      # loop through child requirements
       get_scanners.each do |scanner|
+        # wrap in requirement node if needed
         operator_name = case scanner[:operator]
                           when '?' then :optional
                           when '*' then :zeroOrMore
@@ -31,14 +33,19 @@ module Duxml
           cur_element = element_def
         end
 
+        # if child requirement has enumerated options, wrap in <choice>
         element_array = scanner[:match].source.gsub('\b','').scan(Regexp.nmtoken).flatten
         if element_array.size > 1
           choice_el = element 'choice'
           cur_element << choice_el
           cur_element = choice_el
         end
+
+        # adding enumerated options as new element defs if needed
         element_array.each do |element_name|
-          unless parent.document.xpath("//element[@name='#{element_name}']")
+          nodes = parent.css("element[@name='#{element_name}']")
+          raise Exception if nodes.size > 1
+          if nodes.empty?
             new_def = element [[:define, {name: element_name}],[:element, {name: element_name}]]
             parent << new_def
           end

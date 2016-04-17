@@ -29,14 +29,6 @@ class ChildrenRuleTest < MiniTest::Test
     assert_equal false, rule.applies_to?(Duxml::ChildPattern.new %(<child_pattern subject="foo"/>))
   end
 
-  def test_relaxng
-    skip
-    rule = Duxml::ChildrenRule.new 'legal_parent', '(allowed|also_allowed)+'
-    test_xml = element 'grammar'
-    rng_xml = rule.relaxng test_xml
-    assert_equal 'oneOrMore', rng_xml.element_children.first.element_children.first.name
-  end
-
   def tear_down
   end
 end

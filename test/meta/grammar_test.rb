@@ -118,17 +118,6 @@ class GrammarTest < MiniTest::Test
     assert_equal true, validate
   end
 
-  def test_relaxng
-    skip
-    test_grammar = File.expand_path(File.dirname(__FILE__) + '/../../xml/Dita 1.3 Manual Spec Conversion.xlsx')
-    sample_dux = File.expand_path(File.dirname(__FILE__) + '/../../xml/dita_test.xml')
-    load sample_dux
-    current_meta.grammar = test_grammar
-    g = current_meta.grammar
-    rng = g.relaxng
-    File.write 'test.rng', rng.to_xml
-  end
-
   def test_grammar_qualify
     sample_dux = File.expand_path(File.dirname(__FILE__) + '/../../xml/design.xml')
     load sample_dux

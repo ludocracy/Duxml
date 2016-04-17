@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../lib/duxml')
 
 include Duxml
 
-DITA_GRAMMAR_FILE = File.expand_path(File.dirname(__FILE__) + '/../xml/Dita 1.3 Manual Spec Conversion.xlsx')
+DITA_GRAMMAR_FILE = File.expand_path(File.dirname(__FILE__) + '/../xml/test_grammar.xml')
 xml_file = ARGV.first
 log_file = ARGV[1] || 'log.txt'
 

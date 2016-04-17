@@ -1,13 +1,13 @@
 # coding: utf-8
 Gem::Specification.new do |spec|
   spec.name          = "duxml"
-  spec.version       = "0.5.2"
+  spec.version       = "0.6.0"
   spec.summary       = "Dynamic Universal XML"
   spec.description   = "execute 'validate_xml --help' for more info"
   spec.authors       = ["Peter Kong"]
   spec.email         = ["peter.kong@nxp.com"]
   spec.homepage      = "http://www.github.com/ruby-dita/duxml"
-  spec.license       = "LGPL-3"
+  spec.license       = "MIT"
 
   spec.required_ruby_version     = '>= 1.9.3'
   spec.required_rubygems_version = '>= 1.8.11'
@@ -20,9 +20,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Add any gems that your plugin needs to run within a host application
-  spec.add_runtime_dependency "nokogiri", "~> 1.6"
+  spec.add_runtime_dependency "ox", "~> 2.3"
   spec.add_runtime_dependency "rubyXL", "~> 3.3"
-  spec.add_runtime_dependency "rubytree", "~> 0.9.6"
 
   # Add any gems that your plugin needs for its development environment only
 end
