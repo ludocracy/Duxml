@@ -13,10 +13,6 @@ module Maudule
     def <<(obj)
       @children << obj
     end
-
-    def each(&block)
-      @children.each(&block)
-    end
   end
 end
 

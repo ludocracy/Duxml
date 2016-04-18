@@ -1,5 +1,5 @@
-require File.expand_path(File.dirname(__FILE__) + 'class')
-require File.expand_path(File.dirname(__FILE__) + 'string')
+require File.expand_path(File.dirname(__FILE__) + '/class')
+require File.expand_path(File.dirname(__FILE__) + '/string')
 
 class Object
   # @return [String] returns name of class without Module hierarchy

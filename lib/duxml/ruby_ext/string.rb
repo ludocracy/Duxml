@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + 'regexp')
+require File.expand_path(File.dirname(__FILE__) + '/regexp')
 
 class String
   # @param sym [Symbol] name of Regexp class method to check against self

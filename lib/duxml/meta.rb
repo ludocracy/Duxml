@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../duxml/meta/history')
 require File.expand_path(File.dirname(__FILE__) + '/../duxml/meta/grammar.rb')
 
 module Duxml
-  class Meta < Object
+  class Meta
     # TODO code looks a little dated; use #xml? ?
     # can only be initialized from XML or created as anonymous detached metadata to be attached to content by external entity
     #

@@ -1,7 +1,7 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../lib/duxml')
-require 'minitest/autorun'
+require File.expand_path(File.dirname(__FILE__) + '/../lib/duxml')
+require 'test/unit'
 
-class HistoryTest < MiniTest::Test
+class HistoryTest < Test::Unit::TestCase
   include Duxml
   def setup
     f = File.expand_path(File.dirname(__FILE__) + '/../../xml/design.xml')

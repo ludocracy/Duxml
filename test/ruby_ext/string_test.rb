@@ -1,4 +1,4 @@
-require_relative '../../lib/duxml/ruby_ext/string'
+require File.expand_path(File.dirname(__FILE__) + '/../../lib/duxml/ruby_ext/string')
 require 'test/unit'
 
 class StringTest < Test::Unit::TestCase

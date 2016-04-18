@@ -1,4 +1,4 @@
-require_relative '../../lib/duxml/ruby_ext/object'
+require File.expand_path(File.dirname(__FILE__) + '/../../lib/duxml/ruby_ext/object')
 require 'test/unit'
 
 module Maudule

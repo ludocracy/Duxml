@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../lib/duxml/nokogiri_ext/node')
+require File.expand_path(File.dirname(__FILE__) + '/../lib/duxml')
 require 'test/unit'
 
 class DuxmlTest < Test::Unit::TestCase

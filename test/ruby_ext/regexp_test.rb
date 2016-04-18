@@ -1,4 +1,4 @@
-require_relative '../../lib/duxml/ruby_ext/regexp'
+require File.expand_path(File.dirname(__FILE__) + '/../../lib/duxml/ruby_ext/regexp')
 require 'test/unit'
 
 class RegexpText < Test::Unit::TestCase

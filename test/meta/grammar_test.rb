@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../lib/duxml')
-require 'minitest/autorun'
+require 'test/unit'
 
-class GrammarTest < MiniTest::Test
+class GrammarTest < Test::Unit::TestCase
   include Duxml
 
   def setup
