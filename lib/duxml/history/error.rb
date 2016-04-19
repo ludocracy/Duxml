@@ -9,5 +9,9 @@ module Duxml
       raise Exception if result.nil?
       result
     end
+
+    def error?
+      true
+    end
   end # class Error
 end # module Duxml

@@ -1,12 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../lib/duxml/ox_ext/element')
 require 'test/unit'
 
-class Observer
-  def update(*_args)
-    @args = _args
-  end
-  attr_reader :args
-end
 
 class ElementTest < Test::Unit::TestCase
   include Ox
@@ -18,6 +12,10 @@ class ElementTest < Test::Unit::TestCase
   end
 
   attr_accessor :x, :o
+
+  def test_location
+    # TODO assign location and have it repeat it back
+  end
 
   def test_each
     res = x.collect do |child| child.name end

@@ -23,6 +23,14 @@ class OxTest < Test::Unit::TestCase
   def setup
   end
 
+  def test_line_counter
+    path = File.expand_path(File.dirname(__FILE__) + '/../../xml/design.xml')
+    file = File.open path
+    doc = sax file
+    assert_equal 2, doc.design.line
+    assert_equal 4, doc.design.legal_parent.also_legal_child.line
+    assert_equal 6, doc.design.legal_parent.legal_child.line
+  end
 
   def test_xml
     k = Maudule::Klass.new('primus')

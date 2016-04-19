@@ -5,8 +5,7 @@ module Duxml
     include Ox
     class << self
       def xml
-        e = Element.new('meta')
-        e << '<history/><grammar/>'
+        Element.new('meta') << '<grammar/>' << '<history/>'
       end
     end
     extend self

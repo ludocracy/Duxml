@@ -45,6 +45,7 @@ module Ox
   def xml(obj)
     return obj if obj.is_a?(Ox::Element)
     return obj.root if obj.is_a?(Ox::Document)
+    return sax(obj) if obj.is_a?(IO)
     return(obj[0]=='<' && obj[-1]=='>' ? Ox.parse(obj) : obj) if obj.is_a?(String)
     return obj.xml if obj.respond_to?(:xml)
     el = Ox::Element.new nmtoken(obj)
@@ -60,8 +61,64 @@ module Ox
     el
   end # def xml(obj)
 
+  # @param io [IO] io stream or open file to parse
+  # @return [Ox::Document] finished document with each Element's line and column info added
+  def sax(io)
+    hasher = DocuLiner.new
+    Ox.sax_parse(hasher, io, {convert_special: true, symbolize: false})
+    hasher.cursor
+  end
+
   private
+
   def nmtoken(obj)
     "#{obj.simple_module == 'Module' ? '' : "#{obj.simple_module.nmtokenize}:"}#{obj.simple_class.nmtokenize}"
   end
+
+  class DocuLiner < ::Ox::Sax
+    @doc
+
+    attr_reader :line, :column, :doc
+
+    def initialize
+      @cursor_stack = [Document.new]
+      @line = 0
+      @column = 0
+    end
+
+    def cursor
+      cursor_stack.last
+    end
+
+    attr_accessor :cursor_stack
+
+    def start_element(name)
+      #@node_hash[location_key] = line
+      cursor << Element.new(name)
+      cursor.nodes.last.parent = cursor
+      cursor_stack << cursor.nodes.last
+      cursor.location = [line, column]
+    end
+
+    def attr(name, val)
+      cursor[name] = val
+    end
+
+    def text(str)
+      cursor << str
+    end
+
+    def end_element(name)
+      @cursor_stack.pop
+    end
+
+    private
+
+    def location_key
+      @alocation.inject do |a, index|
+        a ||= ""
+        a << index.to_s
+      end
+    end
+  end # class NodeHasher < ::Ox::Sax
 end # module Ox

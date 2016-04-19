@@ -5,13 +5,14 @@ require File.expand_path(File.dirname(__FILE__) + '/history/validate_error')
 require File.expand_path(File.dirname(__FILE__) + '/history/qualify_error')
 require File.expand_path(File.dirname(__FILE__) + '/history/new_attribute')
 require File.expand_path(File.dirname(__FILE__) + '/history/change_attribute')
-require File.expand_path(File.dirname(__FILE__) + '/history/new_content')
-require File.expand_path(File.dirname(__FILE__) + '/history/change_content')
+require File.expand_path(File.dirname(__FILE__) + '/history/new_text')
+require File.expand_path(File.dirname(__FILE__) + '/history/change_text')
 require File.expand_path(File.dirname(__FILE__) + '/history/undo')
+require File.expand_path(File.dirname(__FILE__) + '/ox_ext/reportable')
 
 module Duxml
   class History < Array
-    include Observable
+    include Reportable
 
     def description
       "history follows: \n" +
@@ -25,7 +26,7 @@ module Duxml
       change_class = Duxml::const_get type
       change_comp = change_class.new *args
       shift change_comp
-      notify_observers change_comp
+      notify_observers change_comp unless change_comp.respond_to?(:error?)
     end
   end # class History
 end # module Duxml

@@ -1,11 +1,9 @@
-require File.expand_path(File.dirname(__FILE__) + '/../lib/duxml')
+require File.expand_path(File.dirname(__FILE__) + '/../../lib/duxml/history')
 require 'test/unit'
 
 class HistoryTest < Test::Unit::TestCase
   include Duxml
   def setup
-    f = File.expand_path(File.dirname(__FILE__) + '/../../xml/design.xml')
-    load f
   end
 
   def test_add_child

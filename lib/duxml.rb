@@ -2,29 +2,6 @@ require 'ox'
 require File.expand_path(File.dirname(__FILE__) + '/duxml/ox_ext/document')
 
 module Duxml
-  class NodeHasher < ::Ox::Sax
-    @node_hash
-
-    attr_reader :node_hash, :line, :column
-    def initialize
-      @alocation = []
-      @line = 0
-      @column = 0
-      @node_hash = {}
-    end
-
-    def start_element(name)
-      @node_hash[location_key] = line
-    end
-
-    private
-    def location_key
-      @alocation.inject do |a, index|
-        a ||= ""
-        a << index.to_s
-      end
-    end
-  end # class NodeHasher < ::Ox::Sax
 
   # path to XML file
   @file
@@ -47,14 +24,14 @@ module Duxml
     io = StringIO.new(File.read(file))
 
     handler = NodeHasher.new
-    Ox.sax_parse(handler, io, {convert_special: true, symbolize: false})
+    xml_doc = Ox.sax_parse(handler, io, {convert_special: true, symbolize: false})
     @node_hash = handler.node_hash
     unless File.exists?(dux_meta_file_path)
       File.new dux_meta_file_path, 'w+'
       File.write(dux_meta_file_path, xml(Meta))
     end
     meta_xml = Ox.parse(File.open(dux_meta_file_path)).root
-    @meta, @doc = meta_xml, xml
+    @meta, @doc = meta_xml, xml_doc
   end # def load
 
   # @param file [String] saves current content XML to given file path (Duxml@file by default)

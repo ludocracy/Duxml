@@ -9,7 +9,10 @@ class MetaTest < Test::Unit::TestCase
   end
 
   def test
-    assert_equal %(<meta><grammar/><history/></meta>), dump(xml(Meta))
+    x = xml(Meta)
+    assert_equal 'meta', x.name
+    assert_equal 'grammar', x.grammar.name
+    assert_equal 'history', x.history.name
   end
 
   def tear_down
