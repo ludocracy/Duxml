@@ -29,6 +29,10 @@ module Duxml
       end
     end # def initialize
 
+    def =(new_grammar)
+
+    end
+
     # @return [Boolean] whether or not any rules have been defined yet in this grammar
     def defined?
       has_children?

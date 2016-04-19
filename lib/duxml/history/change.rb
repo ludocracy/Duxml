@@ -10,7 +10,7 @@ module Duxml
     # this method will timestamp the Change if it is new
     def initialize(*args)
       super *args
-      @xml[:date] = Time.now.to_s unless xml?(args)
+      @time_stamp = Time.now.to_s unless xml?(args)
     end
 
     def description

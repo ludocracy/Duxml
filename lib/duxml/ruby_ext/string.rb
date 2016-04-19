@@ -1,6 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/regexp')
-
+require 'observer'
 class String
+  @parent
+
+  attr_accessor :parent
+
+  include Observable
+
   # @param sym [Symbol] name of Regexp class method to check against self
   # @param *args [nil] must be empty
   # @return [Boolean] true if self matches given Regexp, false if not

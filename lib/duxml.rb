@@ -1,58 +1,71 @@
-require 'nokogiri'
-require File.expand_path(File.dirname(__FILE__) + '/duxml/meta')
+require 'ox'
+require File.expand_path(File.dirname(__FILE__) + '/duxml/ox_ext/document')
 
 module Duxml
-  # contains file name of current XML file
-  @current_file
-  # points to current file's metadata
-  @current_meta
-  # points to current file's object tree (branch of meta at this point)
-  @current_design
+  class NodeHasher < ::Ox::Sax
+    @node_hash
 
-  attr_accessor :current_file, :current_meta, :current_design
+    attr_reader :node_hash, :line, :column
+    def initialize
+      @alocation = []
+      @line = 0
+      @column = 0
+      @node_hash = {}
+    end
 
-  # @param file [String] saves current content XML to given file path (Duxml@current_file by default)
-  def save(file = current_file)
-    s = current_design.xml.document.remove_empty_lines!.to_xml.gsub!('><', ">\n<")
-    File.write file, s
-    File.write get_meta_file, current_meta.xml.to_xml.gsub!('><', ">\n<")
-  end
+    def start_element(name)
+      @node_hash[location_key] = line
+    end
 
-  def get_meta_file
-    File.dirname(current_file)+"/.#{File.basename(current_file, '.*')}.duxml"
-  end
+    private
+    def location_key
+      @alocation.inject do |a, index|
+        a ||= ""
+        a << index.to_s
+      end
+    end
+  end # class NodeHasher < ::Ox::Sax
 
-  # @param meta_xml [Nokogiri::XML::Node] metadata XML
-  # @param content_xml [Nokogiri::XML::Node] content XML
-  # @return [Duxml::Meta] combined object tree including metadata
-  def dux(meta_xml, content_xml)
-    @current_meta = Meta.new meta_xml
-    @current_meta << content_xml
-    @current_design = current_meta.design
-    current_meta
-  end
+  # path to XML file
+  @file
+  # current document
+  @doc
+  # node path, line number hash
+  @node_hash
+  # meta data document
+  @meta
+
+  attr_reader :meta, :file, :doc, :node_hash
 
   # @param file [String] loads given file and finds or creates corresponding metadata file e.g. '.xml_file.duxml'
   # @param grammar [nil, String, Duxml::Grammar] optional - provide an external grammar file or object
   # @return [Duxml::Meta] combined Object tree from metadata root (metadata and content's XML documents are kept separate)
   def load(file, grammar=nil)
     raise Exception unless File.exists? file
-    @current_file = file
+    @file = file
     dux_meta_file_path = get_meta_file
-    f = File.read(current_file).to_s
-    xml = Nokogiri::XML(f).root
+    io = StringIO.new(File.read(file))
+
+    handler = NodeHasher.new
+    Ox.sax_parse(handler, io, {convert_special: true, symbolize: false})
+    @node_hash = handler.node_hash
     unless File.exists?(dux_meta_file_path)
       File.new dux_meta_file_path, 'w+'
-      File.write(dux_meta_file_path, Meta.new.xml.to_xml)
+      File.write(dux_meta_file_path, xml(Meta))
     end
-    meta_xml = Nokogiri::XML(File.open(dux_meta_file_path)).root
-    dux meta_xml, xml
+    meta_xml = Ox.parse(File.open(dux_meta_file_path)).root
+    @meta, @doc = meta_xml, xml
   end # def load
 
-  # @param file [String] path to file to be used as or converted to Duxml::Grammar
-  # @return [Duxml::Grammar] grammar, now attached to @current_meta
-  def grammar(file)
-    @current_meta.grammar = file
+  # @param file [String] saves current content XML to given file path (Duxml@file by default)
+  def save(path=file)
+    s = Ox.dump(doc)
+    File.write path, s
+    File.write(get_meta_file, xml(doc))
+  end
+
+  def get_meta_file
+    File.dirname(file)+"/.#{File.basename(file, '.*')}.duxml"
   end
 
   # @param file [String] output file path for logging human-readable validation error messages

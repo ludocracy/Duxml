@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../lib/duxml/xml')
+require File.expand_path(File.dirname(__FILE__) + '/../../lib/duxml/ox_ext/ox')
 require 'test/unit'
 
 module Maudule
@@ -16,8 +16,8 @@ module Maudule
   end
 end
 
-class XMLTest < Test::Unit::TestCase
-  include Duxml::XML
+class OxTest < Test::Unit::TestCase
+  include Ox
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup

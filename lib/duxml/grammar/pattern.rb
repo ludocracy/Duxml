@@ -1,7 +1,5 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../object')
-
 module Duxml
-  class Pattern < Object
+  class Pattern
     # Duxml::Patterns can be initialized from XML or from arguments that are interpreted as follows:
     # args[0] must be the subject of the Pattern
     # args[1] must be the object of the Pattern
