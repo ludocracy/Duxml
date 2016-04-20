@@ -1,5 +1,5 @@
 require 'ox'
-require File.expand_path(File.dirname(__FILE__) + '/duxml/ox_ext/document')
+require File.expand_path(File.dirname(__FILE__) + '/duxml/ox_ext/duxml_doc')
 
 module Duxml
 

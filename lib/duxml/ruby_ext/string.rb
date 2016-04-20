@@ -1,12 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/regexp')
-require 'observer'
+
 class String
-  @parent
-
-  attr_accessor :parent
-
-  include Observable
-
   # @param sym [Symbol] name of Regexp class method to check against self
   # @param *args [nil] must be empty
   # @return [Boolean] true if self matches given Regexp, false if not
@@ -34,11 +28,13 @@ class String
   #   'Foo_b'.nmtokenize  => 'foo-bar'
   #   'FooBar'.nmtokenize => 'foo_bar'
   def nmtokenize
-    gsub(/(?!^)[A-Z_]/) do |match|
-      case match
-        when '_' then '-'
-        else "_#{match.downcase}"
-      end
-    end.downcase
+    split('::').collect do |word|
+      word.gsub(/(?!^)[A-Z_]/) do |match|
+        case match
+          when '_' then '-'
+          else "_#{match.downcase}"
+        end
+      end.downcase
+    end.join(':')
   end
-end
+end # class String
