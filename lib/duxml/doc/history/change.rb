@@ -15,6 +15,16 @@ module Duxml
     def initialize(_subject, *args)
       @subject = _subject
       @time_stamp = Time.now
+      args.each do |arg|
+        if arg.is_a?(Duxml::Element)
+          @object = arg
+          break
+        end
+      end
+    end
+
+    def abstract?
+      false
     end
 
     attr_reader :time_stamp

@@ -14,7 +14,7 @@ module Duxml
     include RelaxNG
 
     def self.xml
-      Ox.parse('<duxml:grammar/>').extend self
+      Duxml::Element.new('duxml:grammar').extend self
     end
 
     # @param path [String] path to XML file or spreadsheet

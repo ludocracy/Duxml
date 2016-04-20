@@ -14,12 +14,12 @@ module Duxml
       super || %(#{child.description} was added to #{subject.description}.)
     end
 
-    def affected_parent
+    def parent
       subject
     end
 
     def child
-      subject[index]
+      subject.nodes[index]
     end
   end # class Add
 end # module Duxml

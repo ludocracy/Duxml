@@ -18,12 +18,12 @@ module Duxml
     end
 
     def description
-      "#{subject.description}'s @#{attr_name} #{relationship} is #{value(subject.meta)}"
+      "#{subject.description}'s @#{attr_name} #{relationship} is #{value}"
     end
 
     # current value of this attribute
-    def value(meta)
-      subject(meta)[attr_name]
+    def value
+      subject[attr_name]
     end
   end # class AttrValPattern
 end # module Duxml

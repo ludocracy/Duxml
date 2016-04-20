@@ -18,6 +18,10 @@ module Duxml
       Element.new('duxml:history').extend self
     end
 
+    def grammar
+      @observer_peers.first.first
+    end
+
     def description
       "history follows: \n" +
       collect do |change_or_error|

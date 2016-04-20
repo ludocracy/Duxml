@@ -95,7 +95,8 @@ class ElementTest < Test::Unit::TestCase
     assert_equal 'new text', x.second.third.nodes[0]
     assert_equal :ChangeText, o.args[0]
     assert_equal 'third', o.args[1].name
-    assert_equal 'some text', o.args[2]
+    assert_equal 0, o.args[2]
+    assert_equal 'some text', o.args[3]
   end
 
   def tear_down

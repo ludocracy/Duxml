@@ -33,8 +33,8 @@ module Duxml
     # @return [Boolean] whether change_or_pattern#subject is allowed to have value of type #object
     #   if false, reports Error to History
     def qualify(change_or_pattern)
-      value = change_or_pattern.value(meta)
-      s = change_or_pattern.subject(meta)
+      value = change_or_pattern.value
+      s = change_or_pattern.subject
       raise Exception if value.nil?
       result = pass value
       super change_or_pattern unless result

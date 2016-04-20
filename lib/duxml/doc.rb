@@ -1,9 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/doc/saxer')
-require File.expand_path(File.dirname(__FILE__) + '/meta')
+require File.expand_path(File.dirname(__FILE__) + '/doc/meta')
+
 module Duxml
   class Doc < ::Ox::Document
     include Saxer
-    include Duxml
 
     @meta
 
@@ -11,7 +11,7 @@ module Duxml
       raise Exception unless File.exists?(path)
       super(prolog)
       @meta = get_meta_data path
-      @history.add_observer grammar
+      history.add_observer grammar
       @io = File.open path
       self << sax(self)
     end
@@ -27,13 +27,14 @@ module Duxml
     private
 
     def get_meta_data(path)
-      meta_path = File.dirname(path)+"/.#{File.basename(path, '.*')}.duxml"
+      meta_path = File.dirname(path)+"/.#{File.basename(path)}.duxml"
       if File.exists?(meta_path)
         m = Ox.parse File.read meta_path
       else
         m = Meta.xml
         File.write(meta_path, m)
       end
+      m
     end
   end # class Document < Element
 end

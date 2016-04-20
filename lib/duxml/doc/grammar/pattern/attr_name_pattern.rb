@@ -4,23 +4,22 @@ module Duxml
   # pattern representing relationship between an object and one of its attributes
   class AttrNamePattern
     include Pattern
-    # @param _subject [Ox::Element] subject element
+    # @param _subject [Duxml::Element] subject element
     # @param _attr_name [String] name of attribute
     def initialize(_subject, _attr_name)
       @subject = _subject
       @attr_name = _attr_name
     end
 
-    attr_reader :subject, :attr_name
+    attr_reader :attr_name
 
     def relationship
       'attribute'
     end
 
     # @return [Boolean] true if subject does not have the attr_name; false otherwise
-    def abstract?(meta)
-      s = subject(meta)
-      s[attr_name].nil?
+    def abstract?
+      subject[attr_name].nil?
     end
 
     def description
