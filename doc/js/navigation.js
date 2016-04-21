@@ -103,7 +103,7 @@ Navigation = new function() {
   }
 
   /*
-   * Scrolls to the given element in the scrollable element view.
+   * Scrolls to the given doc in the scrollable doc view.
    */
   this.scrollInElement = function(element, view) {
     var offset, viewHeight, viewScroll, height;
@@ -121,7 +121,7 @@ Navigation = new function() {
   }
 
   /*
-   * Scrolls to the given element in the window.  The second argument is
+   * Scrolls to the given doc in the window.  The second argument is
    * ignored
    */
   this.scrollInWindow = function(element, ignored) {

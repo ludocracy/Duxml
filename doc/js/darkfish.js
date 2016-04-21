@@ -19,7 +19,7 @@ if (!("console" in window) || !("firebug" in console)) {
 
 
 /**
- * Unwrap the first element that matches the given @expr@ from the targets and return them.
+ * Unwrap the first doc that matches the given @expr@ from the targets and return them.
  */
 $.fn.unwrap = function( expr ) {
   return this.each( function() {

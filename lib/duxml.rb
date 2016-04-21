@@ -1,18 +1,18 @@
-require 'ox'
-require File.expand_path(File.dirname(__FILE__) + '/duxml/ox_ext/duxml_doc')
+require File.expand_path(File.dirname(__FILE__) + '/duxml/saxer')
+require File.expand_path(File.dirname(__FILE__) + '/duxml/meta')
 
 module Duxml
+  include Saxer
+  include Meta
 
   # path to XML file
   @file
   # current document
   @doc
-  # node path, line number hash
-  @node_hash
   # meta data document
   @meta
 
-  attr_reader :meta, :file, :doc, :node_hash
+  attr_reader :meta, :file, :doc
 
   # @param file [String] loads given file and finds or creates corresponding metadata file e.g. '.xml_file.duxml'
   # @param grammar [nil, String, Duxml::Grammar] optional - provide an external grammar file or object
@@ -41,6 +41,26 @@ module Duxml
     File.write(get_meta_file, xml(doc))
   end
 
+  def grammar
+    @meta.nodes.first
+  end
+
+  def history
+    @meta.nodes.last
+  end
+
+  private
+
+  def get_meta_data(path)
+    meta_path = File.dirname(path)+"/.#{File.basename(path)}.duxml"
+    if File.exists?(meta_path)
+      m = sax(meta_path).root
+    else
+      m = Meta.xml
+      File.write(meta_path, m.to_s)
+    end
+    m
+  end
   def get_meta_file
     File.dirname(file)+"/.#{File.basename(file, '.*')}.duxml"
   end
