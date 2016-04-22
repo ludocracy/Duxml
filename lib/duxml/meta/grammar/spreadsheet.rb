@@ -4,7 +4,7 @@ module Duxml
   module Spreadsheet
     private
   # @param path [String] spreadsheet file
-    def sheet_to_xml(path)
+    def self.sheet_to_xml(path)
       worksheet = RubyXL::Parser.parse(path)[0]
       attr_val_rule_hash = {}
       g = GrammarClass.new

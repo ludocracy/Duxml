@@ -3,6 +3,12 @@ require 'observer'
 module Reportable
   include Observable
 
+  # @param obs [Object] observer to add to this Element as well as its NodeSet
+  def add_observer(obs, sym=nil)
+    super(obs, sym || :update)
+    @nodes.add_observer(obs) if instance_variable_defined?(:@nodes)
+  end
+
   private
 
   # all public methods that alter XML must call #report in the full scope of that public method
@@ -10,8 +16,11 @@ module Reportable
   #
   # @param *args [*several_variants]
   def report(*args)
-    return if count_observers < 1
+    return nil if @observer_peers.nil?
     changed
-    notify_observers *args.flatten
+    new_args = [args.first, self]
+    args[1..-1].each do |a| new_args << a end if args.size > 1
+    notify_observers(*new_args)
   end
+
 end

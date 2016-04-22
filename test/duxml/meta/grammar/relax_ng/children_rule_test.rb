@@ -1,17 +1,19 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../../../../lib/duxml/meta/grammar/relax_ng/children_rule')
+require File.expand_path(File.dirname(__FILE__) + '/../../../../../lib/duxml/meta/grammar')
+
 require 'test/unit'
 
 class RelaxNGTest < Test::Unit::TestCase
   include Duxml
 
   def setup
-    @g = Grammar.new
+    @g = GrammarClass.new
   end
 
   attr_reader :g
 
   def test_star_children
-    g << Duxml::ChildrenRule.new('star', 'child*')
+    g << ChildrenRuleClass.new('star', 'child*')
     rng = g.relaxng
     nodes = rng.css("doc[@name='star']")
     assert_equal 1, nodes.size
@@ -20,7 +22,7 @@ class RelaxNGTest < Test::Unit::TestCase
   end
 
   def test_bang_child
-    g << Duxml::ChildrenRule.new('bang', 'child?')
+    g << ChildrenRuleClass.new('bang', 'child?')
     rng = g.relaxng
     nodes = rng.css('doc[@name="bang"]')
     assert_equal 1, nodes.size
@@ -29,7 +31,7 @@ class RelaxNGTest < Test::Unit::TestCase
   end
 
   def test_required_child
-    g << Duxml::ChildrenRule.new('required', 'child')
+    g << ChildrenRuleClass.new('required', 'child')
     rng = g.relaxng
     nodes = rng.css("doc[@name='required']")
     assert_equal 1, nodes.size
@@ -38,7 +40,7 @@ class RelaxNGTest < Test::Unit::TestCase
   end
 
   def test_plus_children
-    g << Duxml::ChildrenRule.new('plus', 'child+')
+    g << ChildrenRuleClass.new('plus', 'child+')
     rng = g.relaxng
     nodes = rng.css("doc[@name='plus']")
     assert_equal 1, nodes.size
@@ -47,7 +49,7 @@ class RelaxNGTest < Test::Unit::TestCase
   end
 
   def test_multiple_children
-    g << Duxml::ChildrenRule.new('star', '(son|daughter)*')
+    g << ChildrenRuleClass.new('star', '(son|daughter)*')
     rng = g.relaxng
     nodes = rng.css("doc[@name='star']")
     assert_equal 1, nodes.size
@@ -57,12 +59,12 @@ class RelaxNGTest < Test::Unit::TestCase
   end
 
   def test_child_rule_stacking
-    g << Duxml::ChildrenRule.new('plus', 'child+')
+    g << ChildrenRuleClass.new('plus', 'child+')
     rng = g.relaxng
     nodes = rng.css("define[@name='child']/doc")
     assert_equal 'child', nodes.first['name']
 
-    g << Duxml::ChildrenRule.new('child', 'grandchild')
+    g << ChildrenRuleClass.new('child', 'grandchild')
     rng = g.relaxng
     nodes = rng.css("define[@name='child']/doc")
     assert_equal 1, nodes.size

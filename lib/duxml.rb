@@ -14,77 +14,55 @@ module Duxml
 
   attr_reader :meta, :file, :doc
 
-  # @param file [String] loads given file and finds or creates corresponding metadata file e.g. '.xml_file.duxml'
-  # @param grammar [nil, String, Duxml::Grammar] optional - provide an external grammar file or object
+  # @param file [String, Doc] loads given file or document and finds or creates corresponding metadata file e.g. '.xml_file.duxml'
+  # @param grammar_path [nil, String, Duxml::Grammar] optional - provide an external grammar file or object
   # @return [Duxml::Meta] combined Object tree from metadata root (metadata and content's XML documents are kept separate)
-  def load(file, grammar=nil)
-    raise Exception unless File.exists? file
-    @file = file
-    dux_meta_file_path = get_meta_file
-    io = StringIO.new(File.read(file))
-
-    handler = NodeHasher.new
-    xml_doc = Ox.sax_parse(handler, io, {convert_special: true, symbolize: false})
-    @node_hash = handler.node_hash
-    unless File.exists?(dux_meta_file_path)
-      File.new dux_meta_file_path, 'w+'
-      File.write(dux_meta_file_path, xml(Meta))
+  def load(_file, grammar_path=nil)
+    @file = _file if _file.is_a?(String) and File.exists?(_file)
+    if file and File.exists?(Meta.meta_path(file))
+      @meta = sax(File.open(meta_path)).root
+      meta.grammar=grammar_path unless grammar_path.nil? or meta.grammar.defined?
+    else
+      @meta = MetaClass.new(grammar_path)
     end
-    meta_xml = Ox.parse(File.open(dux_meta_file_path)).root
-    @meta, @doc = meta_xml, xml_doc
+
+    @doc = if file.nil?
+             _file.add_observer meta.history
+             _file
+           else
+             f = File.open file
+             sax(f, meta.history)
+           end
+    doc
   end # def load
 
   # @param file [String] saves current content XML to given file path (Duxml@file by default)
-  def save(path=file)
-    s = Ox.dump(doc)
-    File.write path, s
-    File.write(get_meta_file, xml(doc))
-  end
-
-  def grammar
-    @meta.nodes.first
-  end
-
-  def history
-    @meta.nodes.last
-  end
-
-  private
-
-  def get_meta_data(path)
-    meta_path = File.dirname(path)+"/.#{File.basename(path)}.duxml"
-    if File.exists?(meta_path)
-      m = sax(meta_path).root
-    else
-      m = Meta.xml
-      File.write(meta_path, m.to_s)
+  def save(file)
+    meta_path = Meta.meta_path(file)
+    unless File.exists?(meta_path)
+      File.new meta_path, 'w+'
+      File.write(meta_path, Meta.xml)
     end
-    m
-  end
-  def get_meta_file
-    File.dirname(file)+"/.#{File.basename(file, '.*')}.duxml"
   end
 
   # @param file [String] output file path for logging human-readable validation error messages
   def log(file)
-    File.write file, current_meta.history.description
+    File.write(file, meta.history.description)
   end
 
-  # @param file [String] path of XML file to be validated
+  # @param *Args [*several_variants] @see #load
   # @return [Boolean] whether file passed validation
-  def validate(file=nil)
-    load file if file
-    current_meta.grammar &&= current_meta.grammar[:ref] unless current_meta.grammar.defined?
-    results = current_meta.design.collect do |node|
-      node.text? || current_meta.grammar.validate(node)
-    end
-    result = !results.any? do |val| !val end
-    File.write get_meta_file, current_meta.xml.to_xml unless result
-    result
+  def validate(*args)
+    load(*args) unless args.empty?
+    raise Exception, "grammar not defined!" unless meta.grammar.defined?
+    raise Exception, "document not loaded!" unless doc.root
+    results = []
+    doc.root.traverse do |n| results << meta.grammar.validate(n) unless n.is_a?(String) end
+    !results.any? do |r| !r end
   end # def validate
 
   # @return [Nokogiri::XML::RelaxNG] current metadata's grammar as a relaxng file
   def relaxng
-    current_meta.grammar.relaxng
+    #meta.grammar.relaxng
   end
 end # module Duxml

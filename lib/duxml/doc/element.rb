@@ -3,11 +3,15 @@ require File.expand_path(File.dirname(__FILE__) + '/lazy_ox')
 require File.expand_path(File.dirname(__FILE__) + '/node_set')
 
 module Duxml
-  class Element < ::Ox::Element
-    include LazyOx
+  module ElementGuts
+    include Duxml
     include Enumerable
     include Reportable
+    include LazyOx
+  end
 
+  class Element < ::Ox::Element
+    include ElementGuts
     # gives this doc its line and column location then freezes each Fixnum so it cannot be overwritten
     #
     # @param name [String] name of doc
@@ -22,7 +26,9 @@ module Duxml
     attr_reader :line, :column
 
     attr_accessor :nodes
+  end
 
+  module ElementGuts
     # @return [Boolean] whether or not this has been written to file
     def abstract?
       line < 0 || column < 0
@@ -32,22 +38,6 @@ module Duxml
       self.simple_
     end
 
-    # @param obs [Duxml::History] observer to add to this Element as well as its NodeSet
-    def add_observer(obs)
-      super(obs)
-      @nodes.add_observer(obs)
-    end
-
-    # @return [Duxml::History] a Duxml::Element extended with History module that is recording this doc's changes
-    def history
-      @observer_peers.first.first
-    end
-
-    # @return [Duxml::Grammar] a Duxml::doc extended with Grammar module that is validating history's changes
-    def grammar
-      history.grammar
-    end
-
     # now reports to History
     def <<(obj)
       super(obj)
@@ -55,13 +45,15 @@ module Duxml
         type = :NewText
         else
         type = :Add
-        nodes.last.add_observer(@observer_peers.first.first) if nodes.last.count_observers < 1 && @observer_peers
+        if nodes.last.count_observers < 1 && @observer_peers
+          nodes.last.add_observer(@observer_peers.first.first)
+        end
       end
-      report(type, nodes.last) unless name_space == 'duxml'
+      report(type, nodes.size - 1) unless name_space == 'duxml'
       self
     end
 
-    # @param attr [String, Symbol] name of attribute
+    # @param attr_sym [String, Symbol] name of attribute
     # @param val [String]
     # @return [Element] self
     def []=(attr_sym, val)
@@ -73,6 +65,10 @@ module Duxml
       type = args.size == 1 ? :NewAttr : :ChangeAttr
       report(type, *args)
       self
+    end
+
+    def history
+      @observer_peers.first.first if @observer_peers.any? and @observer_peers.first.any?
     end
 
     def to_s
@@ -109,16 +105,10 @@ module Duxml
       @nodes.each(&block)
     end
 
+    # @return [String] namespace of element, derived from name e.g. '<duxml:element>' => 'duxml'
     def name_space
       return nil unless (i = name.index(':'))
       name[0..i-1]
-    end
-
-    private
-    def report(*args)
-      new_args = [args.first, self]
-      new_args << args[1..-1] if args.size > 1
-      super(*new_args)
     end
   end # class Element < Node
 end # module Ox

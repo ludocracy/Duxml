@@ -8,19 +8,25 @@ class Observer
   attr_reader :args
 end
 
-class DocumentTest < Test::Unit::TestCase
+class DocTest < Test::Unit::TestCase
   include Duxml
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
     file_name = 'design.xml'
     path = File.expand_path(File.dirname(__FILE__) + "/../../xml/#{file_name}")
-    @x = Duxml::Doc.new path
+    @x = Duxml::Doc.new
   end
 
 attr_reader :x
 
-  # TODO not sure what we need to test here. that Doc inherited Duxml and Document successfully?
+  def test_traverse
+
+  end
+
+  def test_node_set
+    assert_equal NodeSet, x.nodes.class
+  end
 
   # Called after every test method runs. Can be used to tear
   # down fixture information.

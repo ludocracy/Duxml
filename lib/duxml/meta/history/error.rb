@@ -1,23 +1,23 @@
 require File.expand_path(File.dirname(__FILE__) + '/change')
 
 module Duxml
-  module Error; end
-
-  # do not use
-  class ErrorClass < ChangeClass
-    include Error
-  end
-
   module Error
-    # returns rule from Grammar that found this Error
-    def violated_rule
-      result = root.grammar.find_child(self[:subject])
-      raise Exception if result.nil?
-      result
-    end
-
     def error?
       true
     end
   end # class Error
+
+  # do not use
+  class ErrorClass < ChangeClass
+    include Error
+
+    # @param _rule [Rule] rule that was violated
+    # @param _change_or_pattern [ChangeClass, PatternClass] can be triggered by a change or a pattern found in a static document
+    def initialize(_rule, _change_or_pattern)
+      super(_rule)
+      @object = _change_or_pattern
+    end
+    alias_method :rule, :subject
+  end
+
 end # module Duxml

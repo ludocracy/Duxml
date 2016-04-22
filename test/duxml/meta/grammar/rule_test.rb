@@ -30,6 +30,10 @@ class RuleTest < Test::Unit::TestCase
 
   attr_reader :rule, :o
 
+  def test_history
+    assert_equal Observer, rule.history.class
+  end
+
   def test_qualify
     result = rule.qualify ChangeClass.new(Element.new('barney'))
     assert_equal false, result

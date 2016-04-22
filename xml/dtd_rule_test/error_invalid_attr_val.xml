@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<topic id="topic1">
+<topic id="topic 1">
   <title>simple dita validation test</title>
   <body>
     <ol>
-      <li id="asdf asfd">text</li>
+      <li>text</li>
     </ol>
   </body>
 </topic>

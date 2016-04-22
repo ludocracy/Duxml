@@ -7,15 +7,59 @@ class DuxmlTest < Test::Unit::TestCase
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
+    @g_path = File.expand_path(File.dirname(__FILE__) + '/../xml/test_grammar.xml')
+    @g = Ox.parse_obj File.read g_path
+    @d_path = File.expand_path(File.dirname(__FILE__) + '/../xml/design.xml')
+  end
+
+  attr_reader :g_path, :d_path
+
+  def test_load_with_grammar
+    load(d_path, g_path)
+    assert_equal 'design', doc.root.name
+    assert_equal 'topic', meta.grammar[0].subject
+    assert_equal meta.grammar, meta.history.grammar
+    assert_equal meta.history, meta.grammar.history
+  end
+
+  def test_load_no_grammar
+    load(d_path)
+    assert_equal false, meta.grammar.defined?
+    meta.grammar = g_path
+    assert_equal true, meta.grammar.defined?
+    assert_equal meta.grammar, meta.history.grammar
+    assert_equal meta.history, meta.grammar.history
+  end
+
+  def test_create_file
 
   end
 
-  attr_reader :node
+  def test_elements_update_history
+    load(d_path)
+    doc.root << Element.new('test_node')
+    assert_equal 'add_class', meta.history.latest.simple_name
+    assert_equal 'design', meta.history.latest.parent.name
+    assert_equal 'test_node', meta.history.latest.child.name
+  end
 
-  def test_open_file
-    # open xml file
+  def test_gram_hist_mutual_update
+    load(Doc.new, g_path)
+    assert_equal meta.grammar, meta.history.grammar
+    assert_equal meta.history, meta.grammar.history
+    doc << Element.new('topic')
+    doc.topic << Element.new('bogus')
+    assert_equal QualifyErrorClass, meta.history.latest.class
+    assert_equal 'bogus', meta.history.latest.bad_change.child.name
+    assert_equal meta.history[1].child, meta.history.latest.bad_change.child
+  end
 
-    # check to see that metadata also opened
+  def test_validate
+    x = File.expand_path(File.dirname(__FILE__) + '/../xml/dtd_rule_test/error_invalid_attr.xml')
+    result = validate(x, g_path)
+    assert_equal false, result
+    assert_equal ValidateErrorClass, meta.history.latest.class
+    assert_equal 'invalid_attr', meta.history.latest.bad_pattern.attr_name
   end
 
   def test_save_file
@@ -24,17 +68,6 @@ class DuxmlTest < Test::Unit::TestCase
     # check to see that metadata also saved
   end
 
-  def test_create_file
-
-  end
-
-  def test_grammar_found
-
-  end
-
-  def test_switch_grammar
-
-  end
 
   # Called after every test method runs. Can be used to tear
   # down fixture information.

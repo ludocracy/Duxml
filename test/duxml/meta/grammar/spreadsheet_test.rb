@@ -10,7 +10,7 @@ class SpreadsheetTest < Test::Unit::TestCase
   end
 
   def test_xlsx2xml_conversion
-    xlsx_g = import File.expand_path(File.dirname(__FILE__) + '/../../../../xml/Dita 1.3 Manual Spec Conversion.xlsx')
+    xlsx_g = Grammar.import File.expand_path(File.dirname(__FILE__) + '/../../../../xml/Dita 1.3 Manual Spec Conversion.xlsx')
     assert_equal 373, xlsx_g.rules.size
     r = xlsx_g.rules.first
     assert_equal 'duxml:children_rule_class', r.class.to_s.nmtokenize

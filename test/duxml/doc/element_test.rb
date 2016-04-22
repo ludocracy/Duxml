@@ -21,10 +21,11 @@ class ElementTest < Test::Unit::TestCase
     @o = Observer.new
     x.traverse do |n| n.add_observer o unless n.is_a?(String) end
   end
+
   attr_accessor :x, :o
 
-  def test_method_missing
-
+  def test_history
+    assert_equal Observer, x.history.class
   end
 
   def test_name_space
@@ -69,7 +70,7 @@ class ElementTest < Test::Unit::TestCase
     x[:foot] = :coot
     assert_equal :ChangeAttr, o.args[0]
     assert_equal 'root', o.args[1].name
-    assert_equal :foot, o.args[2]
+    assert_equal 'foot', o.args[2]
     assert_equal 'poot', o.args[3]
   end
 
@@ -77,7 +78,7 @@ class ElementTest < Test::Unit::TestCase
     x[:cork] = :pork
     assert_equal :NewAttr, o.args[0]
     assert_equal 'root', o.args[1].name
-    assert_equal :cork, o.args[2]
+    assert_equal 'cork', o.args[2]
   end
 
   def test_add_text

@@ -1,6 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../../lib/duxml/meta/history')
 require 'test/unit'
 
+class Observer
+  def update(*args)
+    @args = args
+  end
+end
+
 class HistoryTest < Test::Unit::TestCase
   include Duxml
   def setup
@@ -10,11 +16,19 @@ class HistoryTest < Test::Unit::TestCase
     x << Element.new('b')
     x.a << 'old text'
     x.a[:var_attr] = 'old_value'
-
+    history.add_observer Observer.new
     x.traverse do |n| n.add_observer history unless n.is_a?(String) end
   end
 
   attr_accessor :history, :x
+
+  def test_xml
+    assert_equal 'duxml:history', History.xml.name
+  end
+
+  def test_grammar
+    assert_equal Observer, history.grammar.class
+  end
 
   def test_add_child
     new_kid = Element.new('c')

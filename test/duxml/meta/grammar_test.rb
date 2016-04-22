@@ -18,10 +18,13 @@ class GrammarTest < Test::Unit::TestCase
     @g = Ox.parse_obj File.read File.expand_path(File.dirname(__FILE__) + '/../../../xml/test_grammar.xml')
     @o = Observer.new
     g.add_observer o
-    g.rules.each do |rule| rule.add_observer o end
   end
 
   attr_reader :g, :o
+
+  def test_xml
+    Grammar.xml.name
+  end
 
   def test_data_and_child
     doc = sax File.expand_path(File.dirname(__FILE__) + "/../../../xml/dtd_rule_test/data_and_child.xml")
@@ -42,8 +45,9 @@ class GrammarTest < Test::Unit::TestCase
     ol = doc.topic.body.ol
     result = g.validate ol
     assert_equal false, result
-    assert_equal :validate_error, o.args[0]
-    assert_equal 1, o.args[1].index
+    assert_equal :ValidateError, o.args[0]
+    assert_equal 'children_rule_class', o.args[1].simple_name
+    assert_equal 1, o.args[2].index
   end
 
   def test_error_children_split_in_wrong_pos
@@ -51,18 +55,19 @@ class GrammarTest < Test::Unit::TestCase
     ol = doc.topic.body.ol
     result = g.validate ol
     assert_equal false, result
-    assert_equal :validate_error, o.args[0]
-    assert_equal 1, o.args[1].index
+    assert_equal :ValidateError, o.args[0]
+    assert_equal 'children_rule_class', o.args[1].simple_name
+    assert_equal 1, o.args[2].index
   end
 
   def test_error_interleaved_invalid_child_text
     doc = sax File.expand_path(File.dirname(__FILE__) + "/../../../xml/dtd_rule_test/error_interleaved_invalid_child_text.xml")
-
     p = doc.topic.body.p
     result = g.validate p
     assert_equal false, result
-    assert_equal :validate_error, o.args[0]
-    assert_equal 'invalid_child', o.args[1].child.name
+    assert_equal :ValidateError, o.args[0]
+    assert_equal 'children_rule_class', o.args[1].simple_name
+    assert_equal 'invalid_child', o.args[2].child.name
   end
 
   def test_error_invalid_attr
@@ -70,17 +75,19 @@ class GrammarTest < Test::Unit::TestCase
     ol = doc.topic.body.ol
     result = g.validate ol
     assert_equal false, result
-    assert_equal :validate_error, o.args[0]
-    assert_equal 'invalid_attr', o.args[1].attr_name
+    assert_equal :ValidateError, o.args[0]
+    assert_equal GrammarClass, o.args[1].class
+    assert_equal 'invalid_attr', o.args[2].attr_name
   end
 
   def test_error_invalid_attr_val
     doc = sax File.expand_path(File.dirname(__FILE__) + "/../../../xml/dtd_rule_test/error_invalid_attr_val.xml")
-    li = doc.topic.body.ol.li
-    result = g.validate li
+    t = doc.topic
+    result = g.validate t
     assert_equal false, result
-    assert_equal :validate_error, o.args[0]
-    assert_equal 'asdf asfd', o.args[1].value
+    assert_equal :ValidateError, o.args[0]
+    assert_equal 'value_rule_class', o.args[1].simple_name
+    assert_equal 'topic 1', o.args[2].value
   end
 
   def test_error_many_children_in_wrong_pos
@@ -88,8 +95,9 @@ class GrammarTest < Test::Unit::TestCase
     ol = doc.topic.body.ol
     result = g.validate ol
     assert_equal false, result
-    assert_equal :validate_error, o.args[0]
-    assert_equal 2, o.args[1].index
+    assert_equal :ValidateError, o.args[0]
+    assert_equal 'children_rule_class', o.args[1].simple_name
+    assert_equal 2, o.args[2].index
   end
 
   def test_error_missing_attr
@@ -97,8 +105,9 @@ class GrammarTest < Test::Unit::TestCase
     topic = doc.topic
     result = g.validate topic
     assert_equal false, result
-    assert_equal :validate_error, o.args[0]
-    assert_equal 'id', o.args[1].attr_name
+    assert_equal :ValidateError, o.args[0]
+    assert_equal 'attrs_rule_class', o.args[1].simple_name
+    assert_equal 'id', o.args[2].attr_name
   end
 
   def test_error_no_children
@@ -106,8 +115,9 @@ class GrammarTest < Test::Unit::TestCase
     ol = doc.topic.body.ol
     result = g.validate ol
     assert_equal false, result
-    assert_equal :validate_error, o.args[0]
-    assert_equal 'li', o.args[1].missing_child
+    assert_equal :ValidateError, o.args[0]
+    assert_equal 'children_rule_class', o.args[1].simple_name
+    assert_equal 'li', o.args[2].missing_child
   end
 
   def test_error_no_valid_first_child
@@ -115,8 +125,9 @@ class GrammarTest < Test::Unit::TestCase
     ol = doc.topic.body.ol
     result = g.validate ol
     assert_equal false, result
-    assert_equal :validate_error, o.args[0]
-    assert_equal 'li', o.args[1].missing_child
+    assert_equal :ValidateError, o.args[0]
+    assert_equal 'children_rule_class', o.args[1].simple_name
+    assert_equal 'li', o.args[2].missing_child
   end
 
   def test_interleaved_valid_children_text

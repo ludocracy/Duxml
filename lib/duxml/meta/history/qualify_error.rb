@@ -6,16 +6,14 @@ module Duxml
   # created when grammar detects error from user input
   class QualifyErrorClass < ErrorClass
     include QualifyError
+
+    alias_method :bad_change, :object
   end
 
   module QualifyError
-    def description
-      super || "#{non_compliant_change.description} violates rule #{violated_rule.description}."
-    end
 
-    # points to change that triggered this error
-    def non_compliant_change
-      root.history.find_child self[:object]
+    def description
+      "#{simple_name.gsub('_', ' ')}: #{bad_change.description} violates rule #{rule.description}."
     end
   end # module QualifyError
 end # module Duxml

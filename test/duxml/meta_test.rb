@@ -5,20 +5,42 @@ class MetaTest < Test::Unit::TestCase
   include Duxml
   include Ox
   def setup
+    @g_path = File.expand_path(File.dirname(__FILE__) + '/../../xml/test_grammar.xml')
+    @m = MetaClass.new(Doc.new, g_path)
     @x = Meta.xml
   end
 
-  attr_reader :x
+  attr_reader :x, :m, :g_path
+
+  def test_init_no_grammar
+    ng = MetaClass.new(Doc.new)
+    assert_equal false, ng.grammar.defined?
+    ng.grammar = g_path
+    assert_equal true, ng.grammar.defined?
+  end
 
   def test_xml
-    assert_equal 'duxml:meta', x.name
-    assert_equal 'duxml:grammar', x.nodes.first.name
-    assert_equal 'duxml:history', x.nodes.last.name
+    assert_equal 'duxml:meta', x.root.name
+    assert_equal 'duxml:grammar', x.root.nodes.first.name
+    assert_equal 'duxml:history', x.root.nodes[1].name
   end
 
   def test_update
-    assert_equal true, x.nodes.first.respond_to?(:update)
-    assert_equal true, x.nodes.last.respond_to?(:update)
+    assert_equal true, m.grammar.respond_to?(:update)
+    assert_equal true, m.history.respond_to?(:update)
+  end
+
+  def test_observer_status
+    res = m.grammar.rules.any? do |r|
+      r.history != m.history
+    end
+    assert_equal false, res
+    assert_equal m.grammar, m.history.grammar
+  end
+
+  def test_meta_path
+    path = 'C:/test/file.xml'
+    assert_equal 'C:/test/.file.xml.duxml', Meta.meta_path(path)
   end
 
   def tear_down

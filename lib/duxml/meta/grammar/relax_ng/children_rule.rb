@@ -1,19 +1,30 @@
-require File.expand_path(File.dirname(__FILE__) + '/../rule/children_rule.rb')
+require File.expand_path(File.dirname(__FILE__) + '/../rule/children_rule')
 
 module Duxml
-  ChildrenRule.class_eval do
-    # TODO either make RelaxNG module or get parent.xpath to find needed element_def
-    # @param parent [Nokogiri::XML::Node] parent from RelaxNG document under construction (should be <grammar/>)
-    # @return [Nokogiri::XML::Node] same parent but with addition of <define><doc> with #statement converted into <ref>'s
+  module RngChildrenRule; end
+
+  class ChildrenRuleClass
+    include RngChildrenRule
+  end
+
+  module RngChildrenRule
+    include Duxml::LazyOx
+    include Ox
+
+    # @param parent [Ox::Element] parent from RelaxNG document under construction (should be <grammar/>)
+    # @return [Ox::Element] same parent but with addition of <define><doc> with #statement converted into <ref>'s
     #   these are wrapped as needed in <zeroOrMore>,<oneOrMore>, or <optional>
     def relaxng(parent)
-      nodes = parent.css("doc[@name='#{subject}']")
+      nodes = parent.Define(name: 'subject')
       raise Exception if nodes.size > 1
       element_def = nodes.first
 
       if element_def.nil?
-        element_def ||= element 'doc', name: subject
-        define = element('define', name: subject) << element_def
+        element_def = Element.new('doc')
+        element_def[:name] = subject
+        define = Element.new('define')
+        define[:name] = subject
+        define << element_def
         parent << define
       end
 
@@ -27,7 +38,7 @@ module Duxml
                           else nil
                         end
         if operator_name
-          cur_element = element(operator_name.to_s)
+          cur_element = Element.new(operator_name.to_s)
           element_def << cur_element
         else
           cur_element = element_def
@@ -36,28 +47,33 @@ module Duxml
         # if child requirement has enumerated options, wrap in <choice>
         element_array = scanner[:match].source.gsub('\b','').scan(Regexp.nmtoken).flatten
         if element_array.size > 1
-          choice_el = element 'choice'
+          choice_el = Element.new 'choice'
           cur_element << choice_el
           cur_element = choice_el
         end
 
         # adding enumerated options as new doc defs if needed
         element_array.each do |element_name|
-          nodes = parent.css("doc[@name='#{element_name}']")
-          raise Exception if nodes.size > 1
-          if nodes.empty?
-            new_def = element [[:define, {name: element_name}],[:meta, {name: element_name}]]
+          existing_defs = parent.Define() do |d| d.name == element_name end
+          raise Exception if existing_defs.size > 1
+          if existing_defs.empty?
+            new_def = Element.new('define')
+            new_def[:name] = element_name
+            child_el_def = Element.new('element')
+            child_el_def[:name] = element_name
+            new_def << child_el_def
             parent << new_def
           end
 
           if element_name == 'PCDATA'
-            cur_element << element('text')
+            cur_element << Element.new('text')
           else
-            cur_element << element('ref', name: element_name)
+            cur_element << Element.new('ref')
+            cur_element.ref[:name] = element_name
           end
         end # element_array.each
       end # get_scanners.each
       parent
     end # def relaxng
-  end # ChildrenRule.class_eval
+  end # module RngChildrenRule
 end # module Duxml
