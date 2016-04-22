@@ -20,37 +20,37 @@ class HistoryTest < Test::Unit::TestCase
     new_kid = Element.new('c')
     x << new_kid
     c = history.first
-    assert_equal 'duxml:add', c.class.to_s.nmtokenize
+    assert_equal 'duxml:add_class', c.class.to_s.nmtokenize
   end
 
   def test_remove_child
     x.delete x.b
     c = history.first
-    assert_equal 'duxml:remove', c.class.to_s.nmtokenize
+    assert_equal 'duxml:remove_class', c.class.to_s.nmtokenize
   end
 
   def test_new_attr
     x.b[:new_attribute] = 'new value'
     c = history.first
-    assert_equal 'duxml:new_attribute', c.class.to_s.nmtokenize
+    assert_equal 'duxml:new_attr_class', c.class.to_s.nmtokenize
   end
 
   def test_new_text
     x.b << 'new content'
     c = history.first
-    assert_equal 'duxml:new_text', c.class.to_s.nmtokenize
+    assert_equal 'duxml:new_text_class', c.class.to_s.nmtokenize
   end
 
   def test_change_attr
     x.a[:var_attr] = 'new_value'
     c = history.first
-    assert_equal 'duxml:change_attribute', c.class.to_s.nmtokenize
+    assert_equal 'duxml:change_attr_class', c.class.to_s.nmtokenize
   end
 
   def test_change_text
     x.a.nodes[0] = 'new text'
     c = history.first
-    assert_equal 'duxml:change_text', c.class.to_s.nmtokenize
+    assert_equal 'duxml:change_text_class', c.class.to_s.nmtokenize
   end
 
   def tear_down

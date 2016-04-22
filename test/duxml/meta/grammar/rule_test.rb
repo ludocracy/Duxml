@@ -3,16 +3,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../../../../lib/duxml/meta/g
 require File.expand_path(File.dirname(__FILE__) + '/../../../../lib/duxml/meta/history/change')
 
 require 'test/unit'
-
-class TestRule
-  include Duxml::Rule
-  def initialize(*args)
-    @subject = args.first
-  end
-end
-
-class TestRulePattern
-  include Duxml::Pattern
+include Duxml
+class TestRulePattern < PatternClass
   def initialize(*args)
     @subject = args.first
   end
@@ -31,7 +23,7 @@ class RuleTest < Test::Unit::TestCase
   include Ox
 
   def setup
-    @rule = TestRule.new('parent')
+    @rule = RuleClass.new('parent', 'statement')
     @o = Observer.new
     rule.add_observer o
   end
@@ -39,13 +31,21 @@ class RuleTest < Test::Unit::TestCase
   attr_reader :rule, :o
 
   def test_qualify
-    result = rule.qualify Change.new(Element.new('barney'))
+    result = rule.qualify ChangeClass.new(Element.new('barney'))
     assert_equal false, result
     assert_equal :qualify_error, o.args.first
 
     result = rule.qualify TestRulePattern.new(Element.new('barney'))
     assert_equal false, result
     assert_equal :validate_error, o.args.first
+  end
+
+  def test_statement
+    assert_equal 'statement', rule.statement
+  end
+
+  def test_object_nil
+    assert_equal false, rule.object.is_a?(Element)
   end
 
   def test_applies_to

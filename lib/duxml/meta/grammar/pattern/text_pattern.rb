@@ -1,21 +1,24 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../grammar/pattern')
 
 module Duxml
+  module TextPattern; end
   # pattern representing relationship between an object and its text-only child
-  class TextPattern
-    include Pattern
-
+  class TextPatternClass < PatternClass
+    include TextPattern
 
     # @param _subject [Ox::Element] parent of text node
     # @param _index [Fixnum] index of text node
     def initialize(_subject, _index)
-      @subject, @index = _subject, _index
+      @index = _index
+      super _subject
     end
 
     attr_reader :subject, :index
+  end
 
+  module TextPattern
     def text
-      affected_parent.nodes[index]
+      subject.nodes[index]
     end
 
     def description

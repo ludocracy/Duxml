@@ -1,15 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/../rule')
 
 module Duxml
-  # rule that states what values a given attribute name is allowed to have
-  class ValueRule
-    include Rule
+  module ValueRule; end
 
-    CDATA_EXPR = /(\]\]>)/
-    ENTITY_EXPR = /(\b[\S]+\b)/
-    ID_EXPR = /(\b[\w-]+\b)/
-    NMTOKEN_EXPR = ID_EXPR
-    NOTATION_EXPR = //
+  # rule that states what values a given attribute name is allowed to have
+  class ValueRuleClass < RuleClass
+    include ValueRule
 
     # @param _attr_name [String] the attribute name
     # @param _statement [String] data type or expression of the rule for the given attribute's value
@@ -17,7 +13,15 @@ module Duxml
       @attr_name, @statement = _attr_name, _statement
     end
 
-    attr_reader :attr_name, :statement
+    attr_reader :attr_name
+  end
+
+  module ValueRule
+    CDATA_EXPR = /(\]\]>)/
+    ENTITY_EXPR = /(\b[\S]+\b)/
+    ID_EXPR = /(\b[\w-]+\b)/
+    NMTOKEN_EXPR = ID_EXPR
+    NOTATION_EXPR = //
 
     # @return [true]
     def abstract?
@@ -101,5 +105,5 @@ module Duxml
         !result
       end
     end
-  end # class ValueRule
+  end # module ValueRule
 end # module Duxml

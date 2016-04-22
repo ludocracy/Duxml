@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../rule/attributes_rule.rb')
+require File.expand_path(File.dirname(__FILE__) + '/../rule/attrs_rule.rb')
 
 module Duxml
   AttributesRule.class_eval do

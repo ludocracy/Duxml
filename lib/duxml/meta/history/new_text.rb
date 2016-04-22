@@ -1,8 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/change')
 
 module Duxml
+  module NewText; end
   # created when object had no children or text and text has been added
-  class NewText < Change
+  class NewTextClass < ChangeClass
+    include NewText
+
     # @param _subject [Duxml::Element] doc that has gained new text
     # @param _index [Fixnum] index of new text node
     def initialize(_subject, _index)
@@ -11,9 +14,11 @@ module Duxml
     end
 
     attr_reader :index
+  end
 
+  module NewText
     def text
-      subject[index]
+      subject.nodes[index]
     end
 
     # @return [String] self description

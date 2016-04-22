@@ -1,11 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/../grammar/pattern')
 
 module Duxml
+  module Change; end
   # do not use - only for subclassing
   # changes represent events i.e. patterns with a fixed position in time,
   # and can include qualification and validation errors
-  class Change
-    include Pattern
+  class ChangeClass < PatternClass
+    include Change
 
     @time_stamp
 
@@ -13,7 +14,7 @@ module Duxml
     #
     # @param _subject [Duxml::Element] parent doc affected by change
     def initialize(_subject, *args)
-      @subject = _subject
+      super _subject
       @time_stamp = Time.now
       args.each do |arg|
         if arg.is_a?(Duxml::Element)
@@ -23,11 +24,13 @@ module Duxml
       end
     end
 
+    attr_reader :time_stamp
+  end # class ChangeClass < PatternClass
+
+  module Change
     def abstract?
       false
     end
-
-    attr_reader :time_stamp
 
     # @return [String] gives its time stamp
     def description

@@ -1,9 +1,21 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../ruby_ext/string')
 
 module Duxml
+  module Pattern; end
+
+  class PatternClass
+    include Pattern
+    @subject
+
+    def initialize(subj)
+      @subject = subj
+    end
+
+    attr_reader :subject
+  end
+
   module Pattern
     include Duxml
-    @subject
 
     # @return [String] nmtoken name of this pattern without namespace prefix e.g. ChildPattern.new(parent, child).name => 'child_pattern'
     def simple_name
@@ -30,8 +42,6 @@ module Duxml
       end.join(':')
     end
 
-    attr_reader :subject
-
     # returns relationship description as string by subtracting super class name
     # (e.g. 'pattern' or 'rule') from simple_class
     # Duxml::ChildrenRule#relationship => 'children'
@@ -48,6 +58,7 @@ module Duxml
     end
 
     def object
+      return @object if instance_variable_defined?(:@object)
       instance_variables.each do |var|
         target = instance_variable_get(var)
         return target unless target.is_a?(String) or target == subject
@@ -68,5 +79,5 @@ module Duxml
           -1
       end
     end # def <=>
-  end # class Pattern
+  end # module Pattern
 end # module Duxml

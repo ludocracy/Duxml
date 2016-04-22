@@ -2,50 +2,57 @@ require File.expand_path(File.dirname(__FILE__) + '/../reportable')
 require File.expand_path(File.dirname(__FILE__) + '/grammar/spreadsheet')
 require File.expand_path(File.dirname(__FILE__) + '/grammar/pattern_maker')
 require File.expand_path(File.dirname(__FILE__) + '/grammar/rule/children_rule')
-require File.expand_path(File.dirname(__FILE__) + '/grammar/rule/attributes_rule')
+require File.expand_path(File.dirname(__FILE__) + '/grammar/rule/attrs_rule')
 require File.expand_path(File.dirname(__FILE__) + '/grammar/rule/value_rule')
+require File.expand_path(File.dirname(__FILE__) + '/../doc/lazy_ox')
 require File.expand_path(File.dirname(__FILE__) + '/grammar/rule/text_rule')
 #require File.expand_path(File.dirname(__FILE__) + '/grammar/relax_ng')
+require 'forwardable'
 
 module Duxml
-  # contains Duxml::Rules and can apply them by validating XML or qualifying user input
-  # reporting Duxml::Errors to History as needed
   module Grammar
-    include Enumerable
     include Reportable
     include Duxml
     include Spreadsheet
     include PatternMaker
+    include LazyOx
     #include RelaxNG
+  end
 
-    def rules
-      @nodes ||= []
+  class GrammarClass
+    extend Forwardable
+    include Grammar
+
+    # @param rules [[RuleClass]] optional, can initialize grammar with rules
+    def initialize(rules=[])
+      @rules = rules
     end
 
-    def update(*args)
-      sleep 0
-    end
-
-    def self.xml
-      Element.new('duxml:grammar').extend self
-    end
-
-    def self.import(path)
+    def_delegators :@rules, :<<, :[], :each
+    attr_reader :rules
+    alias_method :nodes, :rules
+  end
+  # contains Duxml::Rules and can apply them by validating XML or qualifying user input
+  # reporting Duxml::Errors to History as needed
+  module Grammar
+    def import(path)
       raise Exception unless File.exists?(path)
       if %w(.xlsx .csv).include?(File.extname path)
         doc = sheet_to_xml path
         File.write(File.basename(path)+'.xml', Ox.dump(doc)) #TODO make optional!
         doc
+      else
+        Ox.parse_obj(File.read path)
       end
     end
 
-    def each(&block)
-      yield @nodes.each
+    def update(*args)
+      #qualify args.first
     end
 
     # @return [Boolean] whether or not any rules have been defined yet in this grammar
     def defined?
-      !nodes.empty?
+      !rules.empty?
     end
 
     # @return [String] lists XML schema and content rules in order of precedence
@@ -75,7 +82,7 @@ module Duxml
 
       # define behaviors for when there are no rules applying to a given pattern
       if rules.empty?
-        return true if change_or_pattern.respond_to?(:new_content)
+        return true if change_or_pattern.respond_to?(:text)
         return true if change_or_pattern.respond_to?(:value)
         report :validate_error, change_or_pattern
         return false
@@ -86,17 +93,11 @@ module Duxml
       !results.any? do |qualified| !qualified end
     end # def qualify
 
-    private
-
     # @param change_or_pattern [Duxml::Change, Duxml::Pattern] change or pattern to be qualified
     # @return [Array[Duxml::Rule]] rules that match the pattern type (e.g. :change_content => :content_rule)
     #   and subject (e.g. change_or_pattern.subject.type => 'blobs' && rule.subject => 'blobs')
     def get_rule(change_or_pattern)
-      nodes.select do |rule| rule.applies_to?(change_or_pattern) end
+      rules.select do |rule| rule.applies_to?(change_or_pattern) end
     end # def get_rules
-
-    def self
-      @doc.grammar
-    end
   end # module Grammar
 end # module Duxml

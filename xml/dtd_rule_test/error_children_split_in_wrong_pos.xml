@@ -2,7 +2,7 @@
 <topic id="topic7">
   <title>simple dita validation test</title>
   <body>
-    <ol id="error_children_split_in_wrong_pos">
+    <ol>
       <li>text</li>
       <data>data</data>
       <li>text</li>

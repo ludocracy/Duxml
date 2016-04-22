@@ -1,8 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/error')
 
 module Duxml
+  module ValidateError; end
+
   # created when grammar detects error from file
-  class ValidateError < Error
+  class ValidateErrorClass < ErrorClass
+    include ValidateError
+
     # @param *args [*several_variants] if args.first is not XML,
     #   args[0] must be violated Rule,
     #   args[1] must be violating Pattern
@@ -14,7 +18,9 @@ module Duxml
         super({subject: args.first}, args.last.xml)
       end
     end
+  end
 
+  module ValidateError
     # returns object that is parent of the pattern e.g. the parent of a child node, the parent of the attribute, etc.
     def affected_parent
       object.subject
@@ -33,5 +39,5 @@ module Duxml
     def error_line_no
       non_compliant_change.object.respond_to?(:line) ? non_compliant_change.object.line : non_compliant_change.subject.line
     end
-  end # class ValidateError
+  end # module ValidateError
 end # module Duxml

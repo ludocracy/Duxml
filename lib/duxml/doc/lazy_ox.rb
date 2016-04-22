@@ -1,14 +1,15 @@
 require File.expand_path(File.dirname(__FILE__) + '/../ruby_ext/string')
 
+
 module Duxml
   module LazyOx
   # welcome to Lazy-Ox - where any method that doesn't exist, you can create on the fly and assign its methods to
   # a corresponding Duxml::Element. see Regexp.nmtoken and String#nmtokenize and String#constantize to see how a given symbol
-  # can be converted into XML doc names and vice versa. it can also use Class names as method calls to return children by type
+  # can be converted into XML element names and vice versa. it can also use Class names as method calls to return children by type
   #
   # this method uses Ox::Element's :method_missing but adds an additional rescue block that:
   #   matches namespaced Ruby module to this Element's name and extends this node with module's methods
-  #   then method is called again with given arguments, yielding result to block if given, returning result if not
+  #   then method matching symbol is called again with given arguments, yielding result to block if given, returning result if not
   #   e.g.
   #     module Duxml
   #       module Throwable
@@ -20,7 +21,7 @@ module Duxml
   #
   #     Element.new('throwable').throw => 'throwing!!'
   #
-  #   if doc name matches a class then method yields to block or returns as array child nodes that matches class
+  #   if symbol name matches a class then method yields to block or returns as array child nodes that matches class
   #   you can further refine search results by adding the symbol of the child instance variable, including name, by which to filter
   #   if block given, returns first child for which block evaluates to true
   #
@@ -56,7 +57,7 @@ module Duxml
   #         => [#<Duxml::Element:0xfff @value="child" @attributes={foo: 'bar'} ...>]
   #
   #
-  #   if doc name has no matching Class or Module in namespace,
+  #   if element name has no matching Class or Module in namespace,
   #     if symbol is lower case, it is made into a method, given &block as definition, then called with *args
   #       e.g. n.change_color('blue') do |new_color|  => #<Duxml::Element:0xfff @value="node" @attributes={color: 'blue'} @nodes=[]>
   #              @color = new_color
@@ -71,7 +72,7 @@ module Duxml
     def method_missing(sym, *args, &block)
       super(sym, *args, &block)
     rescue NoMethodError
-      # handling Constant look up to dynamically extend or add to doc
+      # handling Constant look up to dynamically extend or add to element
       if lowercase?(sym)
         if (const = look_up_const) and const.is_a?(Module)
           extend const
@@ -99,7 +100,7 @@ module Duxml
 
     def filter(sym, args)
       class_nodes = nodes.select do |node|
-        node.name == sym.to_s.nmtokenize
+        node.name == sym.to_s.nmtokenize or simple_class(node) == sym.to_s
       end
       class_nodes.keep_if do |node|
         if args.empty?
@@ -127,6 +128,10 @@ module Duxml
 
     def lowercase?(sym)
       sym.to_s[0].match(/[A-Z]/).nil?
+    end
+
+    def simple_class(obj)
+      obj.class.to_s.split('::').last
     end
   end # module LazyOx
 end # module Duxml

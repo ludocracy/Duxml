@@ -28,6 +28,10 @@ module Duxml
       line < 0 || column < 0
     end
 
+    def constant
+      self.simple_
+    end
+
     # @param obs [Duxml::History] observer to add to this Element as well as its NodeSet
     def add_observer(obs)
       super(obs)
@@ -60,14 +64,22 @@ module Duxml
     # @param attr [String, Symbol] name of attribute
     # @param val [String]
     # @return [Element] self
-    def []=(attr, val)
+    def []=(attr_sym, val)
+      attr = attr_sym.to_s
       raise "argument to [] must be a Symbol or a String." unless attr.is_a?(Symbol) or attr.is_a?(String)
       args = [attr]
       args << attributes[attr] if attributes[attr]
       super(attr, val)
-      type = args.size == 1 ? :NewAttribute : :ChangeAttribute
+      type = args.size == 1 ? :NewAttr : :ChangeAttr
       report(type, *args)
       self
+    end
+
+    def to_s
+      s = %(<#{name})
+      attributes.each do |k,v| s << %( #{k.to_s}="#{v}") end
+      return s+'/>' if nodes.empty?
+      s << ">#{nodes.collect do |n| n.to_s end.join}</#{name}>"
     end
 
     # now reports to History

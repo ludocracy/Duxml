@@ -1,8 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/change')
 
 module Duxml
+  module ChangeAttr; end
+
   # created when Element has an attribute already and its value has been changed
-  class ChangeAttribute < Change
+  class ChangeAttrClass < ChangeClass
+    include ChangeAttr
+
     # @param _subject [Duxml::Element] parent doc whose attribute changed
     # @param _attr_name [String] name of the changed attribute
     # @param _old_value [String] old attribute value
@@ -12,7 +16,9 @@ module Duxml
     end
 
     attr_reader :attr_name, :old_value
+  end # class ChangeAttributeClass
 
+  module ChangeAttr
     # @return [String] new value of attribute
     def value
       subject[attr_name]
@@ -22,5 +28,5 @@ module Duxml
     def description
       "#{super} #{subject.description} changed attribute '#{attr_name}' value from '#{old_value}' to '#{value}'."
     end
-  end # class ChangeAttribute
+  end # module ChangeAttribute
 end # module Duxml

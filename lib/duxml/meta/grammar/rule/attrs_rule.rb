@@ -1,21 +1,25 @@
 require File.expand_path(File.dirname(__FILE__) + '/../rule')
 
 module Duxml
+  module AttrsRule; end
+
   # rule that states what attribute names a given object is allowed to have
-  class AttributesRule
-    include Rule
+  class AttrsRuleClass < RuleClass
+    include AttrsRule
 
     # @param _subject [String] name of the doc
     # @param attrs [String] the attribute name pattern in Regexp form
     # @param required [String] the requirement level - optional i.e. #IMPLIED by default
     def initialize(_subject, attrs, required='#IMPLIED')
-      @subject = _subject
-      @statement = attrs.gsub('-', '__dash__').gsub(/\b/, '\b').gsub('-', '__dash__')
+      formatted_statement = attrs.gsub('-', '__dash__').gsub(/\b/, '\b').gsub('-', '__dash__')
       @requirement = required
+      super(_subject, formatted_statement)
     end
 
-    attr_reader :subject, :statement, :requirement
+    attr_reader :requirement
+  end
 
+  module AttrsRule
     # @param change_or_pattern [Duxml::Pattern] checks an doc of type change_or_pattern.subject against change_or_pattern
     # @return [Boolean] whether or not given pattern passed this test
     def qualify(change_or_pattern)
@@ -53,7 +57,7 @@ module Duxml
     # @return [Boolean] true if this rule does not apply to param; false if pattern is for a missing required attribute
     #   otherwise returns whether or not any illegal attributes exist
     def pass(change_or_pattern)
-      if change_or_pattern.is_a?(Duxml::Change)
+      if change_or_pattern.respond_to?(:time_stamp)
         attr_name.include?(change_or_pattern.attr_name.to_s)
       else
         !change_or_pattern.abstract?

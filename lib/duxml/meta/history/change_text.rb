@@ -1,8 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/change')
 
 module Duxml
+  module ChangeText; end
   # created when doc has text and text has been changed
-  class ChangeText < Change
+  class ChangeTextClass < ChangeClass
+    include ChangeText
+
     # @param _subject [Duxml::Element] parent doc whose text has changed
     # @param _index [Fixnum] index of parent's nodes that text is found at
     # @param _old_text [String] string that was replaced
@@ -12,7 +15,9 @@ module Duxml
     end
 
     attr_reader :index, :old_text
+  end
 
+  module ChangeText
     # @return [String] self description
     def description
       "#{super} #{subject.description} changed text from '#{old_text}' to '#{text}'."
@@ -22,5 +27,5 @@ module Duxml
     def text
       subject[index]
     end
-  end # class ChangeContent
+  end # module ChangeText
 end # module Duxml

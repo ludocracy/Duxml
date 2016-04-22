@@ -2,6 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/doc')
 
 module Duxml
   module Saxer
+    include Duxml
     @io
 
     attr_accessor :io
@@ -9,7 +10,7 @@ module Duxml
     # @return [Doc] finished document with each Element's line and column info added
     def sax(path, *obs)
       io = File.open path
-      saxer = DocuLiner.new(Duxml::Doc.new, *obs)
+      saxer = DocuLiner.new(Doc.new, *obs)
       Ox.sax_parse(saxer, io, {convert_special: true, symbolize: false})
       saxer.cursor
     end

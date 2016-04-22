@@ -1,6 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../../lib/duxml/doc/lazy_ox')
 require 'ox'
 require 'test/unit'
+
 module Duxml
   class El < ::Ox::Element
     include LazyOx
@@ -17,19 +18,45 @@ module Duxml
   end
 end
 
+class Generic
+  include Duxml::LazyOx
+  def initialize(*a)
+    @nodes = a
+  end
+
+  attr_reader :nodes
+end
+
+class Duck
+  def name; 'duck' end
+end
+
+class Goose;
+  def name; 'goose' end
+end
+
 class LazyOxTest < Test::Unit::TestCase
   include Duxml
 
   def setup
     @x = El.new('root')
   end
+
   attr_accessor :x
 
   def test_module_extension
     assert_equal 'hi!', x.foo
   end
 
-  def test_class_array
+  def test_class_match_array
+    g = Generic.new(Duck.new, Goose.new, Goose.new)
+    a = g.Goose
+    assert_equal 2, a.size
+    assert_equal "goose", a.first.name
+    assert_equal "goose", a[1].name
+  end
+
+  def test_element_name_array
     #unfiltered
     %w(one two two two).each do |name| x << El.new(name) end
     a = x.two

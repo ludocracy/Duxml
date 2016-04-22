@@ -67,7 +67,7 @@ class ElementTest < Test::Unit::TestCase
 
   def test_change_attr
     x[:foot] = :coot
-    assert_equal :ChangeAttribute, o.args[0]
+    assert_equal :ChangeAttr, o.args[0]
     assert_equal 'root', o.args[1].name
     assert_equal :foot, o.args[2]
     assert_equal 'poot', o.args[3]
@@ -75,7 +75,7 @@ class ElementTest < Test::Unit::TestCase
 
   def test_new_attr
     x[:cork] = :pork
-    assert_equal :NewAttribute, o.args[0]
+    assert_equal :NewAttr, o.args[0]
     assert_equal 'root', o.args[1].name
     assert_equal :cork, o.args[2]
   end

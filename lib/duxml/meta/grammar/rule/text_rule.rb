@@ -1,16 +1,13 @@
 require File.expand_path(File.dirname(__FILE__) + '/../rule')
 
 module Duxml
-  class TextRule
-    include Rule
-    # @param _subject [String] the doc to which this rule applies
-    # @param _statement (Regexp) the Regexp that will be matched against the given doc's content
-    def initialize(_subject, _statement)
-      @subject, @statement = _subject, _statement
-    end
+  module TextRule; end
 
-    attr_reader :subject, :statement
+  class TextRuleClass < RuleClass
+    include TextRule
+  end
 
+  module TextRule
     # @param change_or_pattern [Duxml::Change, Duxml::Pattern] change or pattern that rule may apply to
     # @return [Boolean] whether this rule does in fact apply
     def applies_to?(change_or_pattern)
@@ -20,7 +17,7 @@ module Duxml
 
     # applies Regexp statement to text content of this node; returns false if content has XML
     def qualify(change_or_pattern)
-      @object = change_or_pattern.subject
+      @object = change_or_pattern
       result = pass
       super change_or_pattern unless result
       @object = nil
@@ -31,12 +28,11 @@ module Duxml
 
     def pass
       return false unless object.text.is_a?(String)
-      scanner = get_scanner
-      scanner.match(object.text).to_s == object.text
+      get_scanner.match(object.text).to_s == object.text
     end
 
     def get_scanner
-      Struct::Scanner.new Regexp.new(statement), ''
+      Regexp.new(statement)
     end
-  end # class ContentRule
+  end # module TextRule
 end # module Duxml

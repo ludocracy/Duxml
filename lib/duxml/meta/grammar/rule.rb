@@ -3,13 +3,22 @@ require File.expand_path(File.dirname(__FILE__) + '/../../reportable')
 
 module Duxml
   Struct.new 'Scanner', :match, :operator
+  module Rule; end
 
-  module Rule
-    include Pattern
+  class RuleClass < PatternClass
+    include Rule
     include Reportable
 
-    attr_reader :subject, :statement, :object
+    def initialize(subj, _statement)
+      @statement = _statement
+      @object = nil
+      super subj
+    end
 
+    attr_reader :statement, :object
+  end
+
+  module Rule
     # Duxml::Rule's #qualify is only used to report errors found by its subclasses' #qualify methods
     # @param change_or_pattern [Duxml::Pattern, Duxml::Change] Change or Pattern to be reported for Rule violation
     # @return [Boolean] always false; this method should always be subclassed to apply that specific rule type's #qualify
@@ -30,5 +39,5 @@ module Duxml
     def description
       %(#{name} that #{relationship} of #{subject} must match #{statement.gsub('\b','')})
     end
-  end # class Rule
+  end # module Rule
 end # module Duxml

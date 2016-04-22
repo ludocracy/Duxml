@@ -1,25 +1,29 @@
 require File.expand_path(File.dirname(__FILE__) + '/../rule')
+require File.expand_path(File.dirname(__FILE__) + '/../../../doc/element')
 
 module Duxml
-  # rule that states what children and how many a given object is allowed to have
-  class ChildrenRule
-    include Rule
+  module ChildrenRule; end
+
+  # rule that states what children and how many a given element is allowed to have
+  class ChildrenRuleClass < RuleClass
+    include ChildrenRule
     # child rules are initialized from DTD doc declarations e.g. (zeroOrMore|other-first-child)*,second-child-optional?,third-child-gt1+
     #
     # @param _subject [String] name of the doc the rule applies
     # @param _statement [String] DTD-style statement of the rule
     def initialize(_subject, _statement)
-      @subject = _subject
-      @statement = _statement
-                       .gsub(/[\<>]/, '')
-                       .gsub(/#PCDATA/, 'p_c_data')
-                       .gsub('-','_dash_')
-                       .gsub(/\b/,'\b')
-                       .gsub('_dash_', '-')
-                       .gsub(/\s/,'')
-      @object = nil
+      formatted_statement = _statement
+                                .gsub(/[\<>]/, '')
+                                .gsub(/#PCDATA/, 'p_c_data')
+                                .gsub('-','_dash_')
+                                .gsub(/\b/,'\b')
+                                .gsub('_dash_', '-')
+                                .gsub(/\s/,'')
+      super(_subject, formatted_statement)
     end
+  end # class ChildrenRuleClass
 
+  module ChildrenRule
     # @param change_or_pattern [Duxml::ChildPattern, Duxml::Add, Duxml::Remove] to be evaluated to see if it follows this rule
     # @return [Boolean] whether or not change_or_pattern#subject is allowed to have #object as its child
     #   if false, Error is reported to History
@@ -66,13 +70,15 @@ module Duxml
       end
     end
 
+    attr_reader :child_stack
+
     def pass
-      child_stack = object.child.nil? ? [] : object.parent.nodes.clone
+      @child_stack = object.child.nil? ? [] : object.parent.nodes.clone
       scanners = get_scanners
       scanner = scanners.shift
       result = false
       loop do
-        child = child_stack.shift
+        child = @child_stack.shift
         case
           when child.nil?, scanner.nil? then break
           when child.is_a?(String)
@@ -80,19 +86,19 @@ module Duxml
           when child.name.match(scanner[:match]) # scanner matches this child
             if scanner[:operator]=='?' or scanner[:operator]=='' # shift scanners if we only need one child of this type
               scanner = scanners.shift
-              result = previous(child).nil? || (previous(child).name != child.name)
+              result = previous_child.nil? || (previous_child.name != child.name)
             else
               result = true
             end
           # scanner does not match this child...
           when %w(? *).include?(scanner[:operator]) # optional scanner so try next scanner on same child
             scanner = scanners.shift
-            child_stack.unshift child
+            @child_stack.unshift child
             result = !scanner.nil?
           else
             result = false # else, this scanner will report false
         end # case
-        return result unless child.is_a?(String) or !matching_index?(child_stack) # don't need to keep looping because we've scanned our target
+        return result unless child.is_a?(String) or !matching_index?# don't need to keep looping because we've scanned our target
       end # loop do
 
       # checking to see if any required children were not present
@@ -102,13 +108,18 @@ module Duxml
       result
     end # def pass
 
-    def matching_index?(child_stack)
-      object.parent.nodes.size-child_stack.size+1 == object.index
+    def matching_index?
+      child_index == object.index
     end
 
-    def previous(child)
-      index = child.column-1
+    def child_index
+      i = object.parent.nodes.size-child_stack.size-1
+      i
+    end
+
+    def previous_child
+      index = child_index - 1
       index < 0 ? nil : object.parent.nodes[index]
     end
-  end # class ChildrenRule
+  end # module ChildrenRule
 end # module Duxml

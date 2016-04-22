@@ -1,8 +1,14 @@
 require File.expand_path(File.dirname(__FILE__) + '/error')
 
 module Duxml
+  module QualifyError; end
+
   # created when grammar detects error from user input
-  class QualifyError < Error
+  class QualifyErrorClass < ErrorClass
+    include QualifyError
+  end
+
+  module QualifyError
     def description
       super || "#{non_compliant_change.description} violates rule #{violated_rule.description}."
     end
@@ -11,5 +17,5 @@ module Duxml
     def non_compliant_change
       root.history.find_child self[:object]
     end
-  end # class QualifyError
+  end # module QualifyError
 end # module Duxml
