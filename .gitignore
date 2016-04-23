@@ -8,6 +8,7 @@
 .idea/
 
 #output files
+test/**/*.xml
 trace.txt
 output*
 result*

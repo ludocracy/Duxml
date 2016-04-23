@@ -71,7 +71,7 @@ module Duxml
     # @return [String] lists XML schema and content rules in order of precedence
     def description
     "grammar follows: \n" +
-        children.collect do |change_or_error|
+        rules.collect do |change_or_error|
           change_or_error.description
         end.join("\n")
     end

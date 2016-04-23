@@ -15,61 +15,60 @@ class RelaxNGTest < Test::Unit::TestCase
   def test_star_children
     g << ChildrenRuleClass.new('star', 'child*')
     rng = g.relaxng
-    nodes = rng.css("doc[@name='star']")
+    nodes = rng.root.Define(name: 'star')
     assert_equal 1, nodes.size
-    assert_equal 1, nodes.first.element_children.size
-    assert_equal 'zeroOrMore', nodes.first.element_children.first.name
+    assert_equal 1, nodes.first.nodes.size
+    assert_equal 'zeroOrMore', nodes.first.element.zeroOrMore.name
   end
 
   def test_bang_child
     g << ChildrenRuleClass.new('bang', 'child?')
     rng = g.relaxng
-    nodes = rng.css('doc[@name="bang"]')
+    nodes = rng.root.Define(name: 'bang')
     assert_equal 1, nodes.size
-    assert_equal 1, nodes.first.element_children.size
-    assert_equal 'optional', nodes.first.element_children.first.name
+    assert_equal 1, nodes.first.nodes.size
+    assert_equal 'optional', nodes.first.element.optional.name
   end
 
   def test_required_child
     g << ChildrenRuleClass.new('required', 'child')
     rng = g.relaxng
-    nodes = rng.css("doc[@name='required']")
+    nodes = rng.root.Define(name: 'required')
     assert_equal 1, nodes.size
-    assert_equal 1, nodes.first.element_children.size
-    assert_equal 'ref', nodes.first.element_children.first.name
+    assert_equal 1, nodes.first.nodes.size
+    assert_equal 'ref', nodes.first.element.ref.name
   end
 
   def test_plus_children
     g << ChildrenRuleClass.new('plus', 'child+')
     rng = g.relaxng
-    nodes = rng.css("doc[@name='plus']")
+    nodes = rng.root.Define(name: 'plus')
     assert_equal 1, nodes.size
-    assert_equal 1, nodes.first.element_children.size
-    assert_equal 'oneOrMore', nodes.first.element_children.first.name
+    assert_equal 1, nodes.first.nodes.size
+    assert_equal 'oneOrMore', nodes.first.element.oneOrMore.name
   end
 
   def test_multiple_children
     g << ChildrenRuleClass.new('star', '(son|daughter)*')
     rng = g.relaxng
-    nodes = rng.css("doc[@name='star']")
+    nodes = rng.root.Define(name: 'star')
     assert_equal 1, nodes.size
-    zom = nodes[0].css("zeroOrMore")
-    assert_equal 1, zom.size
-    assert_equal 2, zom.css('/choice/ref').size
+    zom = nodes.first.element.zeroOrMore.choice.Ref()
+    assert_equal 2, zom.size
   end
 
   def test_child_rule_stacking
     g << ChildrenRuleClass.new('plus', 'child+')
     rng = g.relaxng
-    nodes = rng.css("define[@name='child']/doc")
+    nodes = rng.root.Define(name: 'child').collect do |d| d.element end
     assert_equal 'child', nodes.first['name']
 
     g << ChildrenRuleClass.new('child', 'grandchild')
     rng = g.relaxng
-    nodes = rng.css("define[@name='child']/doc")
+    nodes = rng.root.Define(name: 'child').collect do |d| d.element end
     assert_equal 1, nodes.size
 
-    nodes0 = rng.css("define[@name='grandchild']/doc")
+    nodes0 = rng.root.Define(name: 'grandchild').collect do |d| d.element end
     assert_equal 'grandchild', nodes0.first['name']
   end
 

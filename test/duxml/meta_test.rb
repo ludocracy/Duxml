@@ -6,14 +6,14 @@ class MetaTest < Test::Unit::TestCase
   include Ox
   def setup
     @g_path = File.expand_path(File.dirname(__FILE__) + '/../../xml/test_grammar.xml')
-    @m = MetaClass.new(Doc.new, g_path)
+    @m = MetaClass.new(g_path)
     @x = Meta.xml
   end
 
   attr_reader :x, :m, :g_path
 
   def test_init_no_grammar
-    ng = MetaClass.new(Doc.new)
+    ng = MetaClass.new
     assert_equal false, ng.grammar.defined?
     ng.grammar = g_path
     assert_equal true, ng.grammar.defined?
@@ -21,12 +21,12 @@ class MetaTest < Test::Unit::TestCase
 
   def test_xml
     assert_equal 'duxml:meta', x.root.name
-    assert_equal 'duxml:grammar', x.root.nodes.first.name
+    assert_equal 'grammar', x.root.nodes.first.name
     assert_equal 'duxml:history', x.root.nodes[1].name
   end
 
   def test_update
-    assert_equal true, m.grammar.respond_to?(:update)
+    assert_equal true, m.grammar.respond_to?(:qualify)
     assert_equal true, m.history.respond_to?(:update)
   end
 

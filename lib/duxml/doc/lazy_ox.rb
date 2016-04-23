@@ -41,8 +41,8 @@ module Duxml
   #             #<Duxml::Element:0x0002 @value="child" ... @nodes=['some text']>,
   #             #<Duxml::Element 0x0003 @value="child" ... @nodes=['some text']>]
   #
-  #     n.Element do |child| child.nodes.first == 'some text' end                             # returns first child for which block is true
-  #         => #<Duxml::Element:0x0002 @value="child" ... @nodes=['some text']>
+  #     n.Element do |child| child.nodes.first == 'some text' end                             # returns all children for which block is true
+  #         => [#<Duxml::Element:0x0002 @value="child" ... @nodes=['some text']>]
   #
   #     %w(bar mar).each_with_index do |x, i| next if i.zero?; n.Child[:foo] = x end        # adding some attributes
   #         => ['text',
@@ -89,10 +89,7 @@ module Duxml
       else
         results = filter(sym, args)
         return results unless block_given?
-        results.each do |node|
-          return node if yield(node)
-        end
-        raise NoMethodError
+        results.keep_if do |node| yield(node) end
       end # if lowercase? ... else ...
     end # def method_missing(sym, *args, &block)
 

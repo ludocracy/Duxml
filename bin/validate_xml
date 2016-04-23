@@ -9,7 +9,7 @@ log_file = ARGV[1] || 'log.txt'
 
 load xml_file
 puts "loaded XML file: #{xml_file}"
-current_meta.grammar = DITA_GRAMMAR_FILE
+meta.grammar = DITA_GRAMMAR_FILE
 puts "loaded grammar file: #{DITA_GRAMMAR_FILE}"
 validate
 puts "validation complete"

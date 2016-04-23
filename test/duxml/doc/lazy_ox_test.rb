@@ -75,7 +75,7 @@ class LazyOxTest < Test::Unit::TestCase
     assert_equal [a.first], x.Two(attr: 'val')
 
     #selected by block
-    assert_equal a.first, x.Two{|n| n[:attr] == 'val'}
+    assert_equal [a.first], x.Two{|n| n[:attr] == 'val'}
   end
 
   def tear_down

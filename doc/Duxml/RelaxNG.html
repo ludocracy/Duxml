@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>module Duxml::RelaxNG - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/duxml/meta/grammar/relax_ng.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    
+    <!-- Included Modules -->
+<nav id="includes-section" class="section">
+  <h3 class="section-header">Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="../Duxml.html">Duxml</a>
+  
+  
+  </ul>
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li ><a href="#method-i-relaxng">#relaxng</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../Duxml.html">Duxml</a>
+  
+    <li><a href="../Duxml/Add.html">Duxml::Add</a>
+  
+    <li><a href="../Duxml/AddClass.html">Duxml::AddClass</a>
+  
+    <li><a href="../Duxml/AttrNamePattern.html">Duxml::AttrNamePattern</a>
+  
+    <li><a href="../Duxml/AttrNamePatternClass.html">Duxml::AttrNamePatternClass</a>
+  
+    <li><a href="../Duxml/AttrValPattern.html">Duxml::AttrValPattern</a>
+  
+    <li><a href="../Duxml/AttrValPatternClass.html">Duxml::AttrValPatternClass</a>
+  
+    <li><a href="../Duxml/AttrsRule.html">Duxml::AttrsRule</a>
+  
+    <li><a href="../Duxml/AttrsRuleClass.html">Duxml::AttrsRuleClass</a>
+  
+    <li><a href="../Duxml/Change.html">Duxml::Change</a>
+  
+    <li><a href="../Duxml/ChangeAttr.html">Duxml::ChangeAttr</a>
+  
+    <li><a href="../Duxml/ChangeAttrClass.html">Duxml::ChangeAttrClass</a>
+  
+    <li><a href="../Duxml/ChangeClass.html">Duxml::ChangeClass</a>
+  
+    <li><a href="../Duxml/ChangeText.html">Duxml::ChangeText</a>
+  
+    <li><a href="../Duxml/ChangeTextClass.html">Duxml::ChangeTextClass</a>
+  
+    <li><a href="../Duxml/ChildPattern.html">Duxml::ChildPattern</a>
+  
+    <li><a href="../Duxml/ChildPatternClass.html">Duxml::ChildPatternClass</a>
+  
+    <li><a href="../Duxml/ChildrenRule.html">Duxml::ChildrenRule</a>
+  
+    <li><a href="../Duxml/ChildrenRuleClass.html">Duxml::ChildrenRuleClass</a>
+  
+    <li><a href="../Duxml/Doc.html">Duxml::Doc</a>
+  
+    <li><a href="../Duxml/Element.html">Duxml::Element</a>
+  
+    <li><a href="../Duxml/ElementGuts.html">Duxml::ElementGuts</a>
+  
+    <li><a href="../Duxml/Error.html">Duxml::Error</a>
+  
+    <li><a href="../Duxml/ErrorClass.html">Duxml::ErrorClass</a>
+  
+    <li><a href="../Duxml/Grammar.html">Duxml::Grammar</a>
+  
+    <li><a href="../Duxml/GrammarClass.html">Duxml::GrammarClass</a>
+  
+    <li><a href="../Duxml/History.html">Duxml::History</a>
+  
+    <li><a href="../Duxml/HistoryClass.html">Duxml::HistoryClass</a>
+  
+    <li><a href="../Duxml/LazyOx.html">Duxml::LazyOx</a>
+  
+    <li><a href="../Duxml/Meta.html">Duxml::Meta</a>
+  
+    <li><a href="../Duxml/MetaClass.html">Duxml::MetaClass</a>
+  
+    <li><a href="../Duxml/NewAttr.html">Duxml::NewAttr</a>
+  
+    <li><a href="../Duxml/NewAttrClass.html">Duxml::NewAttrClass</a>
+  
+    <li><a href="../Duxml/NewText.html">Duxml::NewText</a>
+  
+    <li><a href="../Duxml/NewTextClass.html">Duxml::NewTextClass</a>
+  
+    <li><a href="../Duxml/NodeSet.html">Duxml::NodeSet</a>
+  
+    <li><a href="../Duxml/NullChildPatternClass.html">Duxml::NullChildPatternClass</a>
+  
+    <li><a href="../Duxml/Pattern.html">Duxml::Pattern</a>
+  
+    <li><a href="../Duxml/PatternClass.html">Duxml::PatternClass</a>
+  
+    <li><a href="../Duxml/PatternMaker.html">Duxml::PatternMaker</a>
+  
+    <li><a href="../Duxml/QualifyError.html">Duxml::QualifyError</a>
+  
+    <li><a href="../Duxml/QualifyErrorClass.html">Duxml::QualifyErrorClass</a>
+  
+    <li><a href="../Duxml/RelaxNG.html">Duxml::RelaxNG</a>
+  
+    <li><a href="../Duxml/Remove.html">Duxml::Remove</a>
+  
+    <li><a href="../Duxml/RemoveClass.html">Duxml::RemoveClass</a>
+  
+    <li><a href="../Duxml/RngAttrsRule.html">Duxml::RngAttrsRule</a>
+  
+    <li><a href="../Duxml/RngChildrenRule.html">Duxml::RngChildrenRule</a>
+  
+    <li><a href="../Duxml/RngValueRule.html">Duxml::RngValueRule</a>
+  
+    <li><a href="../Duxml/Rule.html">Duxml::Rule</a>
+  
+    <li><a href="../Duxml/RuleClass.html">Duxml::RuleClass</a>
+  
+    <li><a href="../Duxml/Saxer.html">Duxml::Saxer</a>
+  
+    <li><a href="../Duxml/Saxer/DocuLiner.html">Duxml::Saxer::DocuLiner</a>
+  
+    <li><a href="../Duxml/Spreadsheet.html">Duxml::Spreadsheet</a>
+  
+    <li><a href="../Duxml/TextPattern.html">Duxml::TextPattern</a>
+  
+    <li><a href="../Duxml/TextPatternClass.html">Duxml::TextPatternClass</a>
+  
+    <li><a href="../Duxml/TextRule.html">Duxml::TextRule</a>
+  
+    <li><a href="../Duxml/TextRuleClass.html">Duxml::TextRuleClass</a>
+  
+    <li><a href="../Duxml/Undo.html">Duxml::Undo</a>
+  
+    <li><a href="../Duxml/UndoClass.html">Duxml::UndoClass</a>
+  
+    <li><a href="../Duxml/ValidateError.html">Duxml::ValidateError</a>
+  
+    <li><a href="../Duxml/ValidateErrorClass.html">Duxml::ValidateErrorClass</a>
+  
+    <li><a href="../Duxml/ValueRule.html">Duxml::ValueRule</a>
+  
+    <li><a href="../Duxml/ValueRuleClass.html">Duxml::ValueRuleClass</a>
+  
+    <li><a href="../Module.html">Module</a>
+  
+    <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../Regexp.html">Regexp</a>
+  
+    <li><a href="../Reportable.html">Reportable</a>
+  
+    <li><a href="../String.html">String</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="module">module Duxml::RelaxNG</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-relaxng" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">relaxng</span><span
+            class="method-args">(output_path=nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param output_path [String] optional, output path for .rng file @return
+[Nokogiri::XML::RelaxNG] <a href="RelaxNG.html">RelaxNG</a> schema object</p>
+          
+          
+
+          
+          <div class="method-source-code" id="relaxng-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/relax_ng.rb, line 11</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">relaxng</span>(<span class="ruby-identifier">output_path</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">doc</span> = <span class="ruby-constant">Doc</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">doc</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Element</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;grammar&#39;</span>)
+  <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">grammar</span>[<span class="ruby-value">:xmlns</span>] = <span class="ruby-string">&#39;http://relaxng.org/ns/structure/1.0&#39;</span>
+  <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">grammar</span>[<span class="ruby-value">:datatypeLibrary</span>] = <span class="ruby-string">&#39;http://www.w3.org/2001/XMLSchema-datatypes&#39;</span>
+  <span class="ruby-identifier">start</span> = <span class="ruby-constant">Element</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;start&#39;</span>)
+  <span class="ruby-identifier">start</span>[<span class="ruby-value">:combine</span>] = <span class="ruby-string">&#39;choice&#39;</span>
+  <span class="ruby-identifier">ref</span> = <span class="ruby-constant">Element</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;ref&#39;</span>)
+  <span class="ruby-identifier">ref</span>[<span class="ruby-value">:name</span>] = <span class="ruby-identifier">rules</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">subject</span>
+  <span class="ruby-identifier">start</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ref</span>
+  <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">grammar</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">start</span>
+  <span class="ruby-identifier">rules</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">rule</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">rule</span>.<span class="ruby-identifier">relaxng</span> <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">grammar</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># fill in empty doc definitions to make them legal</span>
+  <span class="ruby-identifier">element_defs</span> = <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">grammar</span>.<span class="ruby-constant">Define</span>.<span class="ruby-identifier">collect</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">d</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">d</span>.<span class="ruby-identifier">element</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">d</span>.<span class="ruby-identifier">nodes</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;element&#39;</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">d</span>.<span class="ruby-identifier">element</span>.<span class="ruby-identifier">nodes</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-keyword">end</span>.<span class="ruby-identifier">compact</span>
+  <span class="ruby-identifier">element_defs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">element_def</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">element_def</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Element</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;empty&#39;</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">write</span>(<span class="ruby-identifier">output_path</span>, <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">output_path</span>
+  <span class="ruby-identifier">doc</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- relaxng-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- relaxng-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

@@ -47,13 +47,13 @@ class AttrsRuleTest < Test::Unit::TestCase
 
     a = NewAttrClass.new(x, :bird)
     assert_equal false, rule.qualify(a)
-    assert_equal :qualify_error, o.args.first
+    assert_equal :QualifyError, o.args.first
   end
 
   def test_validate
     a = AttrNamePatternClass.new(x, :bird)
     assert_equal false, rule.qualify(a)
-    assert_equal :validate_error, o.args.first
+    assert_equal :ValidateError, o.args.first
 
     x[:bird] = 'word'
     assert_equal true, rule.qualify(a)

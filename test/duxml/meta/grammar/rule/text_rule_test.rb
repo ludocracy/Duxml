@@ -48,7 +48,7 @@ class TextRuleTest < Test::Unit::TestCase
     x.nodes[0]= 'not identifier'
     a = Duxml::ChangeTextClass.new(x, 0, 'identifier')
     assert_equal false, rule.qualify(a)
-    assert_equal :qualify_error, o.args.first
+    assert_equal :QualifyError, o.args.first
   end
 
   def test_validate
@@ -59,7 +59,7 @@ class TextRuleTest < Test::Unit::TestCase
     x.nodes[0] = 'not identifier'
     a = Duxml::TextPatternClass.new(x, 1)
     assert_equal false, rule.qualify(a)
-    assert_equal :validate_error, o.args.first
+    assert_equal :ValidateError, o.args.first
   end
 
   def tear_down

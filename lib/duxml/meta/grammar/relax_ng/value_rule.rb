@@ -14,7 +14,7 @@ module Duxml
     #   where #statement can be 'CDATA', 'NMTOKEN', etc.
     def relaxng(parent)
       parent.Define.each do |define|
-        if define.name == attr_name
+        if define[:name] == attr_name
           attr_def = define.nodes.first
           unless attr_def.nodes.any?
             data_type = statement == 'CDATA' ? 'string' : statement

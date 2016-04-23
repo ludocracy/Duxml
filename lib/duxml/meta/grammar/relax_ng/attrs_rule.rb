@@ -21,7 +21,7 @@ module Duxml
       # TODO
 
       # if new attribute declaration needed
-      unless parent.Define.any? do |d| d.name == attr_name end
+      unless parent.Define(name: attr_name).any?
         new_def = Element.new('define')
         new_def[:name] = attr_name
         new_attr_def = Element.new('attribute')
@@ -32,12 +32,12 @@ module Duxml
 
       # update doc with ref, updating previous <optional> if available
       parent.nodes.reverse.each do |define|
-        if define.name == subject
+        if define[:name] == subject
           element_def = define.nodes.first
           if requirement == '#REQUIRED'
             cur_element = element_def
           else
-            if element_def.nodes.last.name == 'optional'
+            if element_def.nodes.any? and element_def.nodes.last.name == 'optional'
               cur_element = element_def.nodes.last
             else
               cur_element = Element.new('optional')
@@ -45,7 +45,7 @@ module Duxml
             end
           end # if self[:requirement]=='#REQUIRED'
           new_ref = Element.new('ref')
-          new_ref.name = attr_name
+          new_ref[:name] = attr_name
           cur_element << new_ref
           break
         end # if define[:name] == subject

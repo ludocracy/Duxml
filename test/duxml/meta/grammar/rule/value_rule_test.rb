@@ -51,7 +51,7 @@ class ValueRuleTest < Test::Unit::TestCase
     @x[:foo] = 'not nmtoken'
     a = ChangeAttrClass.new(x, :foo, 'identifier')
     assert_equal false, rule.qualify(a)
-    assert_equal :qualify_error, o.args.first
+    assert_equal :QualifyError, o.args.first
   end
 
   def test_validate
@@ -62,7 +62,7 @@ class ValueRuleTest < Test::Unit::TestCase
     @x[:foo] = 'not nmtoken'
     a = AttrValPatternClass.new(x, :foo)
     assert_equal false, rule.qualify(a)
-    assert_equal :validate_error, o.args.first
+    assert_equal :ValidateError, o.args.first
   end
 
   def tear_down

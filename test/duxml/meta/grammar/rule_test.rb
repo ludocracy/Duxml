@@ -37,11 +37,11 @@ class RuleTest < Test::Unit::TestCase
   def test_qualify
     result = rule.qualify ChangeClass.new(Element.new('barney'))
     assert_equal false, result
-    assert_equal :qualify_error, o.args.first
+    assert_equal :QualifyError, o.args.first
 
     result = rule.qualify TestRulePattern.new(Element.new('barney'))
     assert_equal false, result
-    assert_equal :validate_error, o.args.first
+    assert_equal :ValidateError, o.args.first
   end
 
   def test_statement

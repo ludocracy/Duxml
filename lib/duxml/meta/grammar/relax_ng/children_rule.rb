@@ -15,12 +15,12 @@ module Duxml
     # @return [Ox::Element] same parent but with addition of <define><doc> with #statement converted into <ref>'s
     #   these are wrapped as needed in <zeroOrMore>,<oneOrMore>, or <optional>
     def relaxng(parent)
-      nodes = parent.Define(name: 'subject')
+      nodes = parent.Define(name: subject)
       raise Exception if nodes.size > 1
       element_def = nodes.first
 
       if element_def.nil?
-        element_def = Element.new('doc')
+        element_def = Element.new('element')
         element_def[:name] = subject
         define = Element.new('define')
         define[:name] = subject
@@ -54,7 +54,7 @@ module Duxml
 
         # adding enumerated options as new doc defs if needed
         element_array.each do |element_name|
-          existing_defs = parent.Define() do |d| d.name == element_name end
+          existing_defs = parent.Define(name: element_name)
           raise Exception if existing_defs.size > 1
           if existing_defs.empty?
             new_def = Element.new('define')
@@ -68,8 +68,9 @@ module Duxml
           if element_name == 'PCDATA'
             cur_element << Element.new('text')
           else
-            cur_element << Element.new('ref')
-            cur_element.ref[:name] = element_name
+            ref_node = Element.new('ref')
+            ref_node[:name] = element_name
+            cur_element << ref_node
           end
         end # element_array.each
       end # get_scanners.each

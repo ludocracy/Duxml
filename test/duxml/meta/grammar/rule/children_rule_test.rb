@@ -50,7 +50,7 @@ class ChildrenRuleTest < Test::Unit::TestCase
     c = ChildPatternClass.new(x, 2)
     result = rule.qualify c
     assert_equal false, result
-    assert_equal :validate_error, o.args.first
+    assert_equal :ValidateError, o.args.first
   end
 
   def test_qualify
@@ -62,7 +62,7 @@ class ChildrenRuleTest < Test::Unit::TestCase
     p = AddClass.new(x, 2)
     result = rule.qualify p
     assert_equal false, result
-    assert_equal :qualify_error, o.args.first
+    assert_equal :QualifyError, o.args.first
   end
 
   def test_applies_to

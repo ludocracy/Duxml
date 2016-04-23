@@ -1,6 +1,7 @@
 require 'ox'
 require File.expand_path(File.dirname(__FILE__) + '/lazy_ox')
 require File.expand_path(File.dirname(__FILE__) + '/node_set')
+require File.expand_path(File.dirname(__FILE__) + '/../reportable')
 
 module Duxml
   module ElementGuts
@@ -34,11 +35,11 @@ module Duxml
       line < 0 || column < 0
     end
 
-    def constant
-      self.simple_
-    end
-
-    # now reports to History
+    # @see Ox::Element#<<
+    # this override reports changes to history; NewText for Strings, Add for elements
+    #
+    # @param obj [Element] element or string to add to this Element
+    # @return [Element] self
     def <<(obj)
       super(obj)
       if nodes.last.is_a?(String)
@@ -67,10 +68,17 @@ module Duxml
       self
     end
 
+    # @return [String] self description
+    def description
+      "<#{name}>"
+    end
+
+    # @return [HistoryClass] history that is observing this element for changes
     def history
       @observer_peers.first.first if @observer_peers.any? and @observer_peers.first.any?
     end
 
+    # @return [String] XML string (overrides Ox's to_s which just prints the object pointer)
     def to_s
       s = %(<#{name})
       attributes.each do |k,v| s << %( #{k.to_s}="#{v}") end
@@ -78,13 +86,17 @@ module Duxml
       s << ">#{nodes.collect do |n| n.to_s end.join}</#{name}>"
     end
 
-    # now reports to History
+    # TODO do we need this method to take Fixnum node index as well?
+    # @param obj [Element] element child to delete
+    # @return [Element] deleted element
     def delete(obj)
       report(:Remove, @nodes.delete(obj))
       obj
     end
 
-    # traverse through this node and all of its descendants; pre-order
+    # pre-order traverse through this node and all of its descendants
+    #
+    # @param &block [block] code to execute for each yielded node
     def traverse(&block)
       return self.to_enum unless block_given?
       node_stack = [self]
@@ -101,6 +113,8 @@ module Duxml
     end
 
     # traverse through just the children of this node
+    #
+    # @param &block [block] code to execute for each child node
     def each(&block)
       @nodes.each(&block)
     end

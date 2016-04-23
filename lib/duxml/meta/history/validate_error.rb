@@ -17,7 +17,7 @@ module Duxml
 
     # returns XML file line number of error causing object (or subject if no object exists)
     def error_line_no
-      non_compliant_change.object.respond_to?(:line) ? bad_pattern.object.line : bad_pattern.subject.line
+      bad_pattern.object.respond_to?(:line) ? bad_pattern.object.line : bad_pattern.subject.line
     end
   end # module ValidateError
 end # module Duxml

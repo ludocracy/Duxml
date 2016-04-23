@@ -19,10 +19,19 @@ class ElementTest < Test::Unit::TestCase
     x.second.third << 'some text'
     x.second << Element.new('fourth')
     @o = Observer.new
-    x.traverse do |n| n.add_observer o unless n.is_a?(String) end
+    x.traverse do |n|
+      unless n.is_a?(String)
+        n.add_observer o
+        n.nodes.add_observer o
+      end
+    end
   end
 
   attr_accessor :x, :o
+
+  def test_description
+    assert_equal '<root>', x.description
+  end
 
   def test_history
     assert_equal Observer, x.history.class
@@ -54,8 +63,7 @@ class ElementTest < Test::Unit::TestCase
     x << Element.new('fifth')
     assert_equal :Add, o.args[0]
     assert_equal 'root', o.args[1].name
-    assert_equal 'fifth', o.args[2].name
-    assert_equal 1, o.args[2].count_observers
+    assert_equal 2, o.args[2]
   end
 
   def test_remove
@@ -86,7 +94,7 @@ class ElementTest < Test::Unit::TestCase
     assert_equal 'some text', x.nodes.last
     assert_equal :NewText, o.args[0]
     assert_equal 'root', o.args[1].name
-    assert_equal 'some text', o.args[2]
+    assert_equal 2, o.args[2]
 
   end
 

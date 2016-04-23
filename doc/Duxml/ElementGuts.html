@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>module Duxml::ElementGuts - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/duxml/doc/element.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    
+    <!-- Included Modules -->
+<nav id="includes-section" class="section">
+  <h3 class="section-header">Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="../Duxml.html">Duxml</a>
+  
+  
+  
+    <li><span class="include">Enumerable</span>
+  
+  
+  
+    <li><a class="include" href="../Reportable.html">Reportable</a>
+  
+  
+  
+    <li><a class="include" href="LazyOx.html">Duxml::LazyOx</a>
+  
+  
+  </ul>
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li class="calls-super" ><a href="#method-i-3C-3C">#&lt;&lt;</a>
+    
+    <li class="calls-super" ><a href="#method-i-5B-5D-3D">#[]=</a>
+    
+    <li ><a href="#method-i-abstract-3F">#abstract?</a>
+    
+    <li ><a href="#method-i-delete">#delete</a>
+    
+    <li ><a href="#method-i-description">#description</a>
+    
+    <li ><a href="#method-i-each">#each</a>
+    
+    <li ><a href="#method-i-history">#history</a>
+    
+    <li ><a href="#method-i-name_space">#name_space</a>
+    
+    <li ><a href="#method-i-to_s">#to_s</a>
+    
+    <li ><a href="#method-i-traverse">#traverse</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../Duxml.html">Duxml</a>
+  
+    <li><a href="../Duxml/Add.html">Duxml::Add</a>
+  
+    <li><a href="../Duxml/AddClass.html">Duxml::AddClass</a>
+  
+    <li><a href="../Duxml/AttrNamePattern.html">Duxml::AttrNamePattern</a>
+  
+    <li><a href="../Duxml/AttrNamePatternClass.html">Duxml::AttrNamePatternClass</a>
+  
+    <li><a href="../Duxml/AttrValPattern.html">Duxml::AttrValPattern</a>
+  
+    <li><a href="../Duxml/AttrValPatternClass.html">Duxml::AttrValPatternClass</a>
+  
+    <li><a href="../Duxml/AttrsRule.html">Duxml::AttrsRule</a>
+  
+    <li><a href="../Duxml/AttrsRuleClass.html">Duxml::AttrsRuleClass</a>
+  
+    <li><a href="../Duxml/Change.html">Duxml::Change</a>
+  
+    <li><a href="../Duxml/ChangeAttr.html">Duxml::ChangeAttr</a>
+  
+    <li><a href="../Duxml/ChangeAttrClass.html">Duxml::ChangeAttrClass</a>
+  
+    <li><a href="../Duxml/ChangeClass.html">Duxml::ChangeClass</a>
+  
+    <li><a href="../Duxml/ChangeText.html">Duxml::ChangeText</a>
+  
+    <li><a href="../Duxml/ChangeTextClass.html">Duxml::ChangeTextClass</a>
+  
+    <li><a href="../Duxml/ChildPattern.html">Duxml::ChildPattern</a>
+  
+    <li><a href="../Duxml/ChildPatternClass.html">Duxml::ChildPatternClass</a>
+  
+    <li><a href="../Duxml/ChildrenRule.html">Duxml::ChildrenRule</a>
+  
+    <li><a href="../Duxml/ChildrenRuleClass.html">Duxml::ChildrenRuleClass</a>
+  
+    <li><a href="../Duxml/Doc.html">Duxml::Doc</a>
+  
+    <li><a href="../Duxml/Element.html">Duxml::Element</a>
+  
+    <li><a href="../Duxml/ElementGuts.html">Duxml::ElementGuts</a>
+  
+    <li><a href="../Duxml/Error.html">Duxml::Error</a>
+  
+    <li><a href="../Duxml/ErrorClass.html">Duxml::ErrorClass</a>
+  
+    <li><a href="../Duxml/Grammar.html">Duxml::Grammar</a>
+  
+    <li><a href="../Duxml/GrammarClass.html">Duxml::GrammarClass</a>
+  
+    <li><a href="../Duxml/History.html">Duxml::History</a>
+  
+    <li><a href="../Duxml/HistoryClass.html">Duxml::HistoryClass</a>
+  
+    <li><a href="../Duxml/LazyOx.html">Duxml::LazyOx</a>
+  
+    <li><a href="../Duxml/Meta.html">Duxml::Meta</a>
+  
+    <li><a href="../Duxml/MetaClass.html">Duxml::MetaClass</a>
+  
+    <li><a href="../Duxml/NewAttr.html">Duxml::NewAttr</a>
+  
+    <li><a href="../Duxml/NewAttrClass.html">Duxml::NewAttrClass</a>
+  
+    <li><a href="../Duxml/NewText.html">Duxml::NewText</a>
+  
+    <li><a href="../Duxml/NewTextClass.html">Duxml::NewTextClass</a>
+  
+    <li><a href="../Duxml/NodeSet.html">Duxml::NodeSet</a>
+  
+    <li><a href="../Duxml/NullChildPatternClass.html">Duxml::NullChildPatternClass</a>
+  
+    <li><a href="../Duxml/Pattern.html">Duxml::Pattern</a>
+  
+    <li><a href="../Duxml/PatternClass.html">Duxml::PatternClass</a>
+  
+    <li><a href="../Duxml/PatternMaker.html">Duxml::PatternMaker</a>
+  
+    <li><a href="../Duxml/QualifyError.html">Duxml::QualifyError</a>
+  
+    <li><a href="../Duxml/QualifyErrorClass.html">Duxml::QualifyErrorClass</a>
+  
+    <li><a href="../Duxml/RelaxNG.html">Duxml::RelaxNG</a>
+  
+    <li><a href="../Duxml/Remove.html">Duxml::Remove</a>
+  
+    <li><a href="../Duxml/RemoveClass.html">Duxml::RemoveClass</a>
+  
+    <li><a href="../Duxml/RngAttrsRule.html">Duxml::RngAttrsRule</a>
+  
+    <li><a href="../Duxml/RngChildrenRule.html">Duxml::RngChildrenRule</a>
+  
+    <li><a href="../Duxml/RngValueRule.html">Duxml::RngValueRule</a>
+  
+    <li><a href="../Duxml/Rule.html">Duxml::Rule</a>
+  
+    <li><a href="../Duxml/RuleClass.html">Duxml::RuleClass</a>
+  
+    <li><a href="../Duxml/Saxer.html">Duxml::Saxer</a>
+  
+    <li><a href="../Duxml/Saxer/DocuLiner.html">Duxml::Saxer::DocuLiner</a>
+  
+    <li><a href="../Duxml/Spreadsheet.html">Duxml::Spreadsheet</a>
+  
+    <li><a href="../Duxml/TextPattern.html">Duxml::TextPattern</a>
+  
+    <li><a href="../Duxml/TextPatternClass.html">Duxml::TextPatternClass</a>
+  
+    <li><a href="../Duxml/TextRule.html">Duxml::TextRule</a>
+  
+    <li><a href="../Duxml/TextRuleClass.html">Duxml::TextRuleClass</a>
+  
+    <li><a href="../Duxml/Undo.html">Duxml::Undo</a>
+  
+    <li><a href="../Duxml/UndoClass.html">Duxml::UndoClass</a>
+  
+    <li><a href="../Duxml/ValidateError.html">Duxml::ValidateError</a>
+  
+    <li><a href="../Duxml/ValidateErrorClass.html">Duxml::ValidateErrorClass</a>
+  
+    <li><a href="../Duxml/ValueRule.html">Duxml::ValueRule</a>
+  
+    <li><a href="../Duxml/ValueRuleClass.html">Duxml::ValueRuleClass</a>
+  
+    <li><a href="../Module.html">Module</a>
+  
+    <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../Regexp.html">Regexp</a>
+  
+    <li><a href="../Reportable.html">Reportable</a>
+  
+    <li><a href="../String.html">String</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="module">module Duxml::ElementGuts</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-3C-3C" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">&lt;&lt;</span><span
+            class="method-args">(obj)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@see Ox::Element#&lt;&lt; this override reports changes to history; <a
+href="NewText.html">NewText</a> for Strings, <a href="Add.html">Add</a> for
+elements</p>
+
+<p>@param obj [Element] element or string to add to this <a
+href="Element.html">Element</a> @return [Element] self</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="3C-3C-source">
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-identifier">obj</span>)
+  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">obj</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">nodes</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>)
+    <span class="ruby-identifier">type</span> = <span class="ruby-value">:NewText</span>
+    <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">type</span> = <span class="ruby-value">:Add</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">nodes</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">count_observers</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">1</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@observer_peers</span>
+      <span class="ruby-identifier">nodes</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">add_observer</span>(<span class="ruby-ivar">@observer_peers</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">first</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">report</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">nodes</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">name_space</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;duxml&#39;</span>
+  <span class="ruby-keyword">self</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- 3C-3C-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- 3C-3C-method -->
+
+    
+      <div id="method-i-5B-5D-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">[]=</span><span
+            class="method-args">(attr_sym, val)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param attr_sym [String, Symbol] name of attribute @param val [String]
+@return [Element] self</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="5B-5D-3D-source">
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 60</span>
+<span class="ruby-keyword">def</span> <span class="ruby-operator">[]=</span>(<span class="ruby-identifier">attr_sym</span>, <span class="ruby-identifier">val</span>)
+  <span class="ruby-identifier">attr</span> = <span class="ruby-identifier">attr_sym</span>.<span class="ruby-identifier">to_s</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;argument to [] must be a Symbol or a String.&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">attr</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Symbol</span>) <span class="ruby-keyword">or</span> <span class="ruby-identifier">attr</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>)
+  <span class="ruby-identifier">args</span> = [<span class="ruby-identifier">attr</span>]
+  <span class="ruby-identifier">args</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">attributes</span>[<span class="ruby-identifier">attr</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">attributes</span>[<span class="ruby-identifier">attr</span>]
+  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">attr</span>, <span class="ruby-identifier">val</span>)
+  <span class="ruby-identifier">type</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">?</span> <span class="ruby-value">:NewAttr</span> <span class="ruby-operator">:</span> <span class="ruby-value">:ChangeAttr</span>
+  <span class="ruby-identifier">report</span>(<span class="ruby-identifier">type</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-keyword">self</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- 5B-5D-3D-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- 5B-5D-3D-method -->
+
+    
+      <div id="method-i-abstract-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">abstract?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Boolean] whether or not this has been written to file</p>
+          
+          
+
+          
+          <div class="method-source-code" id="abstract-3F-source">
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 34</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">abstract?</span>
+  <span class="ruby-identifier">line</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">column</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- abstract-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- abstract-3F-method -->
+
+    
+      <div id="method-i-delete" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">delete</span><span
+            class="method-args">(obj)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>TODO do we need this method to take Fixnum node index as well? @param obj
+[Element] element child to delete @return [Element] deleted element</p>
+          
+          
+
+          
+          <div class="method-source-code" id="delete-source">
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 92</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete</span>(<span class="ruby-identifier">obj</span>)
+  <span class="ruby-identifier">report</span>(<span class="ruby-value">:Remove</span>, <span class="ruby-ivar">@nodes</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">obj</span>))
+  <span class="ruby-identifier">obj</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- delete-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- delete-method -->
+
+    
+      <div id="method-i-description" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">description</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [String] self description</p>
+          
+          
+
+          
+          <div class="method-source-code" id="description-source">
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 72</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
+  <span class="ruby-node">&quot;&lt;#{name}&gt;&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- description-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- description-method -->
+
+    
+      <div id="method-i-each" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">each</span><span
+            class="method-args">(&block)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>traverse through just the children of this node</p>
+
+<p>@param &amp;block [block] code to execute for each child node</p>
+          
+          
+
+          
+          <div class="method-source-code" id="each-source">
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 118</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">each</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+  <span class="ruby-ivar">@nodes</span>.<span class="ruby-identifier">each</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- each-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- each-method -->
+
+    
+      <div id="method-i-history" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">history</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [HistoryClass] history that is observing this element for changes</p>
+          
+          
+
+          
+          <div class="method-source-code" id="history-source">
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 77</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">history</span>
+  <span class="ruby-ivar">@observer_peers</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@observer_peers</span>.<span class="ruby-identifier">any?</span> <span class="ruby-keyword">and</span> <span class="ruby-ivar">@observer_peers</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">any?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- history-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- history-method -->
+
+    
+      <div id="method-i-name_space" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">name_space</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [String] namespace of element, derived from name e.g.
+&#39;&lt;duxml:element&gt;&#39; =&gt; &#39;duxml&#39;</p>
+          
+          
+
+          
+          <div class="method-source-code" id="name_space-source">
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 123</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">name_space</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> (<span class="ruby-identifier">i</span> = <span class="ruby-identifier">name</span>.<span class="ruby-identifier">index</span>(<span class="ruby-string">&#39;:&#39;</span>))
+  <span class="ruby-identifier">name</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">i</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- name_space-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- name_space-method -->
+
+    
+      <div id="method-i-to_s" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_s</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [String] XML string (overrides Ox&#39;s <a
+href="ElementGuts.html#method-i-to_s">#to_s</a> which just prints the
+object pointer)</p>
+          
+          
+
+          
+          <div class="method-source-code" id="to_s-source">
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 82</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_s</span>
+  <span class="ruby-identifier">s</span> = <span class="ruby-node">%Q(&lt;#{name})</span>
+  <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">s</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">%Q( #{k.to_s}=&quot;#{v}&quot;)</span> <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">s</span><span class="ruby-operator">+</span><span class="ruby-string">&#39;/&gt;&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">nodes</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">s</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&gt;#{nodes.collect do |n| n.to_s end.join}&lt;/#{name}&gt;&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- to_s-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- to_s-method -->
+
+    
+      <div id="method-i-traverse" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">traverse</span><span
+            class="method-args">() { |current| ... }</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>pre-order traverse through this node and all of its descendants</p>
+
+<p>@param &amp;block [block] code to execute for each yielded node</p>
+          
+          
+
+          
+          <div class="method-source-code" id="traverse-source">
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 100</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">traverse</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">to_enum</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">block_given?</span>
+  <span class="ruby-identifier">node_stack</span> = [<span class="ruby-keyword">self</span>]
+
+  <span class="ruby-keyword">until</span> <span class="ruby-identifier">node_stack</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">current</span> = <span class="ruby-identifier">node_stack</span>.<span class="ruby-identifier">shift</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">current</span>
+      <span class="ruby-keyword">yield</span> <span class="ruby-identifier">current</span>
+      <span class="ruby-identifier">node_stack</span> = <span class="ruby-identifier">node_stack</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-identifier">current</span>.<span class="ruby-identifier">nodes</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">current</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:nodes</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- traverse-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- traverse-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

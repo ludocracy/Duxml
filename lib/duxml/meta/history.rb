@@ -20,15 +20,13 @@ module Duxml
     include History
     extend Forwardable
 
-    def_delegators :@events, :[], :each
-    attr_reader :events
-    alias_method :nodes, :events
+    def_delegators :@nodes, :[], :each
 
-    # @param doc [Doc] document associated with this history
-    # @param grammar [Grammar] optional, grammar associated with this history
     def initialize()
-      @events = Duxml::NodeSet.new []
+      @nodes = []
     end
+    attr_reader :nodes
+    alias_method :events, :nodes
   end
 
   module History
@@ -40,7 +38,7 @@ module Duxml
     end
 
     def latest
-      @events[0]
+      events[0]
     end
 
     # @return [GrammarClass] grammar that is observing this history's events
@@ -50,7 +48,7 @@ module Duxml
 
     def description
       "history follows: \n" +
-      collect do |change_or_error|
+      events.collect do |change_or_error|
         change_or_error.description
       end.join("\n")
     end
@@ -59,7 +57,7 @@ module Duxml
     def update(type, *args)
       change_class = Duxml::const_get "#{type.to_s}Class".to_sym
       change_comp = change_class.new *args
-      @events.unshift change_comp
+      @nodes.unshift change_comp
       changed
       notify_observers(change_comp) unless change_comp.respond_to?(:error?)
     end

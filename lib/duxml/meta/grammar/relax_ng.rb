@@ -1,14 +1,15 @@
-require File.expand_path(File.dirname(__FILE__) + '/relax_ng/children_rule.rb')
-require File.expand_path(File.dirname(__FILE__) + '/relax_ng/attrs_rule.rb')
-require File.expand_path(File.dirname(__FILE__) + '/relax_ng/value_rule.rb')
+require File.expand_path(File.dirname(__FILE__) + '/relax_ng/children_rule')
+require File.expand_path(File.dirname(__FILE__) + '/relax_ng/attrs_rule')
+require File.expand_path(File.dirname(__FILE__) + '/relax_ng/value_rule')
+require File.expand_path(File.dirname(__FILE__) + '/../../doc')
 
 module Duxml
   module RelaxNG
-    include Ox
+    include Duxml
     # @param output_path [String] optional, output path for .rng file
     # @return [Nokogiri::XML::RelaxNG] RelaxNG schema object
     def relaxng(output_path=nil)
-      doc = Document.new
+      doc = Doc.new
       doc << Element.new('grammar')
       doc.grammar[:xmlns] = 'http://relaxng.org/ns/structure/1.0'
       doc.grammar[:datatypeLibrary] = 'http://www.w3.org/2001/XMLSchema-datatypes'
@@ -23,11 +24,13 @@ module Duxml
       end
 
       # fill in empty doc definitions to make them legal
-      element_defs = document.grammar.Define.keep_if do |d| d.Element.first.nodes.empty? end
+      element_defs = doc.grammar.Define.collect do |d|
+        d.element if d.nodes.first.name == 'element' and d.element.nodes.empty?
+      end.compact
       element_defs.each do |element_def|
         element_def << Element.new('empty')
       end
-      Ox.to_file(output_path, doc) if output_path
+      File.write(output_path, doc.to_s) if output_path
       doc
     end # def relaxng
   end # module RelaxNG
