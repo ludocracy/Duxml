@@ -7,7 +7,7 @@ module Duxml
     end
   end # class Error
 
-  # do not use
+  # do not use except to subclass
   class ErrorClass < ChangeClass
     include Error
 

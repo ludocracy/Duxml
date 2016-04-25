@@ -10,6 +10,8 @@ module Duxml
   class RuleClass < PatternClass
     include Rule
 
+    # @param subj [String] NMTOKEN name of element this rule applies to
+    # @param _statement [String, Regexp] string statement of rule in DTD declaration form or Regexp
     def initialize(subj, _statement)
       @statement = _statement
       @object = nil
@@ -43,7 +45,8 @@ module Duxml
 
     # @return [String] default description for a Rule
     def description
-      %(#{name} that #{relationship} of #{subject} must match #{statement.gsub('\b','')})
+      statement_str = (statement.is_a?(String) ? statement : statement.inspect).gsub('\b','')
+      %(#{relationship.capitalize} Rule that <#{subject}>'s #{relationship} must match '#{statement_str}')
     end
   end # module Rule
 end # module Duxml

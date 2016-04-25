@@ -35,6 +35,7 @@ module Duxml
     def applies_to?(change_or_pattern)
       return false unless change_or_pattern.respond_to?(:attr_name)
       return false unless super(change_or_pattern)
+      return false if change_or_pattern.respond_to?(:value) && !change_or_pattern.respond_to?(:time_stamp)
       statement.include?(change_or_pattern.attr_name.to_s)
     end
 
@@ -48,9 +49,13 @@ module Duxml
       statement.gsub('\b','')
     end
 
+    def relationship
+      'attributes'
+    end
+
     # @return [String] description of self; overrides super to account for cases of missing, required attributes
     def description
-      %(#{name} that #{relationship} of #{subject} #{required? ? 'must':'can'} include #{attr_name})
+      %(#{relationship.capitalize} Rule that <#{subject}>'s #{relationship} #{required? ? 'must':'can'} include '#{attr_name}')
     end
 
     # @param change_or_pattern [Duxml::Change, Duxml::Pattern] change or pattern to be evaluated
@@ -58,7 +63,8 @@ module Duxml
     #   otherwise returns whether or not any illegal attributes exist
     def pass(change_or_pattern)
       if change_or_pattern.respond_to?(:time_stamp)
-        attr_name.include?(change_or_pattern.attr_name.to_s)
+        an = change_or_pattern.attr_name.to_s
+        attr_name.include?(an) && !change_or_pattern.abstract?
       else
         !change_or_pattern.abstract?
       end

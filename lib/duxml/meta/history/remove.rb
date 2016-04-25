@@ -14,12 +14,13 @@ module Duxml
     end
 
     attr_reader :removed
+    alias_method :object, :removed
   end
 
   module Remove
     # @return [String] describes removal event
     def description
-      %(#{super} #{removed.description} was removed from #{subject.description}.)
+      %(#{super} #{removed.description} removed from #{subject.description}.)
     end
   end # module Remove
 end # module Duxml

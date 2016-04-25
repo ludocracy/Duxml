@@ -20,12 +20,12 @@ module Duxml
   module ChangeText
     # @return [String] self description
     def description
-      "#{super} #{subject.description} changed text from '#{old_text}' to '#{text}'."
+      "#{super} #{subject.description}'s text at index #{index} changed from '#{old_text}' to '#{text}'."
     end
 
     # @return [String] new content (subsequent changes may mean this new content no longer exists in its original form!)
     def text
-      subject[index]
+      subject.nodes[index]
     end
   end # module ChangeText
 end # module Duxml

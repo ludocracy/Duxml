@@ -17,15 +17,16 @@ module Duxml
     def relaxng(parent)
       nodes = parent.Define(name: subject)
       raise Exception if nodes.size > 1
-      element_def = nodes.first
 
-      if element_def.nil?
+      if nodes.first.nil?
         element_def = Element.new('element')
         element_def[:name] = subject
         define = Element.new('define')
         define[:name] = subject
         define << element_def
         parent << define
+      else
+        element_def = nodes.first.nodes.first
       end
 
       # loop through child requirements
@@ -45,14 +46,14 @@ module Duxml
         end
 
         # if child requirement has enumerated options, wrap in <choice>
-        element_array = scanner[:match].source.gsub('\b','').scan(Regexp.nmtoken).flatten
+        element_array = scanner[:match].source.gsub('\b','').scan(Regexp.nmtoken).flatten.keep_if do |e| !e.empty? end
         if element_array.size > 1
           choice_el = Element.new 'choice'
           cur_element << choice_el
           cur_element = choice_el
         end
 
-        # adding enumerated options as new doc defs if needed
+        # adding enumerated options as new element defs if needed
         element_array.each do |element_name|
           existing_defs = parent.Define(name: element_name)
           raise Exception if existing_defs.size > 1
@@ -65,7 +66,7 @@ module Duxml
             parent << new_def
           end
 
-          if element_name == 'PCDATA'
+          if element_name == '#PCDATA'
             cur_element << Element.new('text')
           else
             ref_node = Element.new('ref')

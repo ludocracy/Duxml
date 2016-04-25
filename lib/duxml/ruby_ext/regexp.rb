@@ -7,7 +7,7 @@ class Regexp
 
     # @return [Regexp] XML NMTOKEN e.g xml:attribute, also-valid, CDATA
     def nmtoken
-      /(?!\s)([a-z\:A-Z_][a-zA-Z0-9_\-.:]*)(?!\s)/
+      /(?!\s)([a-zA-Z0-9_\-.:]*)(?!\s)/
     end
 
     # @return [Regexp] Ruby constant e.g. Constant, CONSTANT

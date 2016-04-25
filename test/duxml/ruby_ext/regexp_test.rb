@@ -27,11 +27,11 @@ class RegexpText < Test::Unit::TestCase
   end
 
   def test_regexp_nmtoken
-    %w(identifier Identifier identifier0 :identifier identi.fier identifier_0 _identifier ident-ifier identi:fier ).each do |s|
+    %w(identifier Identifier 0identifier identifier0 :identifier identi.fier identifier_0 _identifier ident-ifier identi:fier ).each do |s|
       assert_equal s, Regexp.nmtoken.match(s).to_s
     end
 
-    ['ident ifier', '0identifier'].each do |s|
+    ['ident ifier', 'ident,ifier'].each do |s|
       assert_not_equal s, Regexp.nmtoken.match(s).to_s
     end
   end

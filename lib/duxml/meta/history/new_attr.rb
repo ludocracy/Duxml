@@ -25,7 +25,7 @@ module Duxml
 
     # @return [String] self description
     def description
-      "#{super} #{subject.description} given new attribute '#{self[:attr_name]}' with value '#{self[:new_value]}'."
+      "#{super} #{subject.description} given new attribute '#{attr_name}' with value '#{value}'."
     end
   end # module NewAttribute
 end # module Duxml

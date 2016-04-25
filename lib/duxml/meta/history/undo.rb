@@ -10,7 +10,7 @@ module Duxml
 
   module Undo
     def description
-      super || "#{subject.id} undone."
+      "#{super} change '#{subject.id}' undone."
     end
 
     # returns previous change instance that was undone

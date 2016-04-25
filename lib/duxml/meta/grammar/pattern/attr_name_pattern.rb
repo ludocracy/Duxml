@@ -27,8 +27,8 @@ module Duxml
     end
 
     def description
-      abstract? ? "#{subject.description} does not have #{relationship} #{attr_name}" :
-          "@#{attr_name} is #{relationship} of #{subject.description}"
+      abstract? ? "#{subject.description} does not have #{relationship} [#{attr_name}]" :
+          "#{subject.description}'s #{relationship} [#{attr_name}]"
     end
   end # class AttrNamePattern
 end # module Duxml

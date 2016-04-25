@@ -26,7 +26,7 @@ module Duxml
 
     # @return [String] self description
     def description
-      "#{super} #{subject.description} changed attribute '#{attr_name}' value from '#{old_value}' to '#{value}'."
+      "#{super} #{subject.description}'s @#{attr_name} changed value from '#{old_value}' to '#{value}'."
     end
   end # module ChangeAttribute
 end # module Duxml

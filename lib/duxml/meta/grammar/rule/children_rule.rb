@@ -14,9 +14,10 @@ module Duxml
     def initialize(_subject, _statement)
       formatted_statement = _statement
                                 .gsub(/[\<>]/, '')
-                                .gsub(/#PCDATA/, 'p_c_data')
+                                .gsub(/#PCDATA/, 'PCDATA')
                                 .gsub('-','_dash_')
                                 .gsub(/\b/,'\b')
+                                .gsub(/PCDATA/, '#PCDATA')
                                 .gsub('_dash_', '-')
                                 .gsub(/\s/,'')
       super(_subject, formatted_statement)
@@ -39,8 +40,8 @@ module Duxml
     def required_children
       req_scans = get_scanners.select do |scanner| scanner[:operator].match(/[\*\?]/).nil? end
       req_scans.collect do |req_scan|
-        get_child_name req_scan
-      end
+        get_child_name req_scan unless get_child_name(req_scan) == 'EMPTY'
+      end.compact
     end
 
     # @param change_or_pattern [Duxml::Pattern, Duxml::Change] change or pattern to be evaluated
@@ -82,7 +83,7 @@ module Duxml
         case
           when child.nil?, scanner.nil? then break
           when child.is_a?(String)
-            result = scanner[:match].inspect.include?('p_c_data')
+            result = scanner[:match].inspect.include?('#PCDATA')
           when child.name.match(scanner[:match]) # scanner matches this child
             if scanner[:operator]=='?' or scanner[:operator]=='' # shift scanners if we only need one child of this type
               scanner = scanners.shift

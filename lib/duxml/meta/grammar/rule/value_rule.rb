@@ -19,7 +19,7 @@ module Duxml
   module ValueRule
     CDATA_EXPR = /(\]\]>)/
     ENTITY_EXPR = /(\b[\S]+\b)/
-    ID_EXPR = /(\b[\w-]+\b)/
+    ID_EXPR = Regexp.nmtoken
     NMTOKEN_EXPR = ID_EXPR
     NOTATION_EXPR = //
 
@@ -30,7 +30,7 @@ module Duxml
 
     # @return [String] description of this rule
     def description
-      %(#{name} that #{relationship} of @#{attr_name} must match #{statement})
+      %(#{relationship.capitalize} Rule that @#{attr_name}'s #{relationship} must match '#{statement}')
     end
 
     # @param change_or_pattern [Duxml::Pattern, Duxml::Change] change or pattern to be evaluated

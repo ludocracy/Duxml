@@ -7,8 +7,8 @@ module Duxml
   class AttrValPatternClass < PatternClass
     include AttrValPattern
 
-    # @param _subject [Ox::Element] subject doc
-    # @param _attr_name [String] name of attribute
+    # @param _subject [Element] subject element
+    # @param _attr_name [String] name of attribute whose value is the object of this pattern
     def initialize(_subject, _attr_name)
       @attr_name = _attr_name
       super _subject
@@ -19,11 +19,11 @@ module Duxml
 
   module AttrValPattern
     def relationship
-      'attribute value'
+      'value'
     end
 
     def description
-      "#{subject.description}'s @#{attr_name} #{relationship} is #{value}"
+      "#{subject.description}'s @#{attr_name} #{relationship} of '#{value}'"
     end
 
     # current value of this attribute

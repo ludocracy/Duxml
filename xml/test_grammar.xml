@@ -216,7 +216,7 @@
       <s a="@subject">ul</s>
     </o>
     <o c="Duxml::ChildrenRuleClass">
-      <s a="@statement">(\bp_c_data\b|\bph\b|\bcodeph\b|\bsynph\b|\bfilepath\b|\bmsgph\b|\buserinput\b|\bsystemoutput\b|\bb\b|\bu\b|\bi\b|\btt\b|\bsup\b|\bsub\b|\buicontrol\b|\bmenucascade\b|\bterm\b|\bxref\b|\bcite\b|\bq\b|\bboolean\b|\bstate\b|\bkeyword\b|\boption\b|\bparmname\b|\bapiname\b|\bcmdname\b|\bmsgnum\b|\bvarname\b|\bwintitle\b|\btm\b|\bp\b|\blq\b|\bnote\b|\bdl\b|\bparml\b|\bul\b|\bol\b|\bsl\b|\bpre\b|\bcodeblock\b|\bmsgblock\b|\bscreen\b|\blines\b|\bfig\b|\bsyntaxdiagram\b|\bimagemap\b|\bimage\b|\bobject\b|\bdraft-comment\b|\brequired-cleanup\b|\bfn\b|\bindextermref\b|\bindexterm\b|\bdata\b|\bdata-about\b|\bforeign\b|\bunknown\b)*</s>
+      <s a="@statement">(\b#PCDATA\b|\bph\b|\bcodeph\b|\bsynph\b|\bfilepath\b|\bmsgph\b|\buserinput\b|\bsystemoutput\b|\bb\b|\bu\b|\bi\b|\btt\b|\bsup\b|\bsub\b|\buicontrol\b|\bmenucascade\b|\bterm\b|\bxref\b|\bcite\b|\bq\b|\bboolean\b|\bstate\b|\bkeyword\b|\boption\b|\bparmname\b|\bapiname\b|\bcmdname\b|\bmsgnum\b|\bvarname\b|\bwintitle\b|\btm\b|\bp\b|\blq\b|\bnote\b|\bdl\b|\bparml\b|\bul\b|\bol\b|\bsl\b|\bpre\b|\bcodeblock\b|\bmsgblock\b|\bscreen\b|\blines\b|\bfig\b|\bsyntaxdiagram\b|\bimagemap\b|\bimage\b|\bobject\b|\bdraft-comment\b|\brequired-cleanup\b|\bfn\b|\bindextermref\b|\bindexterm\b|\bdata\b|\bdata-about\b|\bforeign\b|\bunknown\b)*</s>
       <z a="@object"/>
       <s a="@subject">entry</s>
     </o>
@@ -490,7 +490,7 @@
       <s a="@subject">colspec</s>
     </o>
     <o c="Duxml::ChildrenRuleClass">
-      <s a="@statement">(\bp_c_data\b|\bph\b|\bcodeph\b|\bsynph\b|\bfilepath\b|\bmsgph\b|\buserinput\b|\bsystemoutput\b|\bb\b|\bu\b|\bi\b|\btt\b|\bsup\b|\bsub\b|\buicontrol\b|\bmenucascade\b|\bterm\b|\bxref\b|\bxref-external\b|\bcite\b|\bq\b|\bboolean\b|\bstate\b|\bkeyword\b|\boption\b|\bparmname\b|\bapiname\b|\bcmdname\b|\bmsgnum\b|\bvarname\b|\bwintitle\b|\btm\b|\blq\b|\bnote\b|\bdl\b|\bparml\b|\bul\b|\bol\b|\bsl\b|\bpre\b|\bcodeblock\b|\bmsgblock\b|\bscreen\b|\blines\b|\bfig\b|\bsyntaxdiagram\b|\bimagemap\b|\bimage\b|\bobject\b|\btable\b|\bsimpletable\b|\bdraft-comment\b|\brequired-cleanup\b|\bfn\b|\bindextermref\b|\bindexterm\b|\bdata\b|\bdata-about\b|\bforeign\b|\bunknown\b|\bdataref\b)*</s>
+      <s a="@statement">(\b#PCDATA\b|\bph\b|\bcodeph\b|\bsynph\b|\bfilepath\b|\bmsgph\b|\buserinput\b|\bsystemoutput\b|\bb\b|\bu\b|\bi\b|\btt\b|\bsup\b|\bsub\b|\buicontrol\b|\bmenucascade\b|\bterm\b|\bxref\b|\bxref-external\b|\bcite\b|\bq\b|\bboolean\b|\bstate\b|\bkeyword\b|\boption\b|\bparmname\b|\bapiname\b|\bcmdname\b|\bmsgnum\b|\bvarname\b|\bwintitle\b|\btm\b|\blq\b|\bnote\b|\bdl\b|\bparml\b|\bul\b|\bol\b|\bsl\b|\bpre\b|\bcodeblock\b|\bmsgblock\b|\bscreen\b|\blines\b|\bfig\b|\bsyntaxdiagram\b|\bimagemap\b|\bimage\b|\bobject\b|\btable\b|\bsimpletable\b|\bdraft-comment\b|\brequired-cleanup\b|\bfn\b|\bindextermref\b|\bindexterm\b|\bdata\b|\bdata-about\b|\bforeign\b|\bunknown\b|\bdataref\b)*</s>
       <z a="@object"/>
       <s a="@subject">p</s>
     </o>
@@ -716,7 +716,7 @@
       <s a="@subject">row</s>
     </o>
     <o c="Duxml::ChildrenRuleClass">
-      <s a="@statement">(\bp_c_data\b|\bph\b|\bcodeph\b|\bsynph\b|\bfilepath\b|\bmsgph\b|\buserinput\b|\bsystemoutput\b|\bb\b|\bu\b|\bi\b|\btt\b|\bsup\b|\bsub\b|\buicontrol\b|\bmenucascade\b|\bterm\b|\bxref\b|\bcite\b|\bq\b|\bboolean\b|\bstate\b|\bkeyword\b|\boption\b|\bparmname\b|\bapiname\b|\bcmdname\b|\bmsgnum\b|\bvarname\b|\bwintitle\b|\btm\b|\bimage\b|\bdraft-comment\b|\brequired-cleanup\b|\bfn\b|\bindextermref\b|\bindexterm\b|\bdata\b|\bdata-about\b|\bforeign\b|\bunknown\b)*</s>
+      <s a="@statement">(\b#PCDATA\b|\bph\b|\bcodeph\b|\bsynph\b|\bfilepath\b|\bmsgph\b|\buserinput\b|\bsystemoutput\b|\bb\b|\bu\b|\bi\b|\btt\b|\bsup\b|\bsub\b|\buicontrol\b|\bmenucascade\b|\bterm\b|\bcite\b|\bq\b|\bboolean\b|\bstate\b|\bkeyword\b|\boption\b|\bparmname\b|\bapiname\b|\bcmdname\b|\bmsgnum\b|\bvarname\b|\bwintitle\b|\btm\b|\bimage\b|\bdraft-comment\b|\brequired-cleanup\b|\bfn\b|\bindextermref\b|\bindexterm\b|\bdata\b|\bdata-about\b|\bforeign\b|\bunknown\b)*</s>
       <z a="@object"/>
       <s a="@subject">sli</s>
     </o>
@@ -823,7 +823,7 @@
       <s a="@subject">sli</s>
     </o>
     <o c="Duxml::ChildrenRuleClass">
-      <s a="@statement">(\bp_c_data\b|\bph\b|\bcodeph\b|\bsynph\b|\bfilepath\b|\bmsgph\b|\buserinput\b|\bsystemoutput\b|\bb\b|\bu\b|\bi\b|\btt\b|\bsup\b|\bsub\b|\buicontrol\b|\bmenucascade\b|\bterm\b|\bq\b|\bboolean\b|\bstate\b|\bkeyword\b|\boption\b|\bparmname\b|\bapiname\b|\bcmdname\b|\bmsgnum\b|\bvarname\b|\bwintitle\b|\btm\b|\bimage\b|\bdata\b|\bdata-about\b|\bforeign\b|\bunknown\b|\bdesc\b)*</s>
+      <s a="@statement">(\b#PCDATA\b|\bph\b|\bcodeph\b|\bsynph\b|\bfilepath\b|\bmsgph\b|\buserinput\b|\bsystemoutput\b|\bb\b|\bu\b|\bi\b|\btt\b|\bsup\b|\bsub\b|\buicontrol\b|\bmenucascade\b|\bterm\b|\bq\b|\bboolean\b|\bstate\b|\bkeyword\b|\boption\b|\bparmname\b|\bapiname\b|\bcmdname\b|\bmsgnum\b|\bvarname\b|\bwintitle\b|\btm\b|\bimage\b|\bdata\b|\bdata-about\b|\bforeign\b|\bunknown\b|\bdesc\b)*</s>
       <z a="@object"/>
       <s a="@subject">xref</s>
     </o>
@@ -990,7 +990,7 @@
       <s a="@subject">xref</s>
     </o>
     <o c="Duxml::ChildrenRuleClass">
-      <s a="@statement">(\bp_c_data\b|\bph\b|\bcodeph\b|\bsynph\b|\bfilepath\b|\bmsgph\b|\buserinput\b|\bsystemoutput\b|\bb\b|\bu\b|\bi\b|\btt\b|\bsup\b|\bsub\b|\buicontrol\b|\bmenucascade\b|\bterm\b|\bxref\b|\bcite\b|\bq\b|\bboolean\b|\bstate\b|\bkeyword\b|\boption\b|\bparmname\b|\bapiname\b|\bcmdname\b|\bmsgnum\b|\bvarname\b|\bwintitle\b|\btm\b|\bimage\b|\bdraft-comment\b|\brequired-cleanup\b|\bfn\b|\bindextermref\b|\bindexterm\b|\bdata\b|\bdata-about\b|\bforeign\b|\bunknown\b)*</s>
+      <s a="@statement">(\b#PCDATA\b|\bcodeph\b|\bsynph\b|\bfilepath\b|\bmsgph\b|\buserinput\b|\bsystemoutput\b|\bb\b|\bu\b|\bi\b|\btt\b|\bsup\b|\bsub\b|\buicontrol\b|\bmenucascade\b|\bterm\b|\bxref\b|\bcite\b|\bq\b|\bboolean\b|\bstate\b|\bkeyword\b|\boption\b|\bparmname\b|\bapiname\b|\bcmdname\b|\bmsgnum\b|\bvarname\b|\bwintitle\b|\btm\b|\bimage\b|\bdraft-comment\b|\brequired-cleanup\b|\bfn\b|\bindextermref\b|\bindexterm\b|\bdata\b|\bdata-about\b|\bforeign\b|\bunknown\b)*</s>
       <z a="@object"/>
       <s a="@subject">ph</s>
     </o>
@@ -1103,7 +1103,7 @@
       <s a="@subject">ph</s>
     </o>
     <o c="Duxml::ChildrenRuleClass">
-      <s a="@statement">(\bp_c_data\b|\bph\b|\bcodeph\b|\bsynph\b|\bfilepath\b|\bmsgph\b|\buserinput\b|\bsystemoutput\b|\bb\b|\bu\b|\bi\b|\btt\b|\bsup\b|\bsub\b|\buicontrol\b|\bmenucascade\b|\bactive-low\b|\bcompleted\b|\bday\b|\bmonth\b|\byear\b|\bchange-summary\b|\bterm\b|\bq\b|\bboolean\b|\bstate\b|\bkeyword\b|\boption\b|\bparmname\b|\bapiname\b|\bcmdname\b|\bmsgnum\b|\bvarname\b|\bwintitle\b|\btm\b|\bimage\b|\bdata\b|\bchangehistory\b|\bedited\b|\bperson\b|\bdata-about\b|\bforeign\b|\bunknown\b)*</s>
+      <s a="@statement">(\b#PCDATA\b|\bph\b|\bcodeph\b|\bsynph\b|\bfilepath\b|\bmsgph\b|\buserinput\b|\bsystemoutput\b|\bb\b|\bu\b|\bi\b|\btt\b|\bsup\b|\bsub\b|\buicontrol\b|\bmenucascade\b|\bactive-low\b|\bcompleted\b|\bday\b|\bmonth\b|\byear\b|\bchange-summary\b|\bterm\b|\bq\b|\bboolean\b|\bstate\b|\bkeyword\b|\boption\b|\bparmname\b|\bapiname\b|\bcmdname\b|\bmsgnum\b|\bvarname\b|\bwintitle\b|\btm\b|\bimage\b|\bdata\b|\bchangehistory\b|\bedited\b|\bperson\b|\bdata-about\b|\bforeign\b|\bunknown\b)*</s>
       <z a="@object"/>
       <s a="@subject">title</s>
     </o>
@@ -1156,7 +1156,7 @@
       <s a="@subject">title</s>
     </o>
     <o c="Duxml::ChildrenRuleClass">
-      <s a="@statement">(\bp_c_data\b|\bph\b|\bcodeph\b|\bsynph\b|\bfilepath\b|\bmsgph\b|\buserinput\b|\bsystemoutput\b|\bb\b|\bu\b|\bi\b|\btt\b|\bsup\b|\bsub\b|\buicontrol\b|\bmenucascade\b|\bterm\b|\bxref\b|\bcite\b|\bq\b|\bboolean\b|\bstate\b|\bkeyword\b|\boption\b|\bparmname\b|\bapiname\b|\bcmdname\b|\bmsgnum\b|\bvarname\b|\bwintitle\b|\btm\b|\bp\b|\blq\b|\bnote\b|\bdl\b|\bparml\b|\bul\b|\bol\b|\bsl\b|\bpre\b|\bcodeblock\b|\bmsgblock\b|\bscreen\b|\blines\b|\bfig\b|\bsyntaxdiagram\b|\bimagemap\b|\bimage\b|\bobject\b|\btable\b|\bsimpletable\b|\btitle\b|\bdraft-comment\b|\brequired-cleanup\b|\bfn\b|\bindextermref\b|\bindexterm\b|\bdata\b|\bdata-about\b|\bforeign\b|\bunknown\b)*</s>
+      <s a="@statement">(\b#PCDATA\b|\bph\b|\bcodeph\b|\bsynph\b|\bfilepath\b|\bmsgph\b|\buserinput\b|\bsystemoutput\b|\bb\b|\bu\b|\bi\b|\btt\b|\bsup\b|\bsub\b|\buicontrol\b|\bmenucascade\b|\bterm\b|\bxref\b|\bcite\b|\bq\b|\bboolean\b|\bstate\b|\bkeyword\b|\boption\b|\bparmname\b|\bapiname\b|\bcmdname\b|\bmsgnum\b|\bvarname\b|\bwintitle\b|\btm\b|\bp\b|\blq\b|\bnote\b|\bdl\b|\bparml\b|\bul\b|\bol\b|\bsl\b|\bpre\b|\bcodeblock\b|\bmsgblock\b|\bscreen\b|\blines\b|\bfig\b|\bsyntaxdiagram\b|\bimagemap\b|\bimage\b|\bobject\b|\btable\b|\bsimpletable\b|\btitle\b|\bdraft-comment\b|\brequired-cleanup\b|\bfn\b|\bindextermref\b|\bindexterm\b|\bdata\b|\bdata-about\b|\bforeign\b|\bunknown\b)*</s>
       <z a="@object"/>
       <s a="@subject">section</s>
     </o>
@@ -2023,7 +2023,7 @@
       <s a="@subject">body</s>
     </o>
     <o c="Duxml::ChildrenRuleClass">
-      <s a="@statement">(\bp_c_data\b|\bph\b|\bcodeph\b|\bsynph\b|\bfilepath\b|\bmsgph\b|\buserinput\b|\bsystemoutput\b|\bb\b|\bu\b|\bi\b|\btt\b|\bsup\b|\bsub\b|\buicontrol\b|\bmenucascade\b|\bterm\b|\bxref\b|\bcite\b|\bq\b|\bboolean\b|\bstate\b|\bkeyword\b|\boption\b|\bparmname\b|\bapiname\b|\bcmdname\b|\bmsgnum\b|\bvarname\b|\bwintitle\b|\btm\b|\bp\b|\blq\b|\bnote\b|\bdl\b|\bparml\b|\bul\b|\bol\b|\bsl\b|\bpre\b|\bcodeblock\b|\bmsgblock\b|\bscreen\b|\blines\b|\bfig\b|\bsyntaxdiagram\b|\bimagemap\b|\bimage\b|\bobject\b|\btable\b|\bsimpletable\b|\bitemgroup\b|\bdraft-comment\b|\brequired-cleanup\b|\bfn\b|\bindextermref\b|\bindexterm\b|\bdata\b|\bdata-about\b|\bforeign\b|\bunknown\b)*</s>
+      <s a="@statement">(\b#PCDATA\b|\bph\b|\bcodeph\b|\bsynph\b|\bfilepath\b|\bmsgph\b|\buserinput\b|\bsystemoutput\b|\bb\b|\bu\b|\bi\b|\btt\b|\bsup\b|\bsub\b|\buicontrol\b|\bmenucascade\b|\bterm\b|\bxref\b|\bcite\b|\bq\b|\bboolean\b|\bstate\b|\bkeyword\b|\boption\b|\bparmname\b|\bapiname\b|\bcmdname\b|\bmsgnum\b|\bvarname\b|\bwintitle\b|\btm\b|\bp\b|\blq\b|\bnote\b|\bdl\b|\bparml\b|\bul\b|\bol\b|\bsl\b|\bpre\b|\bcodeblock\b|\bmsgblock\b|\bscreen\b|\blines\b|\bfig\b|\bsyntaxdiagram\b|\bimagemap\b|\bimage\b|\bobject\b|\btable\b|\bsimpletable\b|\bitemgroup\b|\bdraft-comment\b|\brequired-cleanup\b|\bfn\b|\bindextermref\b|\bindexterm\b|\bdata\b|\bdata-about\b|\bforeign\b|\bunknown\b)*</s>
       <z a="@object"/>
       <s a="@subject">li</s>
     </o>

@@ -24,7 +24,7 @@ class ChildrenRuleTest < Test::Unit::TestCase
     @x = Element.new('parent') << 'some_text' << Element.new('one')
     @cr = Element.new('children_rule')
     cr[:subject] = 'parent'
-    cr[:statement] = '((\\bone\\b|\\btwo\\b|\\bfour\\b|\\bp_c_data\\b))*'
+    cr[:statement] = '((\\bone\\b|\\btwo\\b|\\bfour\\b|\\b#PCDATA\\b))*'
   end
 
   attr_reader :rule, :o, :x, :cr
@@ -37,7 +37,7 @@ class ChildrenRuleTest < Test::Unit::TestCase
   def test_init_child_rule
     assert_equal 'children_rule_class', rule.simple_name
     assert_equal 'parent', rule.subject
-    assert_equal '((\\bone\\b|\\btwo\\b|\\bfour\\b|\\bp_c_data\\b))*', rule.statement
+    assert_equal '((\\bone\\b|\\btwo\\b|\\bfour\\b|\\b#PCDATA\\b))*', rule.statement
     assert_equal nil, rule.object
   end
 
@@ -63,6 +63,14 @@ class ChildrenRuleTest < Test::Unit::TestCase
     result = rule.qualify p
     assert_equal false, result
     assert_equal :QualifyError, o.args.first
+  end
+
+  def test_relationship
+    assert_equal 'children', rule.relationship
+  end
+
+  def test_description
+    assert_equal "Children Rule that <parent>'s children must match '((one|two|four|#PCDATA))*'", rule.description
   end
 
   def test_applies_to

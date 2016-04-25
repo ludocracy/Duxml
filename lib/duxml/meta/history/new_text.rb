@@ -2,6 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/change')
 
 module Duxml
   module NewText; end
+
   # created when object had no children or text and text has been added
   class NewTextClass < ChangeClass
     include NewText
@@ -20,10 +21,15 @@ module Duxml
     def text
       subject.nodes[index]
     end
+    alias_method :object, :text
 
     # @return [String] self description
     def description
       "#{super} #{subject.description} given new text '#{text}'."
+    end
+
+    def line_expr
+      subject.line < 0 ? '' : " on line #{subject.line}"
     end
   end # class NewContent
 end # module Duxml

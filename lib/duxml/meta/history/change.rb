@@ -34,13 +34,26 @@ module Duxml
 
     # @return [String] gives its time stamp
     def description
-      "at #{time_stamp}"
+      "at #{time_stamp}#{line_expr}:"
     end
 
     # @return [-1,0,1,nil] compares dates of changes
     def <=>(obj)
       return nil unless obj.is_a?(Duxml::Change)
       date <=> obj.date
+    end
+
+    # @return [String] string equivalent of object's line number
+    def line_expr
+      case
+        when object.respond_to?(:line) && object.line >= 0
+          " on line #{object.line.to_s}"
+        when object.respond_to?(:object) && object.object.respond_to?(:line) && object.object.line >= 0
+          " on line #{object.object.line.to_s}"
+        when subject.respond_to?(:line) && subject.line >= 0
+          " on line #{subject.line.to_s}"
+        else ''
+      end
     end
   end # class Change
 end # module Duxml

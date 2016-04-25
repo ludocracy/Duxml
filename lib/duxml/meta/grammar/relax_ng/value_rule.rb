@@ -22,7 +22,7 @@ module Duxml
               choice_node = Element.new('choice')
               attr_def << choice_node
               data_type.split(/[\(\|\)]/).each do |en_val|
-                if Regexp.nmtoken.match(en_val)
+                if !en_val.empty? && Regexp.nmtoken.match(en_val)
                   value_def = Element.new('value')
                   value_def << en_val
                   choice_node << value_def

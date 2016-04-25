@@ -18,7 +18,7 @@ module Duxml
 
   module Add
     def description
-      super || %(#{child.description} was added to #{subject.description}.)
+      %(#{super} #{child.description} added to #{subject.description}.)
     end
 
     def parent
@@ -28,5 +28,7 @@ module Duxml
     def child
       subject.nodes[index]
     end
+
+    alias_method :object, :child
   end # class Add
 end # module Duxml

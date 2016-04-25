@@ -51,6 +51,14 @@ class TextRuleTest < Test::Unit::TestCase
     assert_equal :QualifyError, o.args.first
   end
 
+  def test_relationship
+    assert_equal 'text', rule.relationship
+  end
+
+  def test_description
+    assert_equal "Text Rule that <parent>'s text must match '/(?:(?!true|false))([a-zA-Z_][a-zA-Z0-9_]*)/'", rule.description
+  end
+
   def test_validate
     x << 'identifier'
     a = Duxml::TextPatternClass.new(x, 0)

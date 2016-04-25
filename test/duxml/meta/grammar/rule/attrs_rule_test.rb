@@ -50,6 +50,14 @@ class AttrsRuleTest < Test::Unit::TestCase
     assert_equal :QualifyError, o.args.first
   end
 
+  def test_relationship
+    assert_equal 'attributes', rule.relationship
+  end
+
+  def test_description
+    assert_equal "Attributes Rule that <parent>'s attributes must include 'foo'", rule.description
+  end
+
   def test_validate
     a = AttrNamePatternClass.new(x, :bird)
     assert_equal false, rule.qualify(a)

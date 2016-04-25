@@ -35,6 +35,14 @@ class ValueRuleTest < Test::Unit::TestCase
     assert_equal nil, rule.object
   end
 
+  def test_relationship
+    assert_equal 'value', rule.relationship
+  end
+
+  def test_description
+    assert_equal "Value Rule that @foo's value must match 'NMTOKEN'", rule.description
+  end
+
   def test_applies_to
     assert_equal true, rule.applies_to?(AttrValPatternClass.new(x, :foo))
     assert_equal true, rule.applies_to?(NewAttrClass.new(x, :foo))

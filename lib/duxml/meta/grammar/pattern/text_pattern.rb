@@ -22,7 +22,7 @@ module Duxml
     end
 
     def description
-      "#{relationship} of #{subject.description}"
+      "#{subject.description}'s #{relationship} is '#{text}'"
     end
   end # class ContentPattern
 end # module Duxml
