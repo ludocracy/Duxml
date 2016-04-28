@@ -43,17 +43,24 @@ module Duxml
       date <=> obj.date
     end
 
-    # @return [String] string equivalent of object's line number
-    def line_expr
+    def line
       case
         when object.respond_to?(:line) && object.line >= 0
-          " on line #{object.line.to_s}"
+          object.line
         when object.respond_to?(:object) && object.object.respond_to?(:line) && object.object.line >= 0
-          " on line #{object.object.line.to_s}"
+          object.object.line
+        when object.respond_to?(:subject) && object.subject.respond_to?(:line) && object.subject.line >= 0
+          object.subject.line
         when subject.respond_to?(:line) && subject.line >= 0
-          " on line #{subject.line.to_s}"
-        else ''
+          subject.line
+        else
+          -1
       end
+    end
+
+    # @return [String] string equivalent of object's line number
+    def line_expr
+      line >= 0 ? " on line #{line.to_s}" : ''
     end
   end # class Change
 end # module Duxml

@@ -58,8 +58,10 @@ class DuxmlTest < Test::Unit::TestCase
     x = File.expand_path(File.dirname(__FILE__) + '/../xml/dtd_rule_test/error_invalid_attr.xml')
     result = validate(x, g_path)
     assert_equal false, result
-    assert_equal ValidateErrorClass, meta.history.latest.class
-    assert_equal 'invalid_attr', meta.history.latest.bad_pattern.attr_name
+    error = meta.history.latest
+    assert_equal ValidateErrorClass, error.class
+    assert_equal 5, error.line
+    assert_equal 'invalid_attr', error.bad_pattern.attr_name
   end
 
   def test_save_file

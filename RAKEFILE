@@ -3,7 +3,7 @@ require 'rake/clean'
 
 Rake::TestTask.new do |t|
   t.libs << 'test'
-  t.test_files = FileList['test/test*.rb']
+  t.test_files = FileList['test/**/*test.rb']
   t.verbose = true
 end
 
@@ -11,7 +11,7 @@ desc "Run tests"
 task :default => :test
 
 task :test do
-  Rake::TestTask.invoke
+  Rake::TestTask['test:unit'].invoke
 end
 
 task :clean => [:test] do
