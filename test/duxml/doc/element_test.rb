@@ -95,7 +95,11 @@ class ElementTest < Test::Unit::TestCase
     assert_equal :NewText, o.args[0]
     assert_equal 'root', o.args[1].name
     assert_equal 2, o.args[2]
+  end
 
+  def test_illegal_chars
+    x << '<totally> illegal & without entity names'
+    assert_equal '&lt;totally&gt; illegal &amp; without entity names', x.text
   end
 
   def test_change_text

@@ -41,11 +41,13 @@ module Duxml
     # @param obj [Element] element or string to add to this Element
     # @return [Element] self
     def <<(obj)
-      super(obj)
-      if nodes.last.is_a?(String)
+      if obj.is_a?(String)
         type = :NewText
-        else
+        safe_str = obj.gsub(/&/,'&amp;').gsub(/</, '&lt;').gsub(/>/, '&gt;')
+        super(safe_str)
+      else
         type = :Add
+        super(obj)
         if nodes.last.count_observers < 1 && @observer_peers
           nodes.last.add_observer(@observer_peers.first.first)
         end
