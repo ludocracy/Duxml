@@ -97,6 +97,13 @@ class ElementTest < Test::Unit::TestCase
     assert_equal 2, o.args[2]
   end
 
+  def test_add_array
+    x << ['some text', Element.new('interloper'), 'more text']
+    assert_equal 'some text', x.nodes[-3]
+    assert_equal 'interloper', x.nodes[-2].name
+    assert_equal 'more text', x.nodes[-1]
+  end
+
   def test_illegal_chars
     x << '<totally> illegal & without entity names'
     assert_equal '&lt;totally&gt; illegal &amp; without entity names', x.text

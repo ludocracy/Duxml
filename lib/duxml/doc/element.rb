@@ -41,16 +41,19 @@ module Duxml
     # @param obj [Element] element or string to add to this Element
     # @return [Element] self
     def <<(obj)
-      if obj.is_a?(String)
-        type = :NewText
-        safe_str = obj.gsub(/&/,'&amp;').gsub(/</, '&lt;').gsub(/>/, '&gt;')
-        super(safe_str)
-      else
-        type = :Add
-        super(obj)
-        if nodes.last.count_observers < 1 && @observer_peers
-          nodes.last.add_observer(@observer_peers.first.first)
-        end
+      case
+        when obj.is_a?(Array)
+          obj.each do |e| self << e end
+        when obj.is_a?(String)
+          type = :NewText
+          safe_str = obj.gsub(/&/,'&amp;').gsub(/</, '&lt;').gsub(/>/, '&gt;')
+          super(safe_str)
+        else
+          type = :Add
+          super(obj)
+          if nodes.last.count_observers < 1 && @observer_peers
+            nodes.last.add_observer(@observer_peers.first.first)
+          end
       end
       report(type, nodes.size - 1) unless name_space == 'duxml'
       self
