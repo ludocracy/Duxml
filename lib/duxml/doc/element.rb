@@ -42,7 +42,7 @@ module Duxml
     # @return [Element] self
     def <<(obj)
       case
-        when obj.is_a?(Array)
+        when obj.is_a?(Array), obj.is_a?(NodeSet)
           obj.each do |e| self << e end
         when obj.is_a?(String)
           type = :NewText

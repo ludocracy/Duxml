@@ -104,6 +104,13 @@ class ElementTest < Test::Unit::TestCase
     assert_equal 'more text', x.nodes[-1]
   end
 
+  def test_detach_nodes
+    t = Element.new('test')
+    t << x.nodes
+    assert_equal 'first', t.nodes[0].name
+    assert_equal 'second', t.nodes[1].name
+  end
+
   def test_illegal_chars
     x << '<totally> illegal & without entity names'
     assert_equal '&lt;totally&gt; illegal &amp; without entity names', x.text
