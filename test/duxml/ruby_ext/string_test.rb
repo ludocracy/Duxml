@@ -18,5 +18,6 @@ class StringTest < Test::Unit::TestCase
     assert_equal 'mail_man', 'mail_man'.constantize.nmtokenize
     assert_equal 'Mail_man', 'mail-man'.constantize
     assert_equal 'mail-man', 'mail-man'.constantize.nmtokenize
+    assert_equal 'MailMan', 'MailMan'.constantize
   end
 end

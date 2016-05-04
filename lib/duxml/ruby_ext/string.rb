@@ -18,6 +18,7 @@ class String
   #   'foo-bar'.constantize => 'Foo_bar'
   #   'foo_bar'.constantize => 'FooBar'
   def constantize
+    return self if Regexp.constant.match(self)
     raise Exception unless Regexp.nmtoken.match(self)
     s = split('_').collect do |word| word.capitalize unless word == '_' end.join.gsub('-', '_')
     raise Exception unless s.match(Regexp.constant)
