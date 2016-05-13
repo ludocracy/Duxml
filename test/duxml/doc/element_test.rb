@@ -29,6 +29,12 @@ class ElementTest < Test::Unit::TestCase
 
   attr_accessor :x, :o
 
+  def test_illegal_text
+    f = x.second.fourth
+    f << '& <&&'
+    assert_equal '& <&&', f.text
+  end
+
   def test_description
     assert_equal '<root>', x.description
   end
@@ -109,11 +115,6 @@ class ElementTest < Test::Unit::TestCase
     t << x.nodes
     assert_equal 'first', t.nodes[0].name
     assert_equal 'second', t.nodes[1].name
-  end
-
-  def test_illegal_chars
-    x << '<totally> illegal & without entity names'
-    assert_equal '&lt;totally&gt; illegal &amp; without entity names', x.text
   end
 
   def test_change_text

@@ -22,6 +22,12 @@ class DuxmlTest < Test::Unit::TestCase
     assert_equal meta.history, meta.grammar.history
   end
 
+  def test_illegal_text
+    load(d_path)
+    text = doc.root.illegal_content.text
+    assert_equal '&& <', text
+  end
+
   def test_load_no_grammar
     load(d_path)
     assert_equal false, meta.grammar.defined?
@@ -31,8 +37,10 @@ class DuxmlTest < Test::Unit::TestCase
     assert_equal meta.history, meta.grammar.history
   end
 
-  def test_create_file
-
+  def test_load_relative_path
+    #TODO test if erroneous paths throw appropriate messages! should then rescue to resume running!
+    load('../xml/design.xml')
+    assert_equal 'design', doc.root.name
   end
 
   def test_elements_update_history

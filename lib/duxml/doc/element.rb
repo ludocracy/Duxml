@@ -46,8 +46,7 @@ module Duxml
           obj.each do |e| self << e end
         when obj.is_a?(String)
           type = :NewText
-          safe_str = obj.gsub(/&/,'&amp;').gsub(/</, '&lt;').gsub(/>/, '&gt;')
-          super(safe_str)
+          super(obj)
         else
           type = :Add
           super(obj)

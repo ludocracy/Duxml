@@ -6,7 +6,7 @@
     <legal_child visible="nope">text content</legal_child>
   </legal_parent>
 
-<temporary/>
+<illegal_content>&amp;&amp; &lt;</illegal_content>
 <temporary/>
 <temporary/>
 <temporary/>
