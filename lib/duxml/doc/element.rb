@@ -13,6 +13,7 @@ module Duxml
 
   class Element < ::Ox::Element
     include ElementGuts
+
     # gives this doc its line and column location then freezes each Fixnum so it cannot be overwritten
     #
     # @param name [String] name of doc

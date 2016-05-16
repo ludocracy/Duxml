@@ -18,7 +18,10 @@ module Duxml
   # @param grammar_path [nil, String, Duxml::Grammar] optional - provide an external grammar file or object
   # @return [Duxml::Meta] combined Object tree from metadata root (metadata and content's XML documents are kept separate)
   def load(_file, grammar_path=nil)
-    @file = _file if _file.is_a?(String) and File.exists?(_file)
+    if _file.is_a?(String)
+      raise Exception, "File #{_file} does not exist." unless File.exists?(_file)
+      @file = _file
+    end
     if file and File.exists?(Meta.meta_path(file))
       @meta = sax(File.open(meta_path)).root
       meta.grammar=grammar_path unless grammar_path.nil? or meta.grammar.defined?
