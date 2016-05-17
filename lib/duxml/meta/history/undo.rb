@@ -1,6 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../grammar/pattern')
 
 module Duxml
+  # TODO NOT IMPLEMENTED YET!!!
   module Undo; end
 
   # created when a previous change is undone

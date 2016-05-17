@@ -55,7 +55,7 @@ module Duxml
             nodes.last.add_observer(@observer_peers.first.first)
           end
       end
-      report(type, nodes.size - 1) unless name_space == 'duxml'
+      report(type, nodes.size - 1)
       self
     end
 

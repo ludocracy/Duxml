@@ -22,9 +22,11 @@ module Duxml
 
     def_delegators :@nodes, :[], :each
 
-    def initialize()
+    def initialize(harsh_or_kind = true)
       @nodes = []
+      @strict = harsh_or_kind
     end
+
     attr_reader :nodes
     alias_method :events, :nodes
   end
@@ -35,6 +37,12 @@ module Duxml
     # @return [Element] XML element for a new <duxml:history> node
     def self.xml
       Element.new(name.nmtokenize).extend self
+    end
+
+    # @return [Boolean] toggles (true by default) whether History will raise exception or tolerate qualify errors
+    def strict?(harsh_or_kind=nil)
+      @strict = harsh_or_kind.nil? ? @strict : harsh_or_kind
+      @strict
     end
 
     def latest
@@ -60,6 +68,7 @@ module Duxml
       @nodes.unshift change_comp
       changed
       notify_observers(change_comp) unless change_comp.respond_to?(:error?)
+      raise(Exception, change_comp.description) if strict? && type == :QualifyError
     end
   end # module History
 end # module Duxml
