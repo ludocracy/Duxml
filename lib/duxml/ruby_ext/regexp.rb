@@ -1,3 +1,5 @@
+# Copyright (c) 2016 Freescale Semiconductor Inc.
+
 class Regexp
   class << self
     # @return [Regexp] C identifier e.g. ident_ifier0, excluding 'true' and 'false'

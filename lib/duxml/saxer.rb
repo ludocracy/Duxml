@@ -1,3 +1,5 @@
+# Copyright (c) 2016 Freescale Semiconductor Inc.
+
 require File.expand_path(File.dirname(__FILE__) + '/doc')
 
 module Duxml

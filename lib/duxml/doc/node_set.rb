@@ -1,3 +1,5 @@
+# Copyright (c) 2016 Freescale Semiconductor Inc.
+
 require 'observer'
 
 module Duxml

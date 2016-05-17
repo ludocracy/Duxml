@@ -1,3 +1,5 @@
+# Copyright (c) 2016 Freescale Semiconductor Inc.
+
 require 'ox'
 require File.expand_path(File.dirname(__FILE__) + '/lazy_ox')
 require File.expand_path(File.dirname(__FILE__) + '/node_set')

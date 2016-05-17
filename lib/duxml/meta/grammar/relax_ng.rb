@@ -1,3 +1,5 @@
+# Copyright (c) 2016 Freescale Semiconductor Inc.
+
 require File.expand_path(File.dirname(__FILE__) + '/relax_ng/children_rule')
 require File.expand_path(File.dirname(__FILE__) + '/relax_ng/attrs_rule')
 require File.expand_path(File.dirname(__FILE__) + '/relax_ng/value_rule')

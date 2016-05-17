@@ -1,3 +1,5 @@
+# Copyright (c) 2016 Freescale Semiconductor Inc.
+
 class Module
   def simple_name
     self.to_s.split('::').last

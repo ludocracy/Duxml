@@ -1,3 +1,5 @@
+# Copyright (c) 2016 Freescale Semiconductor Inc.
+
 require File.expand_path(File.dirname(__FILE__) + '/meta/grammar')
 require File.expand_path(File.dirname(__FILE__) + '/meta/history')
 require File.expand_path(File.dirname(__FILE__) + '/saxer')
