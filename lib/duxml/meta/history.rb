@@ -54,6 +54,10 @@ module Duxml
       @observer_peers.first.first if @observer_peers and @observer_peers.any? and @observer_peers.first.any?
     end
 
+    def inspect
+      "#<#{self.class.to_s} #{object_id}: @events=#{nodes.size}>"
+    end
+
     def description
       "history follows: \n" +
       events.collect do |change_or_error|

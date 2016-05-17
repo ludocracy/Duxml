@@ -76,6 +76,10 @@ module Duxml
         end.join("\n")
     end
 
+    def inspect
+      "#<#{self.class.to_s} #{object_id}: @rules=#{rules.size}>"
+    end
+
     def name
       'grammar'
     end

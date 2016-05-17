@@ -91,6 +91,10 @@ module Duxml
       s << ">#{nodes.collect do |n| n.to_s end.join}</#{name}>"
     end
 
+    def inspect
+      to_s
+    end
+
     # TODO do we need this method to take Fixnum node index as well?
     # @param obj [Element] element child to delete
     # @return [Element] deleted element
@@ -98,6 +102,8 @@ module Duxml
       report(:Remove, @nodes.delete(obj))
       obj
     end
+
+    alias_method :remove, :delete
 
     # pre-order traverse through this node and all of its descendants
     #

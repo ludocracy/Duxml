@@ -13,15 +13,14 @@ class DocTest < Test::Unit::TestCase
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
-    file_name = 'design.xml'
-    path = File.expand_path(File.dirname(__FILE__) + "/../../xml/#{file_name}")
     @x = Duxml::Doc.new
   end
 
 attr_reader :x
 
-  def test_traverse
-
+  def test_to_s
+    x << Element.new('design')
+    assert_equal "@root='<design>'>", x.to_s[-17..-1]
   end
 
   def test_node_set

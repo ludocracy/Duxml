@@ -9,9 +9,15 @@ module Duxml
       @nodes = NodeSet.new(self)
     end
 
-    def to_s
+    def write_to(path)
       s = attributes.collect do |k, v| %( #{k}="#{v}") end.join
       %(<?xml #{s}?>)+nodes.first.to_s
+      File.write(path, s)
+      self
+    end
+
+    def to_s
+      "#<#{self.class.to_s} @object_id='#{object_id}' @root='#{root.nil? ? '' : root.description}'>"
     end
   end # class Document < Element
 end

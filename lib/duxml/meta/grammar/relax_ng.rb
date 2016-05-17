@@ -30,7 +30,7 @@ module Duxml
       element_defs.each do |element_def|
         element_def << Element.new('empty')
       end
-      File.write(output_path, doc.to_s) if output_path
+      doc.write_to output_path if output_path
       doc
     end # def relaxng
   end # module RelaxNG
