@@ -16,15 +16,23 @@ module Duxml
   class Element < ::Ox::Element
     include ElementGuts
 
-    # gives this doc its line and column location then freezes each Fixnum so it cannot be overwritten
+    # operates in two modes:
+    # - from Ruby
+    # - from file
+    # in file mode, args provide Element's line and column location then freezes each Fixnum so it cannot be overwritten
+    # in Ruby mode, args are some combination of new attributes/values and/or child nodes (text or XML) with which to initialize this node
     #
-    # @param name [String] name of doc
-    # @param _line [Fixnum] line number in XML document; -1 if not applicable
-    # @param _column [Fixnum] column position in XML document; -1 if not applicable
-    def initialize(name, _line=-1, _column=-1)
+    # @param name [String] name of element, in both Ruby and file modes
+    # @param _line_content [Fixnum, Array, Hash] line number of element file mode; if Array, new child nodes; if Hash, attributes; can be nil
+    # @param _col_or_children [Fixnum, Array] column position in file mode; if Array, new child nodes; can be nil
+    def initialize(name, _line_or_content=nil, _col_or_children=nil)
       super name
-      @nodes = NodeSet.new(self)
-      @line, @column = _line, _column
+      @line = _line_or_content if _line_or_content.respond_to?(:%)
+      _line_or_content.each do |k,v| self[k] = v end if _line_or_content.respond_to?(:key)
+      @nodes = NodeSet.new(self, _line_or_content) if _line_or_content.respond_to?(:pop) && _col_or_children.nil?
+      @column = _col_or_children if _col_or_children.respond_to?(:%)
+      @nodes = NodeSet.new(self, _col_or_children) if _col_or_children.respond_to?(:pop)
+      @nodes = NodeSet.new(self) if @nodes.empty?
     end
 
     attr_reader :line, :column

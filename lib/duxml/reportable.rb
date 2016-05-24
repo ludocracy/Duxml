@@ -24,5 +24,4 @@ module Reportable
     args[1..-1].each do |a| new_args << a end if args.size > 1
     notify_observers(*new_args)
   end
-
 end

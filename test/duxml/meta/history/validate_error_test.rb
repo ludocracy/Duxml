@@ -19,7 +19,7 @@ class ValidateErrorTest < Test::Unit::TestCase
   attr_reader :v, :t
 
   def test_description
-    assert_equal %(Validate Error at #{t} on line 601: <parent>'s second child <what> not allowed by this Grammar.), v.description
+    assert_equal %(Validate Error at #{t} on line 601: <parent>'s second child <what> violates Children Rule that <parent>'s children must match 'child1|child2'.), v.description
   end
 
   def tear_down

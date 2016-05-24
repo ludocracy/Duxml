@@ -45,20 +45,23 @@ module Duxml
       date <=> obj.date
     end
 
+    # @return [Fixnum] line number of changed object; -l if not applicable
     def line
       case
-        when object.respond_to?(:line) && object.line >= 0
+        when object.respond_to?(:line) && object.line.is_a?(Numeric) && object.line >= 0
           object.line
-        when object.respond_to?(:object) && object.object.respond_to?(:line) && object.object.line >= 0
+        when object.respond_to?(:object) && object.object.respond_to?(:line) && object.object.line.is_a?(Numeric) && object.object.line >= 0
           object.object.line
-        when object.respond_to?(:subject) && object.subject.respond_to?(:line) && object.subject.line >= 0
+        when object.respond_to?(:subject) && object.subject.respond_to?(:line) && object.subject.line.is_a?(Numeric) && object.subject.line >= 0
           object.subject.line
-        when subject.respond_to?(:line) && subject.line >= 0
+        when subject.respond_to?(:line) && subject.line.is_a?(Numeric) && subject.line >= 0
           subject.line
         else
           -1
       end
     end
+
+    private
 
     # @return [String] string equivalent of object's line number
     def line_expr

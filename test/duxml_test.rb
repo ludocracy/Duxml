@@ -60,7 +60,7 @@ class DuxmlTest < Test::Unit::TestCase
     assert_equal meta.grammar, meta.history.grammar
     assert_equal meta.history, meta.grammar.history
     doc << Element.new('topic')
-    assert_raise(Exception) do doc.topic << Element.new('bogus') end
+    assert_raise(Exception, '') do doc.topic << Element.new('bogus') end
     meta.history.strict?(false)
     doc.topic << Element.new('bogus')
     assert_equal QualifyErrorClass, meta.history.latest.class

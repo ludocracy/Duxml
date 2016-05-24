@@ -20,7 +20,7 @@ module Duxml
 
   module Add
     def description
-      %(#{super} #{child.description} added to #{subject.description}.)
+      %(#{super} #{child.description} added to #{parent.description}.)
     end
 
     def parent

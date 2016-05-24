@@ -12,11 +12,8 @@ class ElementTest < Test::Unit::TestCase
   include Duxml
 
   def setup
-    @x = Element.new('root')
-    x[:foot] = 'poot'
-    x << Element.new('first') << Element.new('second')
-    x.second << Element.new('third')
-    x.second.third << 'some text'
+    @x = Element.new('root', {foot: 'poot'}, [Element.new('first'), Element.new('second')])
+    x.second << Element.new('third', ['some text'])
     x.second << Element.new('fourth')
     @o = Observer.new
     x.traverse do |n|

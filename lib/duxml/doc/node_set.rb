@@ -10,8 +10,8 @@ module Duxml
 
     attr_reader :parent
 
-    def initialize(_parent, *args)
-      super *args
+    def initialize(_parent, ary=[])
+      super ary
       @parent = _parent
     end
 

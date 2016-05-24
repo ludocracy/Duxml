@@ -20,7 +20,6 @@ module Duxml
     include LazyOx
     include RelaxNG
   end
-
   # contains Duxml::Rules and can apply them by validating XML or qualifying user input
   # reporting Duxml::Errors to History as needed
   class GrammarClass
