@@ -86,7 +86,7 @@ module Duxml
           self.const_set(sym, new_method)
           return new_method.call *args
         else
-          raise NoMethodError
+          raise NoMethodError, "undefined method `#{sym.to_s}' for #{description}"
         end # if (const = look_up_const) ... elsif block_given? ... else ...
       else
         results = filter(sym, args)

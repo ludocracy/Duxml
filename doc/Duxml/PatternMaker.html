@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>module Duxml::PatternMaker - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/duxml/meta/grammar/pattern_maker.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    
+    <!-- Included Modules -->
+<nav id="includes-section" class="section">
+  <h3 class="section-header">Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="../Duxml.html">Duxml</a>
+  
+  
+  </ul>
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li ><a href="#method-i-get_child_patterns">#get_child_patterns</a>
+    
+    <li ><a href="#method-i-get_existing_attr_patterns">#get_existing_attr_patterns</a>
+    
+    <li ><a href="#method-i-get_null_attr_patterns">#get_null_attr_patterns</a>
+    
+    <li ><a href="#method-i-get_null_child_patterns">#get_null_child_patterns</a>
+    
+    <li ><a href="#method-i-get_relationships">#get_relationships</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../Duxml.html">Duxml</a>
+  
+    <li><a href="../Duxml/Add.html">Duxml::Add</a>
+  
+    <li><a href="../Duxml/AddClass.html">Duxml::AddClass</a>
+  
+    <li><a href="../Duxml/AttrNamePattern.html">Duxml::AttrNamePattern</a>
+  
+    <li><a href="../Duxml/AttrNamePatternClass.html">Duxml::AttrNamePatternClass</a>
+  
+    <li><a href="../Duxml/AttrValPattern.html">Duxml::AttrValPattern</a>
+  
+    <li><a href="../Duxml/AttrValPatternClass.html">Duxml::AttrValPatternClass</a>
+  
+    <li><a href="../Duxml/AttrsRule.html">Duxml::AttrsRule</a>
+  
+    <li><a href="../Duxml/AttrsRuleClass.html">Duxml::AttrsRuleClass</a>
+  
+    <li><a href="../Duxml/Change.html">Duxml::Change</a>
+  
+    <li><a href="../Duxml/ChangeAttr.html">Duxml::ChangeAttr</a>
+  
+    <li><a href="../Duxml/ChangeAttrClass.html">Duxml::ChangeAttrClass</a>
+  
+    <li><a href="../Duxml/ChangeClass.html">Duxml::ChangeClass</a>
+  
+    <li><a href="../Duxml/ChangeText.html">Duxml::ChangeText</a>
+  
+    <li><a href="../Duxml/ChangeTextClass.html">Duxml::ChangeTextClass</a>
+  
+    <li><a href="../Duxml/ChildPattern.html">Duxml::ChildPattern</a>
+  
+    <li><a href="../Duxml/ChildPatternClass.html">Duxml::ChildPatternClass</a>
+  
+    <li><a href="../Duxml/ChildrenRule.html">Duxml::ChildrenRule</a>
+  
+    <li><a href="../Duxml/ChildrenRuleClass.html">Duxml::ChildrenRuleClass</a>
+  
+    <li><a href="../Duxml/Doc.html">Duxml::Doc</a>
+  
+    <li><a href="../Duxml/Element.html">Duxml::Element</a>
+  
+    <li><a href="../Duxml/ElementGuts.html">Duxml::ElementGuts</a>
+  
+    <li><a href="../Duxml/Error.html">Duxml::Error</a>
+  
+    <li><a href="../Duxml/ErrorClass.html">Duxml::ErrorClass</a>
+  
+    <li><a href="../Duxml/Grammar.html">Duxml::Grammar</a>
+  
+    <li><a href="../Duxml/GrammarClass.html">Duxml::GrammarClass</a>
+  
+    <li><a href="../Duxml/History.html">Duxml::History</a>
+  
+    <li><a href="../Duxml/HistoryClass.html">Duxml::HistoryClass</a>
+  
+    <li><a href="../Duxml/LazyOx.html">Duxml::LazyOx</a>
+  
+    <li><a href="../Duxml/Meta.html">Duxml::Meta</a>
+  
+    <li><a href="../Duxml/MetaClass.html">Duxml::MetaClass</a>
+  
+    <li><a href="../Duxml/NewAttr.html">Duxml::NewAttr</a>
+  
+    <li><a href="../Duxml/NewAttrClass.html">Duxml::NewAttrClass</a>
+  
+    <li><a href="../Duxml/NewText.html">Duxml::NewText</a>
+  
+    <li><a href="../Duxml/NewTextClass.html">Duxml::NewTextClass</a>
+  
+    <li><a href="../Duxml/NodeSet.html">Duxml::NodeSet</a>
+  
+    <li><a href="../Duxml/NullChildPatternClass.html">Duxml::NullChildPatternClass</a>
+  
+    <li><a href="../Duxml/Pattern.html">Duxml::Pattern</a>
+  
+    <li><a href="../Duxml/PatternClass.html">Duxml::PatternClass</a>
+  
+    <li><a href="../Duxml/PatternMaker.html">Duxml::PatternMaker</a>
+  
+    <li><a href="../Duxml/QualifyError.html">Duxml::QualifyError</a>
+  
+    <li><a href="../Duxml/QualifyErrorClass.html">Duxml::QualifyErrorClass</a>
+  
+    <li><a href="../Duxml/RelaxNG.html">Duxml::RelaxNG</a>
+  
+    <li><a href="../Duxml/Remove.html">Duxml::Remove</a>
+  
+    <li><a href="../Duxml/RemoveClass.html">Duxml::RemoveClass</a>
+  
+    <li><a href="../Duxml/RngAttrsRule.html">Duxml::RngAttrsRule</a>
+  
+    <li><a href="../Duxml/RngChildrenRule.html">Duxml::RngChildrenRule</a>
+  
+    <li><a href="../Duxml/RngValueRule.html">Duxml::RngValueRule</a>
+  
+    <li><a href="../Duxml/Rule.html">Duxml::Rule</a>
+  
+    <li><a href="../Duxml/RuleClass.html">Duxml::RuleClass</a>
+  
+    <li><a href="../Duxml/Saxer.html">Duxml::Saxer</a>
+  
+    <li><a href="../Duxml/Saxer/DocuLiner.html">Duxml::Saxer::DocuLiner</a>
+  
+    <li><a href="../Duxml/Spreadsheet.html">Duxml::Spreadsheet</a>
+  
+    <li><a href="../Duxml/TextPattern.html">Duxml::TextPattern</a>
+  
+    <li><a href="../Duxml/TextPatternClass.html">Duxml::TextPatternClass</a>
+  
+    <li><a href="../Duxml/TextRule.html">Duxml::TextRule</a>
+  
+    <li><a href="../Duxml/TextRuleClass.html">Duxml::TextRuleClass</a>
+  
+    <li><a href="../Duxml/Undo.html">Duxml::Undo</a>
+  
+    <li><a href="../Duxml/UndoClass.html">Duxml::UndoClass</a>
+  
+    <li><a href="../Duxml/ValidateError.html">Duxml::ValidateError</a>
+  
+    <li><a href="../Duxml/ValidateErrorClass.html">Duxml::ValidateErrorClass</a>
+  
+    <li><a href="../Duxml/ValueRule.html">Duxml::ValueRule</a>
+  
+    <li><a href="../Duxml/ValueRuleClass.html">Duxml::ValueRuleClass</a>
+  
+    <li><a href="../Fixnum.html">Fixnum</a>
+  
+    <li><a href="../Module.html">Module</a>
+  
+    <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../Regexp.html">Regexp</a>
+  
+    <li><a href="../Reportable.html">Reportable</a>
+  
+    <li><a href="../String.html">String</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="module">module Duxml::PatternMaker</h1>
+
+  <div id="description" class="description">
+    
+<p>methods to create Patterns from a given Element&#39;s relationships with
+its members</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-get_child_patterns" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_child_patterns</span><span
+            class="method-args">(node)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param node [Duxml::Element] object whose relationships are to be made into
+patterns @return [Array[Duxml::ChildPattern, Duxml::ContentPattern]] one
+pattern for each child that exists</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_child_patterns-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern_maker.rb, line 57</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_child_patterns</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-identifier">i</span> = <span class="ruby-value">-1</span>
+  <span class="ruby-identifier">node</span>.<span class="ruby-identifier">nodes</span>.<span class="ruby-identifier">collect</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">child</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">i</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">child</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>)
+      <span class="ruby-constant">TextPatternClass</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">node</span>, <span class="ruby-identifier">i</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-constant">ChildPatternClass</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">node</span>, <span class="ruby-identifier">i</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_child_patterns-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_child_patterns-method -->
+
+    
+      <div id="method-i-get_existing_attr_patterns" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_existing_attr_patterns</span><span
+            class="method-args">(node)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param node [Duxml::Element] doc whose relationships are to be made into
+patterns @return [Array[Duxml::AttrNamePattern, Duxml::AttrValPattern]] one
+pattern for each existing attribute</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_existing_attr_patterns-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern_maker.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_existing_attr_patterns</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-comment"># check existing attributes</span>
+  <span class="ruby-identifier">node</span>.<span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">collect</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
+    [<span class="ruby-constant">AttrNamePatternClass</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">node</span>, <span class="ruby-identifier">k</span>), <span class="ruby-constant">AttrValPatternClass</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">node</span>, <span class="ruby-identifier">k</span>)]
+  <span class="ruby-keyword">end</span>.<span class="ruby-identifier">flatten</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_existing_attr_patterns-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_existing_attr_patterns-method -->
+
+    
+      <div id="method-i-get_null_attr_patterns" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_null_attr_patterns</span><span
+            class="method-args">(node)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param node [Element] doc whose relationships are to be made into patterns
+@return [<a href="http://AttrNamePattern">Array</a>] one pattern for each
+attribute that should but does not exist</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_null_attr_patterns-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern_maker.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_null_attr_patterns</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-constant">AttrsRuleClass</span>.<span class="ruby-identifier">collect</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">attr_rule</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">attr_rule</span>.<span class="ruby-identifier">required?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">attr_rule</span>.<span class="ruby-identifier">subject</span>
+      <span class="ruby-constant">AttrNamePatternClass</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">node</span>, <span class="ruby-identifier">attr_rule</span>.<span class="ruby-identifier">attr_name</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">node</span>[<span class="ruby-identifier">attr_rule</span>.<span class="ruby-identifier">attr_name</span>]
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>.<span class="ruby-identifier">compact</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_null_attr_patterns-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_null_attr_patterns-method -->
+
+    
+      <div id="method-i-get_null_child_patterns" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_null_child_patterns</span><span
+            class="method-args">(node)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param node [Duxml::Element] doc whose relationships are to be made into
+patterns @return [<a href="http://ChildPattern">Array</a>] one pattern for
+each child that should be there but isn&#39;t</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_null_child_patterns-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern_maker.rb, line 42</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_null_child_patterns</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-constant">ChildrenRuleClass</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">child_rule</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">child_rule</span>.<span class="ruby-identifier">subject</span>
+      <span class="ruby-keyword">return</span> <span class="ruby-identifier">child_rule</span>.<span class="ruby-identifier">required_children</span>.<span class="ruby-identifier">collect</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">required_child_type</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">nodes</span>.<span class="ruby-identifier">any?</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span> <span class="ruby-identifier">n</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">required_child_type</span> <span class="ruby-keyword">end</span>
+          <span class="ruby-constant">NullChildPatternClass</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">node</span>, <span class="ruby-identifier">required_child_type</span>)
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>.<span class="ruby-identifier">compact</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  []
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_null_child_patterns-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_null_child_patterns-method -->
+
+    
+      <div id="method-i-get_relationships" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_relationships</span><span
+            class="method-args">(node)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param node [Duxml::Element] doc whose relationships are to be made into
+patterns @return [<a href="Duxml::Pattern">Array</a>] array of patterns
+representing every relationship of this XMl node and its members</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_relationships-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern_maker.rb, line 14</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_relationships</span>(<span class="ruby-identifier">node</span>)
+  [<span class="ruby-identifier">get_child_patterns</span>(<span class="ruby-identifier">node</span>),
+   <span class="ruby-identifier">get_null_child_patterns</span>(<span class="ruby-identifier">node</span>),
+   <span class="ruby-identifier">get_existing_attr_patterns</span>(<span class="ruby-identifier">node</span>),
+  <span class="ruby-identifier">get_null_attr_patterns</span>(<span class="ruby-identifier">node</span>)].<span class="ruby-identifier">flatten</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_relationships-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_relationships-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

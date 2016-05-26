@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>module Duxml::AttrsRule - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/duxml/meta/grammar/rule/attrs_rule.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li class="calls-super" ><a href="#method-i-applies_to-3F">#applies_to?</a>
+    
+    <li ><a href="#method-i-attr_name">#attr_name</a>
+    
+    <li ><a href="#method-i-description">#description</a>
+    
+    <li ><a href="#method-i-pass">#pass</a>
+    
+    <li class="calls-super" ><a href="#method-i-qualify">#qualify</a>
+    
+    <li ><a href="#method-i-relationship">#relationship</a>
+    
+    <li ><a href="#method-i-required-3F">#required?</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../Duxml.html">Duxml</a>
+  
+    <li><a href="../Duxml/Add.html">Duxml::Add</a>
+  
+    <li><a href="../Duxml/AddClass.html">Duxml::AddClass</a>
+  
+    <li><a href="../Duxml/AttrNamePattern.html">Duxml::AttrNamePattern</a>
+  
+    <li><a href="../Duxml/AttrNamePatternClass.html">Duxml::AttrNamePatternClass</a>
+  
+    <li><a href="../Duxml/AttrValPattern.html">Duxml::AttrValPattern</a>
+  
+    <li><a href="../Duxml/AttrValPatternClass.html">Duxml::AttrValPatternClass</a>
+  
+    <li><a href="../Duxml/AttrsRule.html">Duxml::AttrsRule</a>
+  
+    <li><a href="../Duxml/AttrsRuleClass.html">Duxml::AttrsRuleClass</a>
+  
+    <li><a href="../Duxml/Change.html">Duxml::Change</a>
+  
+    <li><a href="../Duxml/ChangeAttr.html">Duxml::ChangeAttr</a>
+  
+    <li><a href="../Duxml/ChangeAttrClass.html">Duxml::ChangeAttrClass</a>
+  
+    <li><a href="../Duxml/ChangeClass.html">Duxml::ChangeClass</a>
+  
+    <li><a href="../Duxml/ChangeText.html">Duxml::ChangeText</a>
+  
+    <li><a href="../Duxml/ChangeTextClass.html">Duxml::ChangeTextClass</a>
+  
+    <li><a href="../Duxml/ChildPattern.html">Duxml::ChildPattern</a>
+  
+    <li><a href="../Duxml/ChildPatternClass.html">Duxml::ChildPatternClass</a>
+  
+    <li><a href="../Duxml/ChildrenRule.html">Duxml::ChildrenRule</a>
+  
+    <li><a href="../Duxml/ChildrenRuleClass.html">Duxml::ChildrenRuleClass</a>
+  
+    <li><a href="../Duxml/Doc.html">Duxml::Doc</a>
+  
+    <li><a href="../Duxml/Element.html">Duxml::Element</a>
+  
+    <li><a href="../Duxml/ElementGuts.html">Duxml::ElementGuts</a>
+  
+    <li><a href="../Duxml/Error.html">Duxml::Error</a>
+  
+    <li><a href="../Duxml/ErrorClass.html">Duxml::ErrorClass</a>
+  
+    <li><a href="../Duxml/Grammar.html">Duxml::Grammar</a>
+  
+    <li><a href="../Duxml/GrammarClass.html">Duxml::GrammarClass</a>
+  
+    <li><a href="../Duxml/History.html">Duxml::History</a>
+  
+    <li><a href="../Duxml/HistoryClass.html">Duxml::HistoryClass</a>
+  
+    <li><a href="../Duxml/LazyOx.html">Duxml::LazyOx</a>
+  
+    <li><a href="../Duxml/Meta.html">Duxml::Meta</a>
+  
+    <li><a href="../Duxml/MetaClass.html">Duxml::MetaClass</a>
+  
+    <li><a href="../Duxml/NewAttr.html">Duxml::NewAttr</a>
+  
+    <li><a href="../Duxml/NewAttrClass.html">Duxml::NewAttrClass</a>
+  
+    <li><a href="../Duxml/NewText.html">Duxml::NewText</a>
+  
+    <li><a href="../Duxml/NewTextClass.html">Duxml::NewTextClass</a>
+  
+    <li><a href="../Duxml/NodeSet.html">Duxml::NodeSet</a>
+  
+    <li><a href="../Duxml/NullChildPatternClass.html">Duxml::NullChildPatternClass</a>
+  
+    <li><a href="../Duxml/Pattern.html">Duxml::Pattern</a>
+  
+    <li><a href="../Duxml/PatternClass.html">Duxml::PatternClass</a>
+  
+    <li><a href="../Duxml/PatternMaker.html">Duxml::PatternMaker</a>
+  
+    <li><a href="../Duxml/QualifyError.html">Duxml::QualifyError</a>
+  
+    <li><a href="../Duxml/QualifyErrorClass.html">Duxml::QualifyErrorClass</a>
+  
+    <li><a href="../Duxml/RelaxNG.html">Duxml::RelaxNG</a>
+  
+    <li><a href="../Duxml/Remove.html">Duxml::Remove</a>
+  
+    <li><a href="../Duxml/RemoveClass.html">Duxml::RemoveClass</a>
+  
+    <li><a href="../Duxml/RngAttrsRule.html">Duxml::RngAttrsRule</a>
+  
+    <li><a href="../Duxml/RngChildrenRule.html">Duxml::RngChildrenRule</a>
+  
+    <li><a href="../Duxml/RngValueRule.html">Duxml::RngValueRule</a>
+  
+    <li><a href="../Duxml/Rule.html">Duxml::Rule</a>
+  
+    <li><a href="../Duxml/RuleClass.html">Duxml::RuleClass</a>
+  
+    <li><a href="../Duxml/Saxer.html">Duxml::Saxer</a>
+  
+    <li><a href="../Duxml/Saxer/DocuLiner.html">Duxml::Saxer::DocuLiner</a>
+  
+    <li><a href="../Duxml/Spreadsheet.html">Duxml::Spreadsheet</a>
+  
+    <li><a href="../Duxml/TextPattern.html">Duxml::TextPattern</a>
+  
+    <li><a href="../Duxml/TextPatternClass.html">Duxml::TextPatternClass</a>
+  
+    <li><a href="../Duxml/TextRule.html">Duxml::TextRule</a>
+  
+    <li><a href="../Duxml/TextRuleClass.html">Duxml::TextRuleClass</a>
+  
+    <li><a href="../Duxml/Undo.html">Duxml::Undo</a>
+  
+    <li><a href="../Duxml/UndoClass.html">Duxml::UndoClass</a>
+  
+    <li><a href="../Duxml/ValidateError.html">Duxml::ValidateError</a>
+  
+    <li><a href="../Duxml/ValidateErrorClass.html">Duxml::ValidateErrorClass</a>
+  
+    <li><a href="../Duxml/ValueRule.html">Duxml::ValueRule</a>
+  
+    <li><a href="../Duxml/ValueRuleClass.html">Duxml::ValueRuleClass</a>
+  
+    <li><a href="../Fixnum.html">Fixnum</a>
+  
+    <li><a href="../Module.html">Module</a>
+  
+    <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../Regexp.html">Regexp</a>
+  
+    <li><a href="../Reportable.html">Reportable</a>
+  
+    <li><a href="../String.html">String</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="module">module Duxml::AttrsRule</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-applies_to-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">applies_to?</span><span
+            class="method-args">(change_or_pattern)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param change_or_pattern [Duxml::Change, Duxml::Pattern] change or pattern
+that rule may apply to @return [Boolean] whether this rule does in fact
+apply</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="applies_to-3F-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">applies_to?</span>(<span class="ruby-identifier">change_or_pattern</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:attr_name</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">super</span>(<span class="ruby-identifier">change_or_pattern</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:value</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:time_stamp</span>)
+  <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">attr_name</span>.<span class="ruby-identifier">to_s</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- applies_to-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- applies_to-3F-method -->
+
+    
+      <div id="method-i-attr_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">attr_name</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [String] name of attribute to which this rule applies</p>
+          
+          
+
+          
+          <div class="method-source-code" id="attr_name-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 50</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">attr_name</span>
+  <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&#39;\b&#39;</span>,<span class="ruby-string">&#39;&#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- attr_name-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- attr_name-method -->
+
+    
+      <div id="method-i-description" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">description</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [String] description of self; overrides super to account for cases
+of missing, required attributes</p>
+          
+          
+
+          
+          <div class="method-source-code" id="description-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 59</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
+  <span class="ruby-node">%Q(#{relationship.capitalize} Rule that &lt;#{subject}&gt;&#39;s #{relationship} #{required? ? &#39;must&#39;:&#39;can&#39;} include &#39;#{attr_name}&#39;)</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- description-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- description-method -->
+
+    
+      <div id="method-i-pass" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">pass</span><span
+            class="method-args">(change_or_pattern)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param change_or_pattern [Duxml::Change, Duxml::Pattern] change or pattern
+to be evaluated @return [Boolean] true if this rule does not apply to
+param; false if pattern is for a missing required attribute</p>
+
+<pre>otherwise returns whether or not any illegal attributes exist</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="pass-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 66</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">pass</span>(<span class="ruby-identifier">change_or_pattern</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:time_stamp</span>)
+    <span class="ruby-identifier">an</span> = <span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">attr_name</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-identifier">attr_name</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">an</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">abstract?</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-operator">!</span><span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">abstract?</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- pass-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- pass-method -->
+
+    
+      <div id="method-i-qualify" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">qualify</span><span
+            class="method-args">(change_or_pattern)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param change_or_pattern [Duxml::Pattern] checks an doc of type
+change_or_pattern.subject against change_or_pattern @return [Boolean]
+whether or not given pattern passed this test</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="qualify-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">change_or_pattern</span>)
+  <span class="ruby-ivar">@object</span> = <span class="ruby-identifier">change_or_pattern</span>
+  <span class="ruby-identifier">result</span> = <span class="ruby-identifier">pass</span> <span class="ruby-identifier">change_or_pattern</span>
+  <span class="ruby-keyword">super</span> <span class="ruby-identifier">change_or_pattern</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">result</span>
+  <span class="ruby-ivar">@object</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-identifier">result</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- qualify-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- qualify-method -->
+
+    
+      <div id="method-i-relationship" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">relationship</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="relationship-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 54</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">relationship</span>
+  <span class="ruby-string">&#39;attributes&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- relationship-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- relationship-method -->
+
+    
+      <div id="method-i-required-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">required?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Boolean] whether or not this attribute is required</p>
+          
+          
+
+          
+          <div class="method-source-code" id="required-3F-source">
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">required?</span>
+  <span class="ruby-identifier">requirement</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;#REQUIRED&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- required-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- required-3F-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

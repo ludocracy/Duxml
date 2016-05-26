@@ -48,6 +48,10 @@ class LazyOxTest < Test::Unit::TestCase
     assert_equal 'hi!', x.foo
   end
 
+  def test_no_method_error
+    assert_raise(NameError, "undefined method `asdf' for class `Duxml::El'") do x.asdf end
+  end
+
   def test_class_match_array
     g = Generic.new(Duck.new, Goose.new, Goose.new)
     a = g.Goose
