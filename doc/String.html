@@ -75,8 +75,6 @@
     
     <li ><a href="#method-i-constantize">#constantize</a>
     
-    <li ><a href="#method-i-method_missing">#method_missing</a>
-    
     <li ><a href="#method-i-nmtokenize">#nmtokenize</a>
     
   </ul>
@@ -285,7 +283,7 @@ href="Regexp.html#method-c-nmtoken">Regexp.nmtoken</a></p>
 
           
           <div class="method-source-code" id="constantize-source">
-            <pre><span class="ruby-comment"># File lib/duxml/ruby_ext/string.rb, line 21</span>
+            <pre><span class="ruby-comment"># File lib/duxml/ruby_ext/string.rb, line 8</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">constantize</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">constant</span>.<span class="ruby-identifier">match</span>(<span class="ruby-keyword">self</span>)
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">nmtoken</span>.<span class="ruby-identifier">match</span>(<span class="ruby-keyword">self</span>)
@@ -301,49 +299,6 @@ href="Regexp.html#method-c-nmtoken">Regexp.nmtoken</a></p>
 
         
       </div><!-- constantize-method -->
-
-    
-      <div id="method-i-method_missing" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">method_missing</span><span
-            class="method-args">(sym, *args)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>@param sym [Symbol] name of <a href="Regexp.html">Regexp</a> class method
-to check against self @param *args [nil] must be empty @return [Boolean]
-true if self matches given <a href="Regexp.html">Regexp</a>, false if not</p>
-
-<pre class="ruby"><span class="ruby-string">&#39;foo bar&#39;</span>.<span class="ruby-identifier">nmtoken?</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>
-<span class="ruby-string">&#39;foo-bar&#39;</span>.<span class="ruby-identifier">nmtoken?</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>
-</pre>
-          
-          
-
-          
-          <div class="method-source-code" id="method_missing-source">
-            <pre><span class="ruby-comment"># File lib/duxml/ruby_ext/string.rb, line 10</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">method_missing</span>(<span class="ruby-identifier">sym</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">sym</span>.<span class="ruby-identifier">to_s</span>[<span class="ruby-value">-1</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;?&#39;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">empty?</span>
-    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">method</span>(<span class="ruby-identifier">sym</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">-2</span>]).<span class="ruby-identifier">call</span>).<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">length</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">raise</span> <span class="ruby-constant">NoMethodError</span>, <span class="ruby-node">&quot;#{sym.to_s} is not a method of #{self.class.to_s}&quot;</span>
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- method_missing-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- method_missing-method -->
 
     
       <div id="method-i-nmtokenize" class="method-detail ">
@@ -370,7 +325,7 @@ href="String.html#method-i-constantize">constantize</a> e.g.</p>
 
           
           <div class="method-source-code" id="nmtokenize-source">
-            <pre><span class="ruby-comment"># File lib/duxml/ruby_ext/string.rb, line 32</span>
+            <pre><span class="ruby-comment"># File lib/duxml/ruby_ext/string.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">nmtokenize</span>
   <span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;::&#39;</span>).<span class="ruby-identifier">collect</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">word</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">word</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/(?!^)[A-Z_]/</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">match</span><span class="ruby-operator">|</span>

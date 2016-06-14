@@ -301,6 +301,7 @@
   <span class="ruby-keyword">super</span>(<span class="ruby-identifier">prolog</span>)
   <span class="ruby-keyword">self</span>[<span class="ruby-value">:version</span>] <span class="ruby-operator">||=</span> <span class="ruby-string">&#39;1.0&#39;</span>
   <span class="ruby-ivar">@nodes</span> = <span class="ruby-constant">NodeSet</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>)
+  <span class="ruby-comment"># TODO should also create new metadata!!</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- new-source -->
           
@@ -337,7 +338,7 @@
 
           
           <div class="method-source-code" id="to_s-source">
-            <pre><span class="ruby-comment"># File lib/duxml/doc.rb, line 21</span>
+            <pre><span class="ruby-comment"># File lib/duxml/doc.rb, line 22</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">to_s</span>
   <span class="ruby-node">&quot;#&lt;#{self.class.to_s} @object_id=&#39;#{object_id}&#39; @root=&#39;#{root.nil? ? &#39;&#39; : root.description}&#39;&gt;&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -370,7 +371,7 @@
 
           
           <div class="method-source-code" id="write_to-source">
-            <pre><span class="ruby-comment"># File lib/duxml/doc.rb, line 14</span>
+            <pre><span class="ruby-comment"># File lib/duxml/doc.rb, line 15</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">write_to</span>(<span class="ruby-identifier">path</span>)
   <span class="ruby-identifier">s</span> = <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">collect</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-node">%Q( #{k}=&quot;#{v}&quot;)</span> <span class="ruby-keyword">end</span>.<span class="ruby-identifier">join</span>
   <span class="ruby-node">%Q(&lt;?xml #{s}?&gt;)</span><span class="ruby-operator">+</span><span class="ruby-identifier">nodes</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">to_s</span>

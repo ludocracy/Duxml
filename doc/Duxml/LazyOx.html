@@ -363,7 +363,7 @@ yields to given block; if defining new method, block defines its contents</p>
       <span class="ruby-keyword">self</span>.<span class="ruby-identifier">const_set</span>(<span class="ruby-identifier">sym</span>, <span class="ruby-identifier">new_method</span>)
       <span class="ruby-keyword">return</span> <span class="ruby-identifier">new_method</span>.<span class="ruby-identifier">call</span> <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>
     <span class="ruby-keyword">else</span>
-      <span class="ruby-identifier">raise</span> <span class="ruby-constant">NoMethodError</span>
+      <span class="ruby-identifier">raise</span> <span class="ruby-constant">NoMethodError</span>, <span class="ruby-node">&quot;undefined method `#{sym.to_s}&#39; for #{description}&quot;</span>
     <span class="ruby-keyword">end</span> <span class="ruby-comment"># if (const = look_up_const) ... elsif block_given? ... else ...</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-identifier">results</span> = <span class="ruby-identifier">filter</span>(<span class="ruby-identifier">sym</span>, <span class="ruby-identifier">args</span>)

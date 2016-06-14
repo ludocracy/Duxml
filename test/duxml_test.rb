@@ -41,10 +41,6 @@ class DuxmlTest < Test::Unit::TestCase
     assert_equal meta.history, meta.grammar.history
   end
 
-  def test_load_no_file
-    assert_raise Exception, "File dne.xml does not exist" do load('dne.xml') end
-  end
-
   def test_illegal_text
     load(d_path)
     text = doc.root.illegal_content.text

@@ -17,30 +17,20 @@ module Duxml
 
   attr_reader :meta, :file, :doc
 
-  # @param file [String, Doc] loads given file or document and finds or creates corresponding metadata file e.g. '.xml_file.duxml'
+  # @param file [String, Doc] loads or creates given file or document and finds or creates corresponding metadata file e.g. '.xml_file.duxml'
   # @param grammar_path [nil, String, Duxml::Grammar] optional - provide an external grammar file or object
   # @return [Duxml::Meta] combined Object tree from metadata root (metadata and content's XML documents are kept separate)
   def load(_file, grammar_path=nil)
     grammar_path = DITA_GRAMMAR if grammar_path == :dita
-    if _file.is_a?(String)
-      raise Exception, "File #{_file} does not exist." unless File.exists?(_file)
+    if _file.is_a?(String) and File.exists?(_file)
       @file = _file
-    end
-    if file and File.exists?(Meta.meta_path(file))
-      @meta = sax(File.open(meta_path)).root
-      meta.grammar=grammar_path unless grammar_path.nil? or meta.grammar.defined?
     else
-      @meta = MetaClass.new(grammar_path)
+      @file = "#{(_file.respond_to?(:name) ? _file.name : _file.class.to_s) + _file.object_id.to_s}"
+      File.write file, ''
     end
 
-    @doc = if file.nil?
-             _file.add_observer meta.history
-             _file
-           else
-             f = File.open file
-             sax(f, meta.history)
-           end
-    doc
+    set_metadata!(grammar_path)
+    set_doc!
   end # def load
 
   # @param file [String] creates new XML file at given path
@@ -78,5 +68,31 @@ module Duxml
   # @return [Nokogiri::XML::RelaxNG] current metadata's grammar as a relaxng file
   def relaxng
     #meta.grammar.relaxng
+  end
+
+  private
+
+  # @return [Doc] @doc is set to either file given by user or new Doc
+  def set_doc!
+    @doc ||= if file.nil?
+               f = Doc.new
+               f.add_observer meta.history
+               f
+             else
+               f = File.open file
+               sax(f, meta.history)
+             end
+  end
+
+  # @return [MetaClass] @meta is set to either file extrapolated from path of XML-content file or new MetaClass
+  def set_metadata!(grammar_path=nil)
+    meta_path = Meta.meta_path(file)
+    if file and File.exists?(meta_path)
+      @meta = sax(File.open(meta_path)).root
+      meta.grammar=grammar_path unless grammar_path.nil? or meta.grammar.defined?
+    else
+      @meta = MetaClass.new(grammar_path)
+    end
+    meta
   end
 end # module Duxml

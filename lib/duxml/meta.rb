@@ -33,7 +33,8 @@ module Duxml
       d
     end
 
-    # @return [String] name of metadata file based on content file's name e.g.
+    # @param path [String] path of XML-content file
+    # @return [String] full path of metadata file based on content file's name e.g.
     #   'design.xml' => '.design.xml.duxml'
     def self.meta_path(path)
       dir = File.dirname(path)

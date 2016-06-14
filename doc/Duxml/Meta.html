@@ -280,8 +280,8 @@
 
         <div class="method-description">
           
-          <p>@return [String] name of metadata file based on content file&#39;s name
-e.g.</p>
+          <p>@param path [String] path of XML-content file @return [String] full path of
+metadata file based on content file&#39;s name e.g.</p>
 
 <pre class="ruby"><span class="ruby-string">&#39;design.xml&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;.design.xml.duxml&#39;</span>
 </pre>
@@ -290,7 +290,7 @@ e.g.</p>
 
           
           <div class="method-source-code" id="meta_path-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta.rb, line 38</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta.rb, line 39</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">meta_path</span>(<span class="ruby-identifier">path</span>)
   <span class="ruby-identifier">dir</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">path</span>)
   <span class="ruby-node">&quot;#{dir}/.#{File.basename(path)}#{FILE_EXT}&quot;</span>
@@ -365,10 +365,10 @@ e.g.</p>
 
           
           <div class="method-source-code" id="grammar-3D-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta.rb, line 43</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta.rb, line 44</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">grammar=</span>(<span class="ruby-identifier">g</span>)
   <span class="ruby-ivar">@grammar</span> = <span class="ruby-identifier">g</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">GrammarClass</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">g</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Grammar</span>.<span class="ruby-identifier">import</span>(<span class="ruby-identifier">g</span>)
-  <span class="ruby-identifier">history</span>.<span class="ruby-identifier">delete_observers</span>
+  <span class="ruby-identifier">history</span>.<span class="ruby-identifier">delete_observers</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">history</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:delete_observers</span>)
   <span class="ruby-identifier">history</span>.<span class="ruby-identifier">add_observer</span>(<span class="ruby-identifier">grammar</span>, <span class="ruby-value">:qualify</span>)
   <span class="ruby-identifier">grammar</span>.<span class="ruby-identifier">add_observer</span> <span class="ruby-identifier">history</span>
 <span class="ruby-keyword">end</span></pre>

@@ -88,13 +88,14 @@ module Duxml
       "<#{name}>"
     end
 
+    # @return [Element] copy of this Element but with no children
     def stub
       Element.new(name, attributes)
     end
 
     # @return [HistoryClass] history that is observing this element for changes
     def history
-      @observer_peers.first.first if @observer_peers.any? and @observer_peers.first.any?
+      @observer_peers.first.first if @observer_peers.respond_to?(:any?) and @observer_peers.any? and @observer_peers.first.any?
     end
 
     # @return [String] XML string (overrides Ox's to_s which just prints the object pointer)

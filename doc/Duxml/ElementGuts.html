@@ -111,6 +111,8 @@
     
     <li ><a href="#method-i-remove">#remove</a>
     
+    <li ><a href="#method-i-stub">#stub</a>
+    
     <li ><a href="#method-i-to_s">#to_s</a>
     
     <li ><a href="#method-i-traverse">#traverse</a>
@@ -453,7 +455,7 @@ node index as well? @param obj [Element] element child to delete @return
 
           
           <div class="method-source-code" id="delete-source">
-            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 111</span>
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 116</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">delete</span>(<span class="ruby-identifier">obj</span>)
   <span class="ruby-identifier">report</span>(<span class="ruby-value">:Remove</span>, <span class="ruby-ivar">@nodes</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">obj</span>))
   <span class="ruby-identifier">obj</span>
@@ -526,7 +528,7 @@ node index as well? @param obj [Element] element child to delete @return
 
           
           <div class="method-source-code" id="each-source">
-            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 139</span>
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 144</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">each</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
   <span class="ruby-ivar">@nodes</span>.<span class="ruby-identifier">each</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -559,7 +561,7 @@ node index as well? @param obj [Element] element child to delete @return
 
           
           <div class="method-source-code" id="history-source">
-            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 92</span>
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 97</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">history</span>
   <span class="ruby-ivar">@observer_peers</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@observer_peers</span>.<span class="ruby-identifier">any?</span> <span class="ruby-keyword">and</span> <span class="ruby-ivar">@observer_peers</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">any?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -592,7 +594,7 @@ node index as well? @param obj [Element] element child to delete @return
 
           
           <div class="method-source-code" id="inspect-source">
-            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 104</span>
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 109</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">inspect</span>
   <span class="ruby-identifier">to_s</span>
 <span class="ruby-keyword">end</span></pre>
@@ -626,7 +628,7 @@ node index as well? @param obj [Element] element child to delete @return
 
           
           <div class="method-source-code" id="name_space-source">
-            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 144</span>
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 149</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">name_space</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> (<span class="ruby-identifier">i</span> = <span class="ruby-identifier">name</span>.<span class="ruby-identifier">index</span>(<span class="ruby-string">&#39;:&#39;</span>))
   <span class="ruby-identifier">name</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">i</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>]
@@ -669,6 +671,40 @@ node index as well? @param obj [Element] element child to delete @return
       </div><!-- remove-method -->
 
     
+      <div id="method-i-stub" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">stub</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Element] copy of this <a href="Element.html">Element</a> but with
+no children</p>
+          
+          
+
+          
+          <div class="method-source-code" id="stub-source">
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 92</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">stub</span>
+  <span class="ruby-constant">Element</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">attributes</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- stub-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- stub-method -->
+
+    
       <div id="method-i-to_s" class="method-detail ">
         
         <div class="method-heading">
@@ -690,7 +726,7 @@ object pointer)</p>
 
           
           <div class="method-source-code" id="to_s-source">
-            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 97</span>
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 102</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">to_s</span>
   <span class="ruby-identifier">s</span> = <span class="ruby-node">%Q(&lt;#{name})</span>
   <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">s</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">%Q( #{k.to_s}=&quot;#{v}&quot;)</span> <span class="ruby-keyword">end</span>
@@ -728,7 +764,7 @@ object pointer)</p>
 
           
           <div class="method-source-code" id="traverse-source">
-            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 121</span>
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 126</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">traverse</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">to_enum</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">block_given?</span>
   <span class="ruby-identifier">node_stack</span> = [<span class="ruby-keyword">self</span>]
