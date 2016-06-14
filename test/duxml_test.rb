@@ -12,10 +12,20 @@ class DuxmlTest < Test::Unit::TestCase
     @d_path = File.expand_path(File.dirname(__FILE__) + '/../xml/design.xml')
   end
 
-  attr_reader :g_path, :d_path
+  attr_reader :g_path, :d_path, :g
+
+  def test_dita_option
+    load(Doc.new, :dita)
+    assert_equal GrammarClass, meta.grammar.class
+    assert_equal 373, meta.grammar.nodes.size
+  end
 
   def test_load_new
-
+    load Doc.new
+    assert_equal GrammarClass, meta.grammar.class
+    assert_equal 0, meta.grammar.nodes.size
+    assert_equal HistoryClass, meta.history.class
+    assert_equal 0, meta.history.nodes.size
   end
 
   def test_load_with_grammar

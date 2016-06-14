@@ -4,6 +4,7 @@ require File.expand_path(File.dirname(__FILE__) + '/duxml/saxer')
 require File.expand_path(File.dirname(__FILE__) + '/duxml/meta')
 
 module Duxml
+  DITA_GRAMMAR = File.expand_path(File.dirname(__FILE__) + '/../xml/test_grammar.xml')
   include Saxer
   include Meta
 
@@ -20,6 +21,7 @@ module Duxml
   # @param grammar_path [nil, String, Duxml::Grammar] optional - provide an external grammar file or object
   # @return [Duxml::Meta] combined Object tree from metadata root (metadata and content's XML documents are kept separate)
   def load(_file, grammar_path=nil)
+    grammar_path = DITA_GRAMMAR if grammar_path == :dita
     if _file.is_a?(String)
       raise Exception, "File #{_file} does not exist." unless File.exists?(_file)
       @file = _file

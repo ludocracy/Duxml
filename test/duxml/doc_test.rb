@@ -27,11 +27,6 @@ attr_reader :x
     assert_equal NodeSet, x.nodes.class
   end
 
-  def test_init_metadata
-    #assert_kind_of GrammarClass, meta.grammar.class, "Doc.new successfully created grammar of size: #{meta.grammar.size}."
-    #assert_kind_of HistoryClass, meta.grammar.class, "Doc.new successfully created history of size: #{meta.history.size}."
-  end
-
   # Called after every test method runs. Can be used to tear
   # down fixture information.
 
