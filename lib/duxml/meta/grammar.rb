@@ -38,7 +38,6 @@ module Duxml
 
   module Grammar
     def self.import(path)
-      raise Exception unless File.exists?(path)
       if %w(.xlsx .csv).include?(File.extname path)
         doc = Spreadsheet.sheet_to_xml path
         File.write(File.basename(path)+'.xml', Ox.dump(doc)) #TODO make optional!
@@ -105,8 +104,12 @@ module Duxml
 
       # define behaviors for when there are no rules applying to a given pattern
       if rules.empty?
-        return true if change_or_pattern.respond_to?(:text)
-        return true if change_or_pattern.respond_to?(:value)
+
+        if change_or_pattern.respond_to?(:text) or
+            change_or_pattern.respond_to?(:value) or
+            change_or_pattern.subject.is_a?(Doc)
+          return true
+        end
         report(:ValidateError, change_or_pattern)
         return false
       end

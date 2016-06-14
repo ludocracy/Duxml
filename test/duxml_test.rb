@@ -20,7 +20,9 @@ class DuxmlTest < Test::Unit::TestCase
     assert_equal 373, meta.grammar.nodes.size
     assert(doc << Element.new('topic'))
     t = doc.topic
+    assert_equal 1, meta.history.nodes.size
     assert_raise(Exception, '') do t << Element.new('bogus') end
+    assert_equal 3, meta.history.nodes.size
   end
 
   def test_load_new
