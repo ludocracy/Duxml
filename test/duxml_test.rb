@@ -7,7 +7,7 @@ class DuxmlTest < Test::Unit::TestCase
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
-    @g_path = File.expand_path(File.dirname(__FILE__) + '/../xml/test_grammar.xml')
+    @g_path = File.expand_path(File.dirname(__FILE__) + '/../xml/dita_grammar.xml')
     @g = Ox.parse_obj File.read g_path
     @d_path = File.expand_path(File.dirname(__FILE__) + '/../xml/design.xml')
   end
@@ -18,6 +18,9 @@ class DuxmlTest < Test::Unit::TestCase
     load(Doc.new, :dita)
     assert_equal GrammarClass, meta.grammar.class
     assert_equal 373, meta.grammar.nodes.size
+    assert(doc << Element.new('topic'))
+    t = doc.topic
+    assert_raise(Exception, '') do t << Element.new('bogus') end
   end
 
   def test_load_new

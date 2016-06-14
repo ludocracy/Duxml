@@ -4,7 +4,7 @@ require File.expand_path(File.dirname(__FILE__) + '/duxml/saxer')
 require File.expand_path(File.dirname(__FILE__) + '/duxml/meta')
 
 module Duxml
-  DITA_GRAMMAR = File.expand_path(File.dirname(__FILE__) + '/../xml/test_grammar.xml')
+  DITA_GRAMMAR = File.expand_path(File.dirname(__FILE__) + '/../xml/dita_grammar.xml')
   include Saxer
   include Meta
 
