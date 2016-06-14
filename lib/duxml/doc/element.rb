@@ -88,6 +88,10 @@ module Duxml
       "<#{name}>"
     end
 
+    def stub
+      Element.new(name, attributes)
+    end
+
     # @return [HistoryClass] history that is observing this element for changes
     def history
       @observer_peers.first.first if @observer_peers.any? and @observer_peers.first.any?

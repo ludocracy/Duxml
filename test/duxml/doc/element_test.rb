@@ -45,6 +45,11 @@ class ElementTest < Test::Unit::TestCase
     assert_equal 'duxml', y.name_space
   end
 
+  def test_stub
+    s = x.stub
+    assert_equal '<root foot="poot"/>', s.to_s
+  end
+
   def test_location
     y = Element.new('node', 999, 888)
     assert_equal 999, y.line
