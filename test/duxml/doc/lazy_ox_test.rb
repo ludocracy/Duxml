@@ -35,8 +35,17 @@ class Goose;
   def name; 'goose' end
 end
 
+module Outer
+  module Inner
+    def doit
+      'hi!'
+    end
+  end
+end
+
 class LazyOxTest < Test::Unit::TestCase
   include Duxml
+  include Ox
 
   def setup
     @x = El.new('root')
@@ -46,6 +55,21 @@ class LazyOxTest < Test::Unit::TestCase
 
   def test_module_extension
     assert_equal 'hi!', x.foo
+  end
+
+  def test_module_nesting_main_module
+    outer = El.new('outer:inner')
+    assert_equal 'hi!', outer.doit
+  end
+
+  def test_module_nesting_duxml
+    outer = El.new('duxml:root')
+    assert_equal 'hi!', outer.foo
+  end
+
+  def test_module_nesting_default
+    outer = El.new('root')
+    assert_equal 'hi!', outer.foo
   end
 
   def test_no_method_error

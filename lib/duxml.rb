@@ -41,6 +41,13 @@ module Duxml
     doc
   end # def load
 
+  # @param file [String] creates new XML file at given path
+  # @param content [Doc, Element] XML content with which to initialize new file
+  def create(file, content=nil)
+    File.write(file, content.to_s)
+    @doc = content.is_a?(Doc) ? content : Doc.new
+  end
+
   # @param file [String] saves current content XML to given file path (Duxml@file by default)
   def save(file)
     meta_path = Meta.meta_path(file)

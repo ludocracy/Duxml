@@ -42,7 +42,7 @@ module Duxml
 
     def grammar=(g)
       @grammar = g.is_a?(GrammarClass) ? g : Grammar.import(g)
-      history.delete_observers
+      history.delete_observers if history.respond_to?(:delete_observers)
       history.add_observer(grammar, :qualify)
       grammar.add_observer history
     end

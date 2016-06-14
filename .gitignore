@@ -1,3 +1,6 @@
+#data source files
+/xml/Dita 1.3 Manual Spec Conversion.xlsx
+
 #################
 ## RubyMine
 #################
@@ -17,4 +20,5 @@ xml/~*
 *log.txt
 *profile.txt
 *.rng
-#backup zip
+#coverage
+**/coverage/**

@@ -13,7 +13,7 @@ class DocTest < Test::Unit::TestCase
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
-    @x = Duxml::Doc.new
+    @x = Doc.new
   end
 
 attr_reader :x
@@ -25,6 +25,11 @@ attr_reader :x
 
   def test_node_set
     assert_equal NodeSet, x.nodes.class
+  end
+
+  def test_init_metadata
+    #assert_kind_of GrammarClass, meta.grammar.class, "Doc.new successfully created grammar of size: #{meta.grammar.size}."
+    #assert_kind_of HistoryClass, meta.grammar.class, "Doc.new successfully created history of size: #{meta.history.size}."
   end
 
   # Called after every test method runs. Can be used to tear

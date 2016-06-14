@@ -9,6 +9,7 @@ module Duxml
       super(prolog)
       self[:version] ||= '1.0'
       @nodes = NodeSet.new(self)
+      # TODO should also create new metadata!!
     end
 
     def write_to(path)

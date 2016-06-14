@@ -116,20 +116,28 @@ module Duxml
       end # class_nodes.keep_if do |node|
     end # def filter(args)
 
-    def look_up_const
-      k = name.split(':').collect do |word|
-        word.constantize
-      end.join('::')
-      return nil unless Duxml.const_defined?(k)
-      const = Duxml.const_get(k)
-      const.is_a?(Module) ? const : nil
+    def look_up_const(maudule = Duxml)
+      mod_names = name.split(':')
+      until mod_names.empty?
+        word = mod_names.shift
+        k = word.constantize
+        if maudule.const_defined?(k, true) or Module.const_defined?(simple_class, true)
+          const = maudule.const_get(k)
+          if const.is_a?(Module)
+            maudule = const
+          end
+
+          return const if mod_names.empty? and [Module, Class].include?(const.class)
+        end
+      end
+      nil
     end
 
     def lowercase?(sym)
       sym.to_s[0].match(/[A-Z]/).nil?
     end
 
-    def simple_class(obj)
+    def simple_class(obj=self)
       obj.class.to_s.split('::').last
     end
   end # module LazyOx

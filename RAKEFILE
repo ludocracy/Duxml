@@ -1,19 +1,19 @@
 require 'rake/testtask'
 require 'rake/clean'
 
-Rake::TestTask.new do |t|
-  t.libs << 'test'
-  t.test_files = FileList['test/**/*test.rb']
-  t.verbose = true
-end
-
-desc "Run tests"
-task :default => :test
+lib = File.expand_path("../lib", __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 task :test do
-  Rake::TestTask['test:unit'].invoke
+  system "test"
 end
 
-task :clean => [:test] do
-  Rake::FileList['xml/**/.*.*.duxml'].each { |fn| rm_rf fn rescue nil }
+task :build do
+  system "gem build gem_name.gemspec"
 end
+
+task release: :build do
+  system "gem push gem_name-#{GemName::VERSION}"
+end
+
+task default: :test

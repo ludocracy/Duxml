@@ -14,6 +14,10 @@ class DuxmlTest < Test::Unit::TestCase
 
   attr_reader :g_path, :d_path
 
+  def test_load_new
+
+  end
+
   def test_load_with_grammar
     load(d_path, g_path)
     assert_equal 'design', doc.root.name
@@ -23,7 +27,7 @@ class DuxmlTest < Test::Unit::TestCase
   end
 
   def test_load_no_file
-    assert_raise "File dne.xml does not exist" do load('dne.xml') end
+    assert_raise Exception, "File dne.xml does not exist" do load('dne.xml') end
   end
 
   def test_illegal_text
