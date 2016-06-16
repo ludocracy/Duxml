@@ -288,7 +288,7 @@ apply</p>
 
           
           <div class="method-source-code" id="applies_to-3F-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 37</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 39</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">applies_to?</span>(<span class="ruby-identifier">change_or_pattern</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:attr_name</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">super</span>(<span class="ruby-identifier">change_or_pattern</span>)
@@ -324,7 +324,7 @@ apply</p>
 
           
           <div class="method-source-code" id="attr_name-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 50</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 52</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">attr_name</span>
   <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&#39;\b&#39;</span>,<span class="ruby-string">&#39;&#39;</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -358,7 +358,7 @@ of missing, required attributes</p>
 
           
           <div class="method-source-code" id="description-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 59</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 62</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
   <span class="ruby-node">%Q(#{relationship.capitalize} Rule that &lt;#{subject}&gt;&#39;s #{relationship} #{required? ? &#39;must&#39;:&#39;can&#39;} include &#39;#{attr_name}&#39;)</span>
 <span class="ruby-keyword">end</span></pre>
@@ -395,7 +395,7 @@ param; false if pattern is for a missing required attribute</p>
 
           
           <div class="method-source-code" id="pass-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 66</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 69</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">pass</span>(<span class="ruby-identifier">change_or_pattern</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:time_stamp</span>)
     <span class="ruby-identifier">an</span> = <span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">attr_name</span>.<span class="ruby-identifier">to_s</span>
@@ -440,7 +440,7 @@ whether or not given pattern passed this test</p>
 
           
           <div class="method-source-code" id="qualify-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 27</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 29</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">change_or_pattern</span>)
   <span class="ruby-ivar">@object</span> = <span class="ruby-identifier">change_or_pattern</span>
   <span class="ruby-identifier">result</span> = <span class="ruby-identifier">pass</span> <span class="ruby-identifier">change_or_pattern</span>
@@ -471,13 +471,13 @@ whether or not given pattern passed this test</p>
 
         <div class="method-description">
           
-          
+          <p>@return [String] describes relationship in a word</p>
           
           
 
           
           <div class="method-source-code" id="relationship-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 54</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 57</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">relationship</span>
   <span class="ruby-string">&#39;attributes&#39;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -510,7 +510,7 @@ whether or not given pattern passed this test</p>
 
           
           <div class="method-source-code" id="required-3F-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 45</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 47</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">required?</span>
   <span class="ruby-identifier">requirement</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;#REQUIRED&#39;</span>
 <span class="ruby-keyword">end</span></pre>

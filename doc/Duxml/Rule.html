@@ -289,7 +289,7 @@ apply</p>
 
           
           <div class="method-source-code" id="applies_to-3F-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 43</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 48</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">applies_to?</span>(<span class="ruby-identifier">change_or_pattern</span>)
   <span class="ruby-identifier">pattern_type</span> = <span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">subject</span>.<span class="ruby-identifier">name</span>
   <span class="ruby-identifier">subject</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">pattern_type</span>
@@ -323,7 +323,7 @@ apply</p>
 
           
           <div class="method-source-code" id="description-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 49</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 54</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
   <span class="ruby-identifier">statement_str</span> = (<span class="ruby-identifier">statement</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">statement</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">inspect</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&#39;\b&#39;</span>,<span class="ruby-string">&#39;&#39;</span>)
   <span class="ruby-node">%Q(#{relationship.capitalize} Rule that &lt;#{subject}&gt;&#39;s #{relationship} must match &#39;#{statement_str}&#39;)</span>
@@ -357,7 +357,7 @@ apply</p>
 
           
           <div class="method-source-code" id="history-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 37</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 42</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">history</span>
   <span class="ruby-ivar">@observer_peers</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@observer_peers</span>.<span class="ruby-identifier">any?</span> <span class="ruby-keyword">and</span> <span class="ruby-ivar">@observer_peers</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">any?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -397,7 +397,7 @@ specific rule type&#39;s <a href="Rule.html#method-i-qualify">qualify</a></p>
 
           
           <div class="method-source-code" id="qualify-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 30</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 35</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">change_or_pattern</span>)
   <span class="ruby-identifier">type</span> = (<span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:time_stamp</span>)) <span class="ruby-operator">?</span> <span class="ruby-value">:QualifyError</span> <span class="ruby-operator">:</span> <span class="ruby-value">:ValidateError</span>
   <span class="ruby-identifier">report</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">change_or_pattern</span>)

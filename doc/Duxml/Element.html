@@ -248,6 +248,9 @@
 
   <div id="description" class="description">
     
+<p>basic component of XML file that can possess attributes and take sub
+Elements or <a href="../String.html">String</a> content</p>
+
   </div><!-- description -->
 
   
@@ -355,7 +358,7 @@ new child nodes; can be nil</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 28</span>
+            <pre><span class="ruby-comment"># File lib/duxml/doc/element.rb, line 30</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">_line_or_content</span>=<span class="ruby-keyword">nil</span>, <span class="ruby-identifier">_col_or_children</span>=<span class="ruby-keyword">nil</span>)
   <span class="ruby-keyword">super</span> <span class="ruby-identifier">name</span>
   <span class="ruby-ivar">@line</span> = <span class="ruby-identifier">_line_or_content</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">_line_or_content</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:%</span>)

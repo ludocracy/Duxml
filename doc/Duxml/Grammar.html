@@ -315,13 +315,17 @@
 
         <div class="method-description">
           
-          
+          <p>@param path [String] path of grammar file; can be in .xlsx, .csv or <a
+href="../Duxml.html">Duxml</a> <a href="GrammarClass.html">GrammarClass</a>
+file @return [GrammarClass, Element] XML <a href="Element.html">Element</a>
+named &lt;grammar&gt; and <a href="GrammarClass.html">GrammarClass</a>
+object are functionally equivalent</p>
           
           
 
           
           <div class="method-source-code" id="import-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 40</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 43</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">import</span>(<span class="ruby-identifier">path</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-node">%w(.xlsx .csv)</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">extname</span> <span class="ruby-identifier">path</span>)
     <span class="ruby-identifier">doc</span> = <span class="ruby-constant">Spreadsheet</span>.<span class="ruby-identifier">sheet_to_xml</span> <span class="ruby-identifier">path</span>
@@ -361,7 +365,7 @@
 
           
           <div class="method-source-code" id="xml-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 51</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 54</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">xml</span>
   <span class="ruby-constant">Element</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">name</span>.<span class="ruby-identifier">nmtokenize</span>).<span class="ruby-identifier">extend</span> <span class="ruby-keyword">self</span>
 <span class="ruby-keyword">end</span></pre>
@@ -406,7 +410,7 @@ usually the <a href="History.html">History</a></p>
 
           
           <div class="method-source-code" id="add_observer-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 66</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 69</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">add_observer</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">sym</span>=<span class="ruby-keyword">nil</span>)
   <span class="ruby-keyword">super</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">sym</span> <span class="ruby-operator">||</span> <span class="ruby-value">:update</span>)
   <span class="ruby-ivar">@rules</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span> <span class="ruby-identifier">r</span>.<span class="ruby-identifier">add_observer</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-value">:update</span>)<span class="ruby-keyword">end</span>
@@ -441,7 +445,7 @@ grammar</p>
 
           
           <div class="method-source-code" id="defined-3F-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 61</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 64</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">defined?</span>
   <span class="ruby-operator">!</span><span class="ruby-identifier">rules</span>.<span class="ruby-identifier">empty?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -474,7 +478,7 @@ grammar</p>
 
           
           <div class="method-source-code" id="description-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 72</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 75</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
 <span class="ruby-string">&quot;grammar follows: \n&quot;</span> <span class="ruby-operator">+</span>
     <span class="ruby-identifier">rules</span>.<span class="ruby-identifier">collect</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">change_or_error</span><span class="ruby-operator">|</span>
@@ -515,7 +519,7 @@ the pattern type (e.g. :change_content =&gt; :content_rule)</p>
 
           
           <div class="method-source-code" id="get_rule-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 125</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 130</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_rule</span>(<span class="ruby-identifier">change_or_pattern</span>)
   <span class="ruby-identifier">rules</span>.<span class="ruby-identifier">select</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">rule</span><span class="ruby-operator">|</span> <span class="ruby-identifier">rule</span>.<span class="ruby-identifier">applies_to?</span>(<span class="ruby-identifier">change_or_pattern</span>) <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
@@ -548,7 +552,7 @@ the pattern type (e.g. :change_content =&gt; :content_rule)</p>
 
           
           <div class="method-source-code" id="history-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 56</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 59</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">history</span>
   <span class="ruby-ivar">@observer_peers</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@observer_peers</span> <span class="ruby-keyword">and</span> <span class="ruby-ivar">@observer_peers</span>.<span class="ruby-identifier">any?</span> <span class="ruby-keyword">and</span> <span class="ruby-ivar">@observer_peers</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">any?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -575,13 +579,13 @@ the pattern type (e.g. :change_content =&gt; :content_rule)</p>
 
         <div class="method-description">
           
-          
+          <p>@return [String] formatted to appear in tight spaces e.g. debugger</p>
           
           
 
           
           <div class="method-source-code" id="inspect-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 79</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 83</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">inspect</span>
   <span class="ruby-node">&quot;#&lt;#{self.class.to_s} #{object_id}: @rules=#{rules.size}&gt;&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -608,13 +612,13 @@ the pattern type (e.g. :change_content =&gt; :content_rule)</p>
 
         <div class="method-description">
           
-          
+          <p>@return [String] &#39;grammar&#39;</p>
           
           
 
           
           <div class="method-source-code" id="name-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 83</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 88</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">name</span>
   <span class="ruby-string">&#39;grammar&#39;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -652,7 +656,7 @@ rule type and subject</p>
 
           
           <div class="method-source-code" id="qualify-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 101</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 106</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">change_or_pattern</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">defined?</span>
   <span class="ruby-identifier">rules</span> = <span class="ruby-identifier">get_rule</span>(<span class="ruby-identifier">change_or_pattern</span>)
@@ -703,7 +707,7 @@ the given object @result [Boolean] whether all rules qualified</p>
 
           
           <div class="method-source-code" id="validate-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 89</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar.rb, line 94</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">validate</span>(<span class="ruby-identifier">node</span>)
   <span class="ruby-identifier">rels</span> = <span class="ruby-identifier">get_relationships</span>(<span class="ruby-identifier">node</span>)
   <span class="ruby-identifier">results</span> = <span class="ruby-identifier">rels</span>.<span class="ruby-identifier">collect</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">rel</span><span class="ruby-operator">|</span>

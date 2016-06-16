@@ -12,6 +12,7 @@ require File.expand_path(File.dirname(__FILE__) + '/grammar/relax_ng')
 require 'forwardable'
 
 module Duxml
+  # module shares name with <grammar> to activate its methods when that XML Element is encountered in a Meta file
   module Grammar
     include Reportable
     include Duxml
@@ -37,6 +38,8 @@ module Duxml
   end
 
   module Grammar
+    # @param path [String] path of grammar file; can be in .xlsx, .csv or Duxml GrammarClass file
+    # @return [GrammarClass, Element] XML Element named <grammar> and GrammarClass object are functionally equivalent
     def self.import(path)
       if %w(.xlsx .csv).include?(File.extname path)
         doc = Spreadsheet.sheet_to_xml path
@@ -76,10 +79,12 @@ module Duxml
         end.join("\n")
     end
 
+    # @return [String] formatted to appear in tight spaces e.g. debugger
     def inspect
       "#<#{self.class.to_s} #{object_id}: @rules=#{rules.size}>"
     end
 
+    # @return [String] 'grammar'
     def name
       'grammar'
     end

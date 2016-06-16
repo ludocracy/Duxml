@@ -248,6 +248,14 @@
 
   <div id="description" class="description">
     
+<p>as an object, a <a href="Pattern.html">Pattern</a> consists of a subject
+and may or may not have an object a <a href="Pattern.html">Pattern</a>
+without an object represents a childless empty node with no attributes this
+class must be subclassed to be used; there is one for each type of XML
+relationship that an <a href="Element.html">Element</a> can have up to one
+degree of separation, that is, grandparent relationships are not considered
+and neither are the attributes of children</p>
+
   </div><!-- description -->
 
   
@@ -301,13 +309,14 @@
 
         <div class="method-description">
           
-          
+          <p>@param subj [Element] specific <a href="Element.html">Element</a> that is
+the subject of this pattern</p>
           
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern.rb, line 12</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/pattern.rb, line 24</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">subj</span>)
   <span class="ruby-ivar">@subject</span> = <span class="ruby-identifier">subj</span>
 <span class="ruby-keyword">end</span></pre>

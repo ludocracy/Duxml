@@ -3,6 +3,7 @@
 require 'rubyXL'
 
 module Duxml
+  # contains helper methods to convert spreadsheet of DTD rules into Duxml::Rules
   module Spreadsheet
     private
   # @param path [String] spreadsheet file

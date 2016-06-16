@@ -3,13 +3,15 @@
 require File.expand_path(File.dirname(__FILE__) + '/../rule')
 
 module Duxml
+  # methods for applying a rule on what attribute names a given Element is allowed to have
   module AttrsRule; end
 
-  # rule that states what attribute names a given object is allowed to have
+  # do not subclass this! as object, consists of subject and a Regexp describing allowable attribute names
+  # as well as a String indicating with DTD symbols for whether the given attributes are allowed or required
   class AttrsRuleClass < RuleClass
     include AttrsRule
 
-    # @param _subject [String] name of the doc
+    # @param _subject [String] name of the Element
     # @param attrs [String] the attribute name pattern in Regexp form
     # @param required [String] the requirement level - optional i.e. #IMPLIED by default
     def initialize(_subject, attrs, required='#IMPLIED')
@@ -51,6 +53,7 @@ module Duxml
       statement.gsub('\b','')
     end
 
+    # @return [String] describes relationship in a word
     def relationship
       'attributes'
     end

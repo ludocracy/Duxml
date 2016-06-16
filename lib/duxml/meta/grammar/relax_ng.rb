@@ -6,6 +6,7 @@ require File.expand_path(File.dirname(__FILE__) + '/relax_ng/value_rule')
 require File.expand_path(File.dirname(__FILE__) + '/../../doc')
 
 module Duxml
+  # contains methods to convert Rules into a valid RelaxNG schema file
   module RelaxNG
     include Duxml
     # @param output_path [String] optional, output path for .rng file

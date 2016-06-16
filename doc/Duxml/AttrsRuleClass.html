@@ -253,7 +253,10 @@
 
   <div id="description" class="description">
     
-<p>rule that states what attribute names a given object is allowed to have</p>
+<p>do not subclass this! as object, consists of subject and a <a
+href="../Regexp.html">Regexp</a> describing allowable attribute names as
+well as a <a href="../String.html">String</a> indicating with DTD symbols
+for whether the given attributes are allowed or required</p>
 
   </div><!-- description -->
 
@@ -308,9 +311,10 @@
 
         <div class="method-description">
           
-          <p>@param _subject [String] name of the doc @param attrs [String] the
-attribute name pattern in <a href="../Regexp.html">Regexp</a> form @param
-required [String] the requirement level - optional i.e. #IMPLIED by default</p>
+          <p>@param _subject [String] name of the <a href="Element.html">Element</a>
+@param attrs [String] the attribute name pattern in <a
+href="../Regexp.html">Regexp</a> form @param required [String] the
+requirement level - optional i.e. #IMPLIED by default</p>
           
           
             <div class="method-calls-super">
@@ -321,7 +325,7 @@ required [String] the requirement level - optional i.e. #IMPLIED by default</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 15</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/attrs_rule.rb, line 17</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">_subject</span>, <span class="ruby-identifier">attrs</span>, <span class="ruby-identifier">required</span>=<span class="ruby-string">&#39;#IMPLIED&#39;</span>)
   <span class="ruby-identifier">formatted_statement</span> = <span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&#39;-&#39;</span>, <span class="ruby-string">&#39;__dash__&#39;</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/\b/</span>, <span class="ruby-string">&#39;\b&#39;</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&#39;-&#39;</span>, <span class="ruby-string">&#39;__dash__&#39;</span>)
   <span class="ruby-ivar">@requirement</span> = <span class="ruby-identifier">required</span>

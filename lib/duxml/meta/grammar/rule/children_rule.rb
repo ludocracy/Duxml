@@ -4,9 +4,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../rule')
 require File.expand_path(File.dirname(__FILE__) + '/../../../doc/element')
 
 module Duxml
+  # methods to apply rule on what children an Element may have
   module ChildrenRule; end
 
-  # rule that states what children and how many a given element is allowed to have
+  # do not subclass! rule that states what children and how many a given element is allowed to have where @statement
+  # is a DTD/Regexp of what children are allowed, how many, in what order and whether they are required
   class ChildrenRuleClass < RuleClass
     include ChildrenRule
     # child rules are initialized from DTD doc declarations e.g. (zeroOrMore|other-first-child)*,second-child-optional?,third-child-gt1+
@@ -60,10 +62,13 @@ module Duxml
 
     private
 
+    # @param req_scan [Struct::Scanner] scanner with which to identify a child name within @statement
+    # @return [String] name of child that is currently being checked for by this rule
     def get_child_name(req_scan)
       req_scan[:match].inspect.split(/[\/(\\b)]/).select do |word| !word.empty? end.first
     end
 
+    # @return [[Struct::Scanner]] array of scanners for each logical component of @statement to be applied to target Element's children
     def get_scanners
       statement.split(',').collect do |rule|
         r = rule.gsub(/[\(\)]/, '')
@@ -75,6 +80,7 @@ module Duxml
 
     attr_reader :child_stack
 
+    # @return [Boolean] whether or not this rule has been passed
     def pass
       @child_stack = object.child.nil? ? [] : object.parent.nodes.clone
       scanners = get_scanners
@@ -111,15 +117,18 @@ module Duxml
       result
     end # def pass
 
+    # @return [Boolean] whether the child currently being scanned is the one in the pattern we are testing now
     def matching_index?
       child_index == object.index
     end
 
+    # @return [Fixnum] index of child currenlty being scanned
     def child_index
       i = object.parent.nodes.size-child_stack.size-1
       i
     end
 
+    # @return [Element] previous element to the one being scanned
     def previous_child
       index = child_index - 1
       index < 0 ? nil : object.parent.nodes[index]

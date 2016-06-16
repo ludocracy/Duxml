@@ -6,6 +6,7 @@ require File.expand_path(File.dirname(__FILE__) + '/node_set')
 require File.expand_path(File.dirname(__FILE__) + '/../reportable')
 
 module Duxml
+  # contains actual methods of XML Element
   module ElementGuts
     include Duxml
     include Enumerable
@@ -13,6 +14,7 @@ module Duxml
     include LazyOx
   end
 
+  # basic component of XML file that can possess attributes and take sub Elements or String content
   class Element < ::Ox::Element
     include ElementGuts
 
@@ -106,6 +108,7 @@ module Duxml
       s << ">#{nodes.collect do |n| n.to_s end.join}</#{name}>"
     end
 
+    # @return #to_s
     def inspect
       to_s
     end

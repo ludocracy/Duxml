@@ -1,10 +1,12 @@
+# Copyright (c) 2016 Freescale Semiconductor Inc.
+
 # Duxml for Ruby
 Duxml binds XML to Ruby objects and classes and vice versa, allowing validation of structure and content using Ruby statements, implemented as a wrapper for Ox XML parser.
 Its goal is to allow Ruby users to automate the generation of XML documents without having to know their exact schema rules, 
 and it allows XML users without any knowledge of Ruby to manipulate dataflows through the use of namespaced elements bound to Ruby methods.
 
 ## Features:
-- The whole Ox
+- Ox gem based
 - Lazy-duck XML creation (even lazier than Ox's): you can use a file path, a string, or any Ruby object at all.
 - Static and runtime validation using flattened DTD: 
     - notifies you that an XML edit action violates a DTD rule

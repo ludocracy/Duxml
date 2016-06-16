@@ -97,6 +97,9 @@ module Duxml
 
     private
 
+    # @param sym [Symbol] indicates which element type is being filtered for
+    # @param args [several_variants] arguments for filtering element children that matched 'sym'
+    # @return [[Element]] Elements of type 'sym' that match criteria 'args'
     def filter(sym, args)
       class_nodes = nodes.select do |node|
         node.name == sym.to_s.nmtokenize or simple_class(node) == sym.to_s
@@ -116,6 +119,8 @@ module Duxml
       end # class_nodes.keep_if do |node|
     end # def filter(args)
 
+    # @param maudule [Module] module context in which to look for duck-called method's module
+    # @return [Module, Class] requested module or class
     def look_up_const(maudule = Duxml)
       mod_names = name.split(':')
       until mod_names.empty?
@@ -133,10 +138,14 @@ module Duxml
       nil
     end
 
+    # @param sym [Symbol] symbol for a constant
+    # @return [Boolean] is symbol lowercase?
     def lowercase?(sym)
       sym.to_s[0].match(/[A-Z]/).nil?
     end
 
+    # @param obj [Object] usually Element
+    # @return [String] name of final Class or Module of self
     def simple_class(obj=self)
       obj.class.to_s.split('::').last
     end

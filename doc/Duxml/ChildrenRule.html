@@ -281,7 +281,7 @@ affected_parent</p>
 
           
           <div class="method-source-code" id="applies_to-3F-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/children_rule.rb, line 51</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/children_rule.rb, line 53</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">applies_to?</span>(<span class="ruby-identifier">change_or_pattern</span>)
   <span class="ruby-keyword">case</span>
     <span class="ruby-keyword">when</span> <span class="ruby-identifier">change_or_pattern</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Duxml</span><span class="ruby-operator">::</span><span class="ruby-constant">Rule</span>) <span class="ruby-keyword">then</span> <span class="ruby-keyword">false</span>
@@ -330,7 +330,7 @@ change_or_pattern#subject is allowed to have object as its child</p>
 
           
           <div class="method-source-code" id="qualify-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/children_rule.rb, line 33</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/children_rule.rb, line 35</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">change_or_pattern</span>)
   <span class="ruby-ivar">@object</span> = <span class="ruby-identifier">change_or_pattern</span>
   <span class="ruby-identifier">result</span> = <span class="ruby-identifier">pass</span>
@@ -368,7 +368,7 @@ types required by this rule</p>
 
           
           <div class="method-source-code" id="required_children-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/children_rule.rb, line 42</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/children_rule.rb, line 44</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">required_children</span>
   <span class="ruby-identifier">req_scans</span> = <span class="ruby-identifier">get_scanners</span>.<span class="ruby-identifier">select</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">scanner</span><span class="ruby-operator">|</span> <span class="ruby-identifier">scanner</span>[<span class="ruby-value">:operator</span>].<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/[\*\?]/</span>).<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">req_scans</span>.<span class="ruby-identifier">collect</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">req_scan</span><span class="ruby-operator">|</span>

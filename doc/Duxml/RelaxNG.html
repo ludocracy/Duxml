@@ -242,6 +242,9 @@
 
   <div id="description" class="description">
     
+<p>contains methods to convert Rules into a valid <a
+href="RelaxNG.html">RelaxNG</a> schema file</p>
+
   </div><!-- description -->
 
   
@@ -282,7 +285,7 @@
 
           
           <div class="method-source-code" id="relaxng-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/relax_ng.rb, line 13</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/relax_ng.rb, line 14</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">relaxng</span>(<span class="ruby-identifier">output_path</span>=<span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">doc</span> = <span class="ruby-constant">Doc</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-identifier">doc</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Element</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;grammar&#39;</span>)

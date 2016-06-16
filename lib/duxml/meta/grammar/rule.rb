@@ -4,11 +4,16 @@ require File.expand_path(File.dirname(__FILE__) + '/pattern')
 require File.expand_path(File.dirname(__FILE__) + '/../../reportable')
 
 module Duxml
+  # scans DTD statements for XML rule operators
   Struct.new 'Scanner', :match, :operator
+
+  # contains methods to apply Duxml::RuleClass to XML edit or validate events
   module Rule
     include Reportable
   end
 
+  # as an object, Rules consist of a subject, representing the XML Element, and a statement representing the Rule's logic
+  # this class cannot be used alone and is rather subclassed, one for each type of possible XML changes
   class RuleClass < PatternClass
     include Rule
 

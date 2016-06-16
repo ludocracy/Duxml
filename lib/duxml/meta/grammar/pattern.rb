@@ -3,12 +3,24 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../ruby_ext/string')
 
 module Duxml
+  # Patterns represent a relationship between a specific XML Element and
+  # a specific or hypothetical attribute, attribute value, text value or child Element
+  # For example, given an XML Element: '<element attr='value'/>', there exists a valid PatternClass
+  # that represents the relationship betweeen <element> and the attribute value 'value'
+  # There can also exists a hypothetical relationship between <element> and a new child <child/> that
+  # is defined as an allowed child Element in the Rules that apply to this Element.
   module Pattern; end
 
+  # as an object, a Pattern consists of a subject and may or may not have an object
+  # a Pattern without an object represents a childless empty node with no attributes
+  # this class must be subclassed to be used; there is one for each type of XML relationship
+  # that an Element can have up to one degree of separation, that is, grandparent relationships are not considered
+  # and neither are the attributes of children
   class PatternClass
     include Pattern
     @subject
 
+    # @param subj [Element] specific Element that is the subject of this pattern
     def initialize(subj)
       @subject = subj
     end
@@ -59,6 +71,7 @@ module Duxml
       "#{object.description} is #{relationship} of #{subject.description}"
     end
 
+    # @return [Element] will only return non-nil value when pattern represents relationship with a child Element
     def object
       return @object if instance_variable_defined?(:@object)
       instance_variables.each do |var|

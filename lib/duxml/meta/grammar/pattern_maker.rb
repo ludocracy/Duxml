@@ -6,7 +6,7 @@ require File.expand_path(File.dirname(__FILE__) + '/pattern/attr_name_pattern')
 require File.expand_path(File.dirname(__FILE__) + '/pattern/attr_val_pattern')
 
 module Duxml
-  # methods to create Patterns from a given Element's relationships with its members
+  # helper methods to create Patterns from a given Element's relationships with its members
   module PatternMaker
     include Duxml
     # @param node [Duxml::Element] doc whose relationships are to be made into patterns

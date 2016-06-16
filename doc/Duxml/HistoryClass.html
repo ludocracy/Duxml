@@ -260,6 +260,10 @@
 
   <div id="description" class="description">
     
+<p>as an object, <a href="HistoryClass.html">HistoryClass</a> holds events
+latest first, earliest last it also has delegators that allow the use of
+Array-style notation e.g. &#39;[]&#39; and each to search the history.</p>
+
   </div><!-- description -->
 
   
@@ -326,13 +330,15 @@
 
         <div class="method-description">
           
-          
+          <p>@param harsh_or_kind [Boolean] by default harsh i.e. true so that if this
+<a href="History.html">History</a> detects an error it will raise an
+Exception; otherwise not</p>
           
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/history.rb, line 27</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/history.rb, line 31</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">harsh_or_kind</span> = <span class="ruby-keyword">true</span>)
   <span class="ruby-ivar">@nodes</span> = []
   <span class="ruby-ivar">@strict</span> = <span class="ruby-identifier">harsh_or_kind</span>

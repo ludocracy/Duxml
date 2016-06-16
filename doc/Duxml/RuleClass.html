@@ -248,6 +248,11 @@
 
   <div id="description" class="description">
     
+<p>as an object, Rules consist of a subject, representing the XML <a
+href="Element.html">Element</a>, and a statement representing the
+Rule&#39;s logic this class cannot be used alone and is rather subclassed,
+one for each type of possible XML changes</p>
+
   </div><!-- description -->
 
   
@@ -327,7 +332,7 @@ form or <a href="../Regexp.html">Regexp</a></p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 17</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule.rb, line 22</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">subj</span>, <span class="ruby-identifier">_statement</span>)
   <span class="ruby-ivar">@statement</span> = <span class="ruby-identifier">_statement</span>
   <span class="ruby-ivar">@object</span> = <span class="ruby-keyword">nil</span>

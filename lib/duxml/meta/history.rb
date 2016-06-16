@@ -13,17 +13,21 @@ require File.expand_path(File.dirname(__FILE__) + '/../doc')
 require 'forwardable'
 
 module Duxml
+  # monitors XML Elements for changes and GrammarClass for errors, recording them and saving to Meta file
   module History
     include Duxml
     include Reportable
   end
 
+  # as an object, HistoryClass holds events latest first, earliest last
+  # it also has delegators that allow the use of Array-style notation e.g. '[]' and #each to search the history.
   class HistoryClass
     include History
     extend Forwardable
 
     def_delegators :@nodes, :[], :each
 
+    # @param harsh_or_kind [Boolean] by default harsh i.e. true so that if this History detects an error it will raise an Exception; otherwise not
     def initialize(harsh_or_kind = true)
       @nodes = []
       @strict = harsh_or_kind
@@ -47,6 +51,7 @@ module Duxml
       @strict
     end
 
+    # @return [ChangeClass, ErrorClass] the latest event
     def latest
       events[0]
     end
@@ -56,18 +61,21 @@ module Duxml
       @observer_peers.first.first if @observer_peers and @observer_peers.any? and @observer_peers.first.any?
     end
 
+    # @return [String] shortened self description for debugging
     def inspect
       "#<#{self.class.to_s} #{object_id}: @events=#{nodes.size}>"
     end
 
+    # @return [String] returns entire history, calling #description on each event in chronological order
     def description
       "history follows: \n" +
-      events.collect do |change_or_error|
+      events.reverse.collect do |change_or_error|
         change_or_error.description
       end.join("\n")
     end
 
-    # receives reports from interface of changes or from Duxml::Rule violations
+    # @param type [Symbol] category i.e. class symbol of changes/errors reported
+    # @param *args [*several_variants] information needed to accurately log the event; varies by change/error class
     def update(type, *args)
       change_class = Duxml::const_get "#{type.to_s}Class".to_sym
       change_comp = change_class.new *args

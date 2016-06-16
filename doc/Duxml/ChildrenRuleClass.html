@@ -253,8 +253,9 @@
 
   <div id="description" class="description">
     
-<p>rule that states what children and how many a given element is allowed to
-have</p>
+<p>do not subclass! rule that states what children and how many a given
+element is allowed to have where @statement is a DTD/Regexp of what
+children are allowed, how many, in what order and whether they are required</p>
 
   </div><!-- description -->
 
@@ -304,7 +305,7 @@ have</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/children_rule.rb, line 16</span>
+            <pre><span class="ruby-comment"># File lib/duxml/meta/grammar/rule/children_rule.rb, line 18</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">_subject</span>, <span class="ruby-identifier">_statement</span>)
   <span class="ruby-identifier">formatted_statement</span> = <span class="ruby-identifier">_statement</span>
                             .<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/[\&lt;&gt;]/</span>, <span class="ruby-string">&#39;&#39;</span>)
