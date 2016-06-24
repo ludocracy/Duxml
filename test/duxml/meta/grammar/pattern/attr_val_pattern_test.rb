@@ -1,3 +1,4 @@
+# Copyright (c) 2016 Freescale Semiconductor Inc.
 require File.expand_path(File.dirname(__FILE__) + '/../../../../../lib/duxml/meta/grammar/pattern/attr_val_pattern')
 require File.expand_path(File.dirname(__FILE__) + '/../../../../../lib/duxml/doc/element')
 require 'test/unit'

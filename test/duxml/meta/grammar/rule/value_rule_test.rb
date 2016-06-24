@@ -1,3 +1,4 @@
+# Copyright (c) 2016 Freescale Semiconductor Inc.
 require 'ox'
 require File.expand_path(File.dirname(__FILE__) + '/../../../../../lib/duxml/meta/grammar/rule/value_rule')
 require File.expand_path(File.dirname(__FILE__) + '/../../../../../lib/duxml/meta/history/new_attr')

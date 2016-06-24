@@ -1,3 +1,4 @@
+# Copyright (c) 2016 Freescale Semiconductor Inc.
 require File.expand_path(File.dirname(__FILE__) + '/../../../../lib/duxml/meta/history/validate_error')
 require File.expand_path(File.dirname(__FILE__) + '/../../../../lib/duxml/meta/grammar/rule/children_rule')
 require File.expand_path(File.dirname(__FILE__) + '/../../../../lib/duxml/meta/grammar/pattern/child_pattern')
