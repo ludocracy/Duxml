@@ -14,17 +14,6 @@ class DuxmlTest < Test::Unit::TestCase
 
   attr_reader :g_path, :d_path, :g
 
-  def test_dita_option
-    load(Doc.new, :dita)
-    assert_equal GrammarClass, meta.grammar.class
-    assert_equal 373, meta.grammar.nodes.size
-    assert(doc << Element.new('topic'))
-    t = doc.topic
-    assert_equal 1, meta.history.nodes.size
-    assert_raise(Exception, '') do t << Element.new('bogus') end
-    assert_equal 3, meta.history.nodes.size
-  end
-
   def test_load_new
     load Doc.new
     assert_equal GrammarClass, meta.grammar.class

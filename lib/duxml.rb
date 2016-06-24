@@ -21,7 +21,6 @@ module Duxml
   # @param grammar_path [nil, String, Duxml::Grammar] optional - provide an external grammar file or object
   # @return [Duxml::Meta] combined Object tree from metadata root (metadata and content's XML documents are kept separate)
   def load(_file, grammar_path=nil)
-    grammar_path = DITA_GRAMMAR if grammar_path == :dita
     if _file.is_a?(String) and File.exists?(_file)
       @file = _file
     else
