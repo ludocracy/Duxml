@@ -17,3 +17,15 @@ validate
 puts "validation complete"
 log log_file
 puts "logged errors to #{log_file}"
+
+
+if conditions
+
+end
+
+
+def conditions
+  asdf and b and c
+end
+
+File

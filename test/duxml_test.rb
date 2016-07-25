@@ -2,6 +2,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/../lib/duxml')
 require 'test/unit'
 
+class Dummy
+  def answer
+    'answer!'
+  end
+end
+
 class DuxmlTest < Test::Unit::TestCase
   include Duxml
 
@@ -16,7 +22,7 @@ class DuxmlTest < Test::Unit::TestCase
   attr_reader :g_path, :d_path, :g
 
   def test_load_new
-    load Doc.new
+    load 'test.xml'
     assert_equal GrammarClass, meta.grammar.class
     assert_equal 0, meta.grammar.nodes.size
     assert_equal HistoryClass, meta.history.class
@@ -74,13 +80,14 @@ class DuxmlTest < Test::Unit::TestCase
   end
 
   def test_validate
-    x = File.expand_path(File.dirname(__FILE__) + '/../xml/dtd_rule_test/error_invalid_attr.xml')
+    x = File.expand_path(File.dirname(__FILE__) + '/../xml/dtd_rule_test/error_invalid_attr_val.xml')
     result = validate(x, g_path)
     assert_equal false, result
     error = meta.history.latest
     assert_equal ValidateErrorClass, error.class
     assert_equal 5, error.line
     assert_equal 'invalid_attr', error.bad_pattern.attr_name
+    puts meta.history.description
   end
 
   def test_save_file

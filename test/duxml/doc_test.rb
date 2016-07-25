@@ -26,7 +26,32 @@ attr_reader :x
   end
 
   def test_node_set
-    assert_equal NodeSet, x.nodes.class
+    assert_kind_of NodeSet, x.nodes
+  end
+
+  def test_path
+    assert_nil x.path
+    x.path = 'file.xml'
+    assert_equal 'file.xml', x.path
+  end
+
+  def test_meta
+    assert_kind_of MetaClass, x.meta
+  end
+
+  def test_history
+    assert_kind_of HistoryClass, x.history
+    x << Element.new('root')
+    assert_equal '<root> added to document.', x.history[0].description[30..-1]
+  end
+
+  def test_grammar
+    assert_equal 0, x.grammar.rules.size
+  end
+
+  def test_assign_grammar
+    x.grammar = GrammarClass.new
+    assert_kind_of GrammarClass, x.grammar
   end
 
   # Called after every test method runs. Can be used to tear

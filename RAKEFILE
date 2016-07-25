@@ -6,16 +6,11 @@ require 'rake/clean'
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-task :test do
-  system "test"
-end
-
-task :build do
-  system "gem build gem_name.gemspec"
-end
-
-task release: :build do
-  system "gem push gem_name-#{GemName::VERSION}"
-end
-
 task default: :test
+
+Rake::TestTask.new do |t|
+  t.libs << "test"
+  t.test_files = FileList['test/test*.rb']
+  t.verbose = true
+  CLEAN.include FileList['test/**.xml']
+end

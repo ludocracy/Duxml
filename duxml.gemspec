@@ -2,9 +2,9 @@
 # Copyright (c) 2016 Freescale Semiconductor Inc.
 Gem::Specification.new do |spec|
   spec.name          = "duxml"
-  spec.version       = "0.7.2"
+  spec.version       = "0.8.0"
   spec.summary       = "Dynamic Universal XML"
-  spec.description   = "execute 'validate_xml --help' for more info"
+  spec.description   = "see README.md"
   spec.authors       = ["Peter Kong"]
   spec.email         = ["peter.kong@nxp.com"]
   spec.homepage      = "http://www.github.com/ruby-dita/duxml"
@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   # Only the files that are hit by these wildcards will be included in the
   # packaged gem, the default should hit everything in most cases but this will
   # need to be added to if you have any custom directories
-  spec.files         = Dir["lib/**/*.rb", "xml/dita_grammar.xml"]
+  spec.files         = Dir["lib/**/*.rb"]
   spec.executables   = ["validate_xml"]
   spec.require_paths = ["lib"]
 

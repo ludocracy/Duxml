@@ -7,7 +7,7 @@ class MetaTest < Test::Unit::TestCase
   include Duxml
   include Ox
   def setup
-    @g_path = File.expand_path(File.dirname(__FILE__) + '/../../xml/test_grammar.xml')
+    @g_path = File.expand_path(File.dirname(__FILE__) + '/../../xml/dita_grammar.xml')
     @m = MetaClass.new(g_path)
     @x = Meta.xml
   end

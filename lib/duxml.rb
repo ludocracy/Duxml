@@ -1,43 +1,34 @@
 # Copyright (c) 2016 Freescale Semiconductor Inc.
 
 require File.expand_path(File.dirname(__FILE__) + '/duxml/saxer')
-require File.expand_path(File.dirname(__FILE__) + '/duxml/meta')
 
 module Duxml
-  DITA_GRAMMAR = File.expand_path(File.dirname(__FILE__) + '/../xml/dita_grammar.xml')
   include Saxer
-  include Meta
 
-  # path to XML file
-  @file
-  # current document
-  @doc
-  # meta data document
-  @meta
-
-  attr_reader :meta, :file, :doc
-
-  # @param file [String, Doc] loads or creates given file or document and finds or creates corresponding metadata file e.g. '.xml_file.duxml'
+  # @param _file [String] loads XML file from given path and finds or creates corresponding metadata file e.g. '.xml_file.duxml'
   # @param grammar_path [nil, String, Duxml::Grammar] optional - provide an external grammar file or object
-  # @return [Duxml::Meta] combined Object tree from metadata root (metadata and content's XML documents are kept separate)
+  # @return [Doc] XML document as Ruby object
   def load(_file, grammar_path=nil)
-    if _file.is_a?(String) and File.exists?(_file)
-      @file = _file
+    meta_path = Meta.meta_path(_file)
+
+    if File.exists?(meta_path)
+      meta = sax(File.open meta_path).root
+      meta.grammar=grammar_path unless grammar_path.nil? or meta.grammar.defined?
     else
-      @file = "#{(_file.respond_to?(:name) ? _file.name : _file.class.to_s) + _file.object_id.to_s}"
-      File.write file, ''
+      meta = MetaClass.new(grammar_path)
     end
 
-    set_metadata!(grammar_path)
-    set_doc!
-  end # def load
+    if File.exists?(_file)
+      doc = sax(_file, meta.history)
+    else
+      doc = Doc.new
+      doc.add_observer meta.history
+      doc.path = _file
+    end
 
-  # @param file [String] creates new XML file at given path
-  # @param content [Doc, Element] XML content with which to initialize new file
-  def create(file, content=nil)
-    File.write(file, content.to_s)
-    @doc = content.is_a?(Doc) ? content : Doc.new
-  end
+    doc.meta = meta
+    doc
+  end # def load
 
   # @param file [String] saves current content XML to given file path (Duxml@file by default)
   def save(file)
@@ -53,45 +44,15 @@ module Duxml
     File.write(file, meta.history.description)
   end
 
-  # @param *Args [*several_variants] @see #load
+  # @param *Args [String, Doc] if string then path to load Doc, else Doc to validate
   # @return [Boolean] whether file passed validation
-  def validate(*args)
-    load(*args) unless args.empty?
+  def validate(path_or_doc, options={})
+    doc = path_or_doc.is_a?(String) ? load(path_or_doc) : path_or_doc
     raise Exception, "grammar not defined!" unless meta.grammar.defined?
     raise Exception, "document not loaded!" unless doc.root
     results = []
     doc.root.traverse do |n| results << meta.grammar.validate(n) unless n.is_a?(String) end
+    puts(doc.history.description) if options[:verbose]
     !results.any? do |r| !r end
   end # def validate
-
-  # @return [Nokogiri::XML::RelaxNG] current metadata's grammar as a relaxng file
-  def relaxng
-    #meta.grammar.relaxng
-  end
-
-  private
-
-  # @return [Doc] @doc is set to either file given by user or new Doc
-  def set_doc!
-    @doc ||= if file.nil?
-               f = Doc.new
-               f.add_observer meta.history
-               f
-             else
-               f = File.open file
-               sax(f, meta.history)
-             end
-  end
-
-  # @return [MetaClass] @meta is set to either file extrapolated from path of XML-content file or new MetaClass
-  def set_metadata!(grammar_path=nil)
-    meta_path = Meta.meta_path(file)
-    if file and File.exists?(meta_path)
-      @meta = sax(File.open(meta_path)).root
-      meta.grammar=grammar_path unless grammar_path.nil? or meta.grammar.defined?
-    else
-      @meta = MetaClass.new(grammar_path)
-    end
-    meta
-  end
 end # module Duxml

@@ -16,7 +16,7 @@ class GrammarTest < Test::Unit::TestCase
   include Saxer
 
   def setup
-    @g = Ox.parse_obj File.read File.expand_path(File.dirname(__FILE__) + '/../../../xml/test_grammar.xml')
+    @g = Ox.parse_obj File.read File.expand_path(File.dirname(__FILE__) + '/../../../xml/dita_grammar.xml')
     @o = Observer.new
     g.add_observer o
   end
