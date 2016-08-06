@@ -15,6 +15,7 @@ module Duxml
       Ox.sax_parse(saxer, io, {convert_special: true, symbolize: false})
       doc = saxer.cursor
       doc.add_observer obs if obs
+      doc.path = path
       doc
     end
 

@@ -1,4 +1,4 @@
-Thu, 16 Jun 2016 16:34:16 -0500
+Fri, 08 Jul 2016 13:48:19 -0500
 lib/duxml/doc/element.rb	Thu, 16 Jun 2016 15:37:26 -0500
 lib/duxml/doc/lazy_ox.rb	Thu, 16 Jun 2016 15:50:56 -0500
 lib/duxml/doc/node_set.rb	Thu, 16 Jun 2016 16:33:57 -0500
@@ -40,4 +40,4 @@ lib/duxml/ruby_ext/object.rb	Tue, 17 May 2016 17:59:12 -0500
 lib/duxml/ruby_ext/regexp.rb	Tue, 17 May 2016 17:59:12 -0500
 lib/duxml/ruby_ext/string.rb	Mon, 13 Jun 2016 17:20:58 -0500
 lib/duxml/saxer.rb	Tue, 17 May 2016 17:59:12 -0500
-lib/duxml.rb	Tue, 14 Jun 2016 16:33:43 -0500
+lib/duxml.rb	Fri, 24 Jun 2016 13:43:00 -0500

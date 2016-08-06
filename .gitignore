@@ -24,3 +24,4 @@ xml/~*
 *.rng
 #coverage
 **/coverage/**
+doc/**

@@ -25,7 +25,7 @@ module Duxml
     # in Ruby mode, args are some combination of new attributes/values and/or child nodes (text or XML) with which to initialize this node
     #
     # @param name [String] name of element, in both Ruby and file modes
-    # @param _line_content [Fixnum, Array, Hash] line number of element file mode; if Array, new child nodes; if Hash, attributes; can be nil
+    # @param _line_or_content [Fixnum, Array, Hash] line number of element file mode; if Array, new child nodes; if Hash, attributes; can be nil
     # @param _col_or_children [Fixnum, Array] column position in file mode; if Array, new child nodes; can be nil
     def initialize(name, _line_or_content=nil, _col_or_children=nil)
       super name

@@ -390,7 +390,7 @@
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File lib/duxml.rb, line 38</span>
+            <pre><span class="ruby-comment"># File lib/duxml.rb, line 37</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>(<span class="ruby-identifier">file</span>, <span class="ruby-identifier">content</span>=<span class="ruby-keyword">nil</span>)
   <span class="ruby-constant">File</span>.<span class="ruby-identifier">write</span>(<span class="ruby-identifier">file</span>, <span class="ruby-identifier">content</span>.<span class="ruby-identifier">to_s</span>)
   <span class="ruby-ivar">@doc</span> = <span class="ruby-identifier">content</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Doc</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">content</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Doc</span>.<span class="ruby-identifier">new</span>
@@ -431,7 +431,6 @@ and content&#39;s XML documents are kept separate)</p>
           <div class="method-source-code" id="load-source">
             <pre><span class="ruby-comment"># File lib/duxml.rb, line 23</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">load</span>(<span class="ruby-identifier">_file</span>, <span class="ruby-identifier">grammar_path</span>=<span class="ruby-keyword">nil</span>)
-  <span class="ruby-identifier">grammar_path</span> = <span class="ruby-constant">DITA_GRAMMAR</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">grammar_path</span> <span class="ruby-operator">==</span> <span class="ruby-value">:dita</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">_file</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>) <span class="ruby-keyword">and</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">_file</span>)
     <span class="ruby-ivar">@file</span> = <span class="ruby-identifier">_file</span>
   <span class="ruby-keyword">else</span>
@@ -472,7 +471,7 @@ error messages</p>
 
           
           <div class="method-source-code" id="log-source">
-            <pre><span class="ruby-comment"># File lib/duxml.rb, line 53</span>
+            <pre><span class="ruby-comment"># File lib/duxml.rb, line 52</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">log</span>(<span class="ruby-identifier">file</span>)
   <span class="ruby-constant">File</span>.<span class="ruby-identifier">write</span>(<span class="ruby-identifier">file</span>, <span class="ruby-identifier">meta</span>.<span class="ruby-identifier">history</span>.<span class="ruby-identifier">description</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -506,7 +505,7 @@ relaxng file</p>
 
           
           <div class="method-source-code" id="relaxng-source">
-            <pre><span class="ruby-comment"># File lib/duxml.rb, line 69</span>
+            <pre><span class="ruby-comment"># File lib/duxml.rb, line 68</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">relaxng</span>
   <span class="ruby-comment">#meta.grammar.relaxng</span>
 <span class="ruby-keyword">end</span></pre>
@@ -540,7 +539,7 @@ relaxng file</p>
 
           
           <div class="method-source-code" id="save-source">
-            <pre><span class="ruby-comment"># File lib/duxml.rb, line 44</span>
+            <pre><span class="ruby-comment"># File lib/duxml.rb, line 43</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">save</span>(<span class="ruby-identifier">file</span>)
   <span class="ruby-identifier">meta_path</span> = <span class="ruby-constant">Meta</span>.<span class="ruby-identifier">meta_path</span>(<span class="ruby-identifier">file</span>)
   <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">meta_path</span>)
@@ -579,7 +578,7 @@ passed validation</p>
 
           
           <div class="method-source-code" id="validate-source">
-            <pre><span class="ruby-comment"># File lib/duxml.rb, line 59</span>
+            <pre><span class="ruby-comment"># File lib/duxml.rb, line 58</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">validate</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
   <span class="ruby-identifier">load</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">empty?</span>
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span>, <span class="ruby-string">&quot;grammar not defined!&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">meta</span>.<span class="ruby-identifier">grammar</span>.<span class="ruby-identifier">defined?</span>

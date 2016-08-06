@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Freescale Semiconductor Inc.
+Copyright (c) 2016 Freescale Semiconductor Inc.
 
 # Duxml for Ruby
 Duxml binds XML to Ruby objects and classes and vice versa, allowing validation of structure and content using Ruby statements, implemented as a wrapper for Ox XML parser.
