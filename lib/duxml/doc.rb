@@ -23,23 +23,32 @@ module Duxml
       add_observer meta.history
     end
 
-    # assigns file path to document
+    # @param _path [String] assigns file path to document, creating it if it does not already exist along with metadata file
     def path=(_path)
-      path = _path
-      # handle case where path already exists?
-    end
-
-    # do we need this??
-    def write_to(path)
-      s = attributes.collect do |k, v| %( #{k}="#{v}") end.join
-      %(<?xml #{s}?>)+nodes.first.to_s
-      File.write(path, s)
-      self
+      @path = _path
+      set_meta _path unless path
+      unless File.exists?(path)
+        write_to(path)
+      end
     end
 
     # @return [String] summary of XML document as Ruby object and description of root element
     def to_s
       "#<#{self.class.to_s} @object_id='#{object_id}' @root='#{root.nil? ? '' : root.description}'>"
+    end
+
+    # @param path_or_obj [String, MetaClass] metadata object itself or path of metadata for this file; if none given, saves existing metadata to file using @path
+    # @return [Doc] self
+    def set_meta(path_or_obj=nil)
+      @meta = case path_or_obj
+                when MetaClass, Element then path_or_obj
+                when String && File.exists?(path_or_obj)
+                  Ox.parse_obj(path_or_obj)
+                else
+                  File.write(Meta.meta_path(path), Ox.dump(meta)) if path
+                  meta
+              end
+      self
     end
 
     # shortcut method @see Meta#grammar
@@ -60,6 +69,18 @@ module Duxml
     # @return [String] one word description of what this object is: 'document'
     def description
       'document'
+    end
+
+    private
+
+    # @param path [String] document's file path
+    # @return [Doc] returns self after writing contents to file
+    def write_to(path)
+      s = attributes.collect do |k, v| %( #{k}="#{v}") end.join
+      File.write(path, %(<?xml #{s}?>\n) + root.to_s)
+      x = meta.xml
+      File.write(Meta.meta_path(path), meta.xml.to_s)
+      self
     end
   end # class Document < Element
 end

@@ -33,10 +33,19 @@ attr_reader :x
     assert_nil x.path
     x.path = 'file.xml'
     assert_equal 'file.xml', x.path
+    assert File.exists? x.path
+    assert File.exists? Meta.meta_path x.path
   end
 
   def test_meta
     assert_kind_of MetaClass, x.meta
+  end
+
+  def test_set_meta
+    m = MetaClass.new
+    d = x.set_meta(m)
+    assert_same m, x.meta
+    assert_same x, d
   end
 
   def test_history
@@ -58,6 +67,7 @@ attr_reader :x
   # down fixture information.
 
   def teardown
-
+    File.delete 'file.xml' if File.exists?('file.xml')
+    File.delete '.file.xml.duxml' if File.exists?('.file.xml.duxml')
   end
 end

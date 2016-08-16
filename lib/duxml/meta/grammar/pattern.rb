@@ -31,6 +31,19 @@ module Duxml
   module Pattern
     include Duxml
 
+    def xml
+      p = Element.new(simple_name)
+      instance_variables.each do |sym|
+        val = instance_variable_get(sym)
+        if val.respond_to?(:nodes)
+          p << val
+        else
+          p[sym.to_s[1..-1].to_sym] = val unless sym == :@observer_peers
+        end
+      end
+      p
+    end
+
     # @return [String] nmtoken name of this pattern without namespace prefix e.g. ChildPattern.new(parent, child).name => 'child_pattern'
     def simple_name
       name.split(':').last

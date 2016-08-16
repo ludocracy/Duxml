@@ -27,6 +27,12 @@ class ElementTest < Test::Unit::TestCase
 
   attr_accessor :x, :o
 
+  def test_index_or_attr
+    assert_equal 'poot', x[:foot]
+    assert_equal 'poot', x['foot']
+    assert_equal 'second', x[1].name
+  end
+
   def test_illegal_text
     f = x.second.fourth
     f << '& <&&'
@@ -75,6 +81,12 @@ class ElementTest < Test::Unit::TestCase
     assert_equal 2, o.args[2]
   end
 
+  def test_replace
+    x[0] = 'coot'
+    x[1] = 'moot'
+    assert_equal '<root foot="poot">cootmoot</root>', x.to_s
+  end
+
   def test_remove
     f = x.second.fourth
     assert_equal f, x.second.delete(f)
@@ -111,6 +123,7 @@ class ElementTest < Test::Unit::TestCase
     assert_equal 'some text', x.nodes[-3]
     assert_equal 'interloper', x.nodes[-2].name
     assert_equal 'more text', x.nodes[-1]
+    x.add(%w(one two three), 1)
   end
 
   def test_detach_nodes

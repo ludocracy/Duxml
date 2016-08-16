@@ -24,7 +24,13 @@ class GrammarTest < Test::Unit::TestCase
   attr_reader :g, :o
 
   def test_xml
-    Grammar.xml.name
+    x = g.xml
+    assert_equal 'grammar', x.name
+    assert_equal 373, x.nodes.size
+    doc = sax File.expand_path(File.dirname(__FILE__) + "/../../../xml/dtd_rule_test/data_and_child.xml")
+    ol = doc.topic.body.ol
+    result = g.validate ol
+    assert_equal true, result
   end
 
   def test_data_and_child

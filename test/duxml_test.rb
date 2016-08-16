@@ -15,23 +15,23 @@ class DuxmlTest < Test::Unit::TestCase
   # to set up fixture information.
   def setup
     @g_path = File.expand_path(File.dirname(__FILE__) + '/../xml/dita_grammar.xml')
-    @g = Ox.parse_obj File.read g_path
     @d_path = File.expand_path(File.dirname(__FILE__) + '/../xml/design.xml')
   end
 
-  attr_reader :g_path, :d_path, :g
+  attr_reader :g_path, :d_path
 
-  def test_load_new
+  def test_load_create_new
     load 'test.xml'
-    assert_equal GrammarClass, doc.grammar.class
+    assert_respond_to doc.grammar, :validate
     assert_equal 0, doc.grammar.nodes.size
-    assert_equal HistoryClass, doc.history.class
+    assert_respond_to doc.history, :update
     assert_equal 0, doc.history.nodes.size
   end
 
   def test_load_with_grammar
     load(d_path, g_path)
     assert_equal 'design', doc.root.name
+    g = doc.grammar
     assert_equal 'topic', doc.grammar[0].subject
     assert_equal doc.grammar, doc.history.grammar
     assert_equal doc.history, doc.grammar.history
@@ -67,7 +67,8 @@ class DuxmlTest < Test::Unit::TestCase
   end
 
   def test_gram_hist_mutual_update
-    load(Doc.new, g_path)
+    doc = Doc.new
+    doc.grammar = g_path
     assert_equal doc.grammar, doc.history.grammar
     assert_equal doc.history, doc.grammar.history
     doc << Element.new('topic')
@@ -107,5 +108,7 @@ class DuxmlTest < Test::Unit::TestCase
 
   def teardown
     # Do nothing
+    File.delete 'test.xml' if File.exists?('test.xml')
+    File.delete '.test.xml.duxml' if File.exists?('.test.xml.duxml')
   end
 end

@@ -27,10 +27,10 @@ module Duxml
 
     def_delegators :@nodes, :[], :each
 
-    # @param harsh_or_kind [Boolean] by default harsh i.e. true so that if this History detects an error it will raise an Exception; otherwise not
-    def initialize(harsh_or_kind = true)
+    # @param strict_or_false [Boolean] by default strict i.e. true so that if this History detects an error it will raise an Exception; otherwise not
+    def initialize(strict_or_false = true)
       @nodes = []
-      @strict = harsh_or_kind
+      @strict = strict_or_false
     end
 
     attr_reader :nodes
@@ -40,15 +40,16 @@ module Duxml
   module History
     # used when creating a new metadata file for a static XML file
     #
-    # @return [Element] XML element for a new <duxml:history> node
-    def self.xml
-      Element.new(name.nmtokenize).extend self
+    # @return [Doc] returns self as XML document
+    def xml
+      h = Element.new('history')
+      events.each do |event| h << event.xml end
+      h
     end
 
     # @return [Boolean] toggles (true by default) whether History will raise exception or tolerate qualify errors
-    def strict?(harsh_or_kind=nil)
-      @strict = harsh_or_kind.nil? ? @strict : harsh_or_kind
-      @strict
+    def strict?(strict_or_false=nil)
+      @strict = strict_or_false.nil? ? @strict : strict_or_false
     end
 
     # @return [ChangeClass, ErrorClass] the latest event

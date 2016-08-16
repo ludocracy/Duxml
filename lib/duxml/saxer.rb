@@ -14,7 +14,7 @@ module Duxml
       saxer = DocuLiner.new(Duxml::Doc.new, obs)
       Ox.sax_parse(saxer, io, {convert_special: true, symbolize: false})
       doc = saxer.cursor
-      doc.add_observer obs if obs
+      doc.add_observer obs if obs and doc.count_observers < 1
       doc.path = path
       doc
     end

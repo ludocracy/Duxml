@@ -22,17 +22,10 @@ module Duxml
       @grammar_path = grammar_path
     end
 
-    attr_reader :history, :grammar
+    attr_reader :history, :grammar, :grammar_path
   end
 
   module Meta
-    # @return [Doc] metadata document
-    def self.xml
-      d = Doc.new << (Element.new(name.nmtokenize) << Grammar.xml << History.xml)
-      d.root.grammar[:ref] = @grammar_path if @grammar_path
-      d
-    end
-
     # @param path [String] path of XML-content file
     # @return [String] full path of metadata file based on content file's name e.g.
     #   'design.xml' => '.design.xml.duxml'
@@ -41,11 +34,29 @@ module Duxml
       "#{dir}/.#{File.basename(path)}#{FILE_EXT}"
     end
 
+    # @param g [String, GrammarClass] either a grammar object or path to one
+    # @return [GrammarClass] grammar object
     def grammar=(g)
-      @grammar = g.is_a?(GrammarClass) ? g : Grammar.import(g)
+      @grammar = if g.is_a?(GrammarClass)
+                   g
+                 else
+                   @grammar_path = g if File.exists?(g)
+                   Grammar.import(g)
+                 end
       history.delete_observers if history.respond_to?(:delete_observers)
       history.add_observer(grammar, :qualify)
       grammar.add_observer history
+      grammar
+    end
+
+    def xml
+      if grammar_path
+        g = Duxml::Element.new('grammar')
+        g[:ref] = grammar_path
+      else
+        g = grammar.xml
+      end
+      Duxml::Element.new('meta') << g << history.xml
     end
   end # module Meta
 end # module Duxml

@@ -24,17 +24,17 @@ module Duxml
     end
 
     if File.exists?(_file)
-      new_doc = sax(_file, meta.history)
+      @doc = sax(_file, meta.history)
     else
-      new_doc = Doc.new
-      new_doc.add_observer meta.history
-      new_doc.path = _file
-    end
+      @doc = Doc.new
+      @doc.path = _file
 
-    @doc = new_doc
+      doc.add_observer meta.history if doc.count_observers < 1
+    end
+    doc.set_meta meta
   end # def load
 
-  # @param file [String] saves current content XML to given file path (Duxml@file by default)
+  # @param file [String] saves current content XML to given file path
   def save(file)
     meta_path = Meta.meta_path(file)
     unless File.exists?(meta_path)
@@ -49,17 +49,28 @@ module Duxml
   end
 
   # @param *Args [String, Doc] if string then path to load Doc, else Doc to validate
+  # @param options [Hash, Symbol] currently just supports suppression of console output of results with :quiet
   # @return [Boolean] whether file passed validation
   def validate(path_or_doc, options={})
     doc = path_or_doc.is_a?(Doc) ? path_or_doc : load(path_or_doc)
-    unless doc.meta.grammar.defined?
+    unless doc.grammar.defined?
       raise Exception, "grammar not defined!" unless options[:grammar]
-      doc.meta.grammar = options[:grammar]
+      doc.grammar = options[:grammar]
     end
     raise Exception, "XML document has no root element!" unless doc.root
     results = []
-    doc.root.traverse do |n| results << doc.meta.grammar.validate(n) unless n.is_a?(String) end
-    puts(doc.history.description) if options[:verbose]
+    doc.root.traverse do |n| results << doc.grammar.validate(n) unless n.is_a?(String) end
+    puts(doc.history.description) unless options[:quiet]
     !results.any? do |r| !r end
   end # def validate
+
+  private
+  # @param g_path [String, GrammarClass] grammar to associate with @doc, which must be set to a Doc and not nil
+  def associate_grammar(g_path)
+    doc.grammar = g_path if g_path
+  end
+
+  def find_meta
+
+  end
 end # module Duxml

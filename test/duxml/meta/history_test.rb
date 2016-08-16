@@ -25,8 +25,15 @@ class HistoryTest < Test::Unit::TestCase
 
   attr_accessor :history, :x
 
+
   def test_xml
-    assert_equal 'duxml:history', History.xml.name
+    h = history.xml
+    assert_equal 'history', h.name
+    assert_equal 0, h.nodes.size
+    x << Element.new('child')
+    h = history.xml
+    assert_equal 'history', h.name
+    assert_equal 1, h.nodes.size
   end
 
   def test_grammar

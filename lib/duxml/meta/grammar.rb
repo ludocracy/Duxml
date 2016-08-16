@@ -50,9 +50,9 @@ module Duxml
       end
     end
 
-    # @return [Element] returns self as XML element e.g. '<duxml:grammar/>'
-    def self.xml
-      Element.new(name.nmtokenize).extend self
+    # @return [Doc] returns self as XML document
+    def xml
+      Element.new('grammar') << rules.collect do |rule| rule.xml end
     end
 
     # @return [History] history that this grammar is currently reporting to

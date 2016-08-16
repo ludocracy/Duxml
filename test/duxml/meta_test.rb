@@ -9,22 +9,23 @@ class MetaTest < Test::Unit::TestCase
   def setup
     @g_path = File.expand_path(File.dirname(__FILE__) + '/../../xml/dita_grammar.xml')
     @m = MetaClass.new(g_path)
-    @x = Meta.xml
   end
 
-  attr_reader :x, :m, :g_path
+  attr_reader :m, :g_path
+
+  def test_xml
+    x = m.xml
+    assert_equal 'meta', x.name
+    assert_equal 'grammar', x.nodes[0].name
+    assert_equal 'history', x.nodes[1].name
+  end
 
   def test_init_no_grammar
     ng = MetaClass.new
     assert_equal false, ng.grammar.defined?
     ng.grammar = g_path
     assert_equal true, ng.grammar.defined?
-  end
-
-  def test_xml
-    assert_equal 'duxml:meta', x.root.name
-    assert_equal 'grammar', x.root.nodes.first.name
-    assert_equal 'duxml:history', x.root.nodes[1].name
+    assert_equal 'dita_grammar.xml', File.basename(ng.grammar_path)
   end
 
   def test_update

@@ -51,18 +51,31 @@ module Duxml
     # @see Ox::Element#<<
     # this override reports changes to history; NewText for Strings, Add for elements
     #
-    # @param obj [Element] element or string to add to this Element
+    # @param obj [Element, Array] element or string to add to this Element; can insert arrays which are always inserted in order
     # @return [Element] self
     def <<(obj)
+      add(obj)
+    end
+
+    # @see #<<
+    # this version of the method allows insertions between existing elements
+    #
+    # @param obj [Element, Array] element or string to add to this Element; can insert arrays which are always inserted in order
+    # @param index [Fixnum] index at which to insert new node; inserts at end of element by default; when inserting arrays, index is incremented for each item to avoid reversing array order
+    # @return [Element] self
+    def add(obj, index=-1)
       case
         when obj.is_a?(Array), obj.is_a?(NodeSet)
-          obj.each do |e| self << e end
+          obj.each_with_index do |e, i|
+            add(e, index == -1 ? index : index+i)
+          end
         when obj.is_a?(String)
           type = :NewText
-          super(obj)
+          nodes.insert(index, obj)
+          report(type, nodes.size-1)
         else
           type = :Add
-          super(obj)
+          nodes.insert(index, obj)
           if nodes.last.count_observers < 1 && @observer_peers
             nodes.last.add_observer(@observer_peers.first.first)
           end
@@ -71,10 +84,21 @@ module Duxml
       self
     end
 
-    # @param attr_sym [String, Symbol] name of attribute
-    # @param val [String]
+    # @param index_or_attr [String, Symbol, Fixnum] string or symbol of attribute or index of child node
+    # @return [Element, String] string if attribute value or text node; Element if XML node
+    def [](index_or_attr)
+      index_or_attr.is_a?(Fixnum) ? nodes[index_or_attr] : super(index_or_attr)
+    end
+
+    # @param attr_sym [String, Symbol, Fixnum] name of attribute or index of child to replace
+    # @param val [String] new attribute value or replacement child node
     # @return [Element] self
     def []=(attr_sym, val)
+      if attr_sym.is_a?(Fixnum)
+        remove nodes[attr_sym]
+        add(val, attr_sym)
+        return self
+      end
       attr = attr_sym.to_s
       raise "argument to [] must be a Symbol or a String." unless attr.is_a?(Symbol) or attr.is_a?(String)
       args = [attr]
