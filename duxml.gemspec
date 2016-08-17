@@ -2,12 +2,12 @@
 # Copyright (c) 2016 Freescale Semiconductor Inc.
 Gem::Specification.new do |spec|
   spec.name          = "duxml"
-  spec.version       = "0.8.0"
+  spec.version       = "0.8.1"
   spec.summary       = "Dynamic Universal XML"
   spec.description   = "see README.md"
   spec.authors       = ["Peter Kong"]
   spec.email         = ["peter.kong@nxp.com"]
-  spec.homepage      = "http://www.github.com/ruby-dita/duxml"
+  spec.homepage      = "http://www.github.com/Ludocracy/duxml"
   spec.license       = "MIT"
 
   spec.required_ruby_version     = '>= 1.9.3'
