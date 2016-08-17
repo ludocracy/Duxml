@@ -17,7 +17,7 @@ module Duxml
     meta_path = Meta.meta_path(_file)
 
     if File.exists?(meta_path)
-      meta = sax(File.open meta_path).root
+      meta = Ox.parse_obj(File.read meta_path)
       meta.grammar = grammar_path unless grammar_path.nil? or meta.grammar.defined?
     else
       meta = MetaClass.new(grammar_path)
@@ -29,18 +29,18 @@ module Duxml
       @doc = Doc.new
       @doc.path = _file
 
+      doc.delete_observers if doc.count_observers > 0 and doc.observer_peers.first.object_id != meta.history.object_id
       doc.add_observer meta.history if doc.count_observers < 1
     end
     doc.set_meta meta
   end # def load
 
   # @param file [String] saves current content XML to given file path
-  def save(file)
-    meta_path = Meta.meta_path(file)
-    unless File.exists?(meta_path)
-      File.new meta_path, 'w+'
-      File.write(meta_path, Meta.xml)
-    end
+  # @param xml [Doc, Element] current Doc by default, but can also be unattached XML Element
+  def save(file, xml=doc)
+    @doc = xml.respond_to?(:root) ? xml : Doc.new << xml
+    doc.write_to file
+    File.write(Meta.meta_path(file), Ox.dump(doc.meta, circular: true))
   end
 
   # @param file [String] output file path for logging human-readable validation error messages

@@ -11,6 +11,8 @@ module Reportable
     nodes.add_observer(obs) if self.respond_to?(:nodes) and nodes.respond_to?(:add_observer)
   end
 
+  attr_reader :observer_peers
+
   private
 
   # all public methods that alter XML must call #report in the full scope of that public method

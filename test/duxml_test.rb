@@ -26,6 +26,13 @@ class DuxmlTest < Test::Unit::TestCase
     assert_equal 0, doc.grammar.nodes.size
     assert_respond_to doc.history, :update
     assert_equal 0, doc.history.nodes.size
+
+    doc << Element.new('root')
+    hs = doc.history.events.size
+    assert_equal 1, hs
+    doc.root[:id] = 'asdfasdf'
+    hs0 = doc.history.events.size
+    assert_equal 2, hs0
   end
 
   def test_load_with_grammar
@@ -81,25 +88,39 @@ class DuxmlTest < Test::Unit::TestCase
   end
 
   def test_validate
-    x = File.expand_path(File.dirname(__FILE__) + '/../xml/dtd_rule_test/error_invalid_attr_val.xml')
+    x = File.expand_path(File.dirname(__FILE__) + '/../xml/dtd_rule_test/error_invalid_attr.xml')
     result = validate(x, grammar: g_path)
     assert_equal false, result
     error = doc.history.latest
     assert_equal ValidateErrorClass, error.class
     assert_equal 5, error.line
     assert_equal 'invalid_attr', error.bad_pattern.attr_name
-    puts doc.history.description
+    assert_equal %(on line 5: <ol>'s attribute [invalid_attr] not allowed by this Grammar.),
+                 doc.history.description[62..-1]
   end
 
-  def test_validate_log
-    # test that validate outputs to STDERR or console, etc., given option :output
-
+  def test_qualify
+    load('test.xml', g_path)
+    doc.history.strict?(false)
+    doc << Element.new('topic')
+    doc.topic[:id] = 'asdf asdf'
+    s1 = doc.history.events.first.description
+    doc.topic << Element.new('bogus')
+    s = doc.history.events.first.description
+    s
   end
 
   def test_save_file
-    # save XML file
+    @doc = Doc.new << Element.new('parent')
+    doc.parent << Element.new('child0')
+    assert_equal 2, doc.history.events.size
+    save 'test0.xml'
+    @doc = nil
 
-    # check to see that metadata also saved
+    load 'test0.xml'
+    assert_equal 2, doc.history.events.size
+    doc.parent << Element.new('child1')
+    assert_equal 3, doc.history.events.size
   end
 
 
@@ -107,8 +128,6 @@ class DuxmlTest < Test::Unit::TestCase
   # down fixture information.
 
   def teardown
-    # Do nothing
-    File.delete 'test.xml' if File.exists?('test.xml')
-    File.delete '.test.xml.duxml' if File.exists?('.test.xml.duxml')
+    FileUtils.rm_f(%w(.test0.xml.duxml .test.xml.duxml test0.xml test.xml))
   end
 end

@@ -71,8 +71,6 @@ module Duxml
       'document'
     end
 
-    private
-
     # @param path [String] document's file path
     # @return [Doc] returns self after writing contents to file
     def write_to(path)

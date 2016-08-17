@@ -36,9 +36,10 @@ module Duxml
       instance_variables.each do |sym|
         val = instance_variable_get(sym)
         if val.respond_to?(:nodes)
-          p << val
+          d = Element.new(sym.to_s) << val
+          p << d
         else
-          p[sym.to_s[1..-1].to_sym] = val unless sym == :@observer_peers
+          p[sym.to_s[1..-1].to_sym] = val.to_s unless sym == :@observer_peers
         end
       end
       p

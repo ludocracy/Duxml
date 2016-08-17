@@ -38,7 +38,7 @@ module Duxml
       attr_accessor :cursor_stack
 
       def start_element(name)
-        cursor << Duxml::Element.new(name, line, column)
+        cursor.nodes.insert(-1, Duxml::Element.new(name, line, column))
         cursor_stack << cursor.nodes.last
       end
 
@@ -47,7 +47,7 @@ module Duxml
       end
 
       def text(str)
-        cursor << str
+        cursor.nodes.insert(-1, str)
       end
 
       def end_element(name)
