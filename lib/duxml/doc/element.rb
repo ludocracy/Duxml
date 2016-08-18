@@ -158,7 +158,7 @@ module Duxml
         current = node_stack.shift
         if current
           yield current
-          node_stack = node_stack.concat(current.nodes) if current.respond_to?(:nodes)
+          node_stack = node_stack.insert(0, *current.nodes) if current.respond_to?(:nodes)
         end
       end
 

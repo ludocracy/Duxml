@@ -70,8 +70,9 @@ class ElementTest < Test::Unit::TestCase
 
   def test_traverse
     res = []
+    x.first << Element.new('three-halves')
     x.traverse do |node| res << node.name if node.is_a?(Element) end
-    assert_equal %w(root first second third fourth), res
+    assert_equal %w(root first three-halves second third fourth), res
   end
 
   def test_add
