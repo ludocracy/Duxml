@@ -73,7 +73,7 @@ module Duxml
   # @param &block [block] if yielding result, yields to given block; if defining new method, block defines its contents
     def method_missing(sym, *args, &block)
       super(sym, *args, &block)
-    rescue NoMethodError
+    rescue NoMethodError, NameError => orig_error
       # handling Constant look up to dynamically extend or add to element
       if lowercase?(sym)
         if (const = look_up_const) and const.is_a?(Module)
@@ -86,13 +86,15 @@ module Duxml
           self.const_set(sym, new_method)
           return new_method.call *args
         else
-          raise NoMethodError, "undefined method `#{sym.to_s}' for #{description}"
+          raise orig_error
         end # if (const = look_up_const) ... elsif block_given? ... else ...
       else
         results = filter(sym, args)
         return results unless block_given?
         results.keep_if do |node| yield(node) end
       end # if lowercase? ... else ...
+    rescue NoMethodError, NameError
+      raise orig_error
     end # def method_missing(sym, *args, &block)
 
     private

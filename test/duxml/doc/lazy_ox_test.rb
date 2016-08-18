@@ -107,6 +107,14 @@ class LazyOxTest < Test::Unit::TestCase
     assert_equal [a.first], x.Two{|n| n[:attr] == 'val'}
   end
 
+  def test_misnavigation
+    %w(one two two two).each do |name| x << El.new(name) end
+    assert_raise(NameError) do x.three end
+
+    o = El.new('outer:inner_fake') << El.new('coo')
+    assert_raise(NoMethodError) do o.coo.yeah end
+  end
+
   def tear_down
   end
 end
