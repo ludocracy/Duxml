@@ -37,11 +37,22 @@ module Duxml
     # @param g [String, GrammarClass] either a grammar object or path to one
     # @return [GrammarClass] grammar object
     def grammar=(g)
-      @grammar = if g.is_a?(GrammarClass)
-                   g
-                 else
-                   @grammar_path = g if File.exists?(g)
-                   Grammar.import(g)
+      @grammar = case g
+                   when GrammarClass then g
+                   when String
+                     if File.exists?(g)
+                       @grammar_path = g
+                       Grammar.import(g)
+                     else
+                       maudule, meth = *g.split('.')
+                       if Module.const_defined?(maudule.to_sym)
+                         Module.const_get(maudule.to_sym).send(meth.to_sym)
+                       else
+                         raise ArgumentError, "#{g.to_s} is not a valid module/grammar symbol"
+                       end
+                     end
+                   else
+                     raise ArgumentError, "#{g.to_s} is not a valid Grammar or path to one"
                  end
       history.delete_observers if history.respond_to?(:delete_observers)
       history.add_observer(grammar, :qualify)
