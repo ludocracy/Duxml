@@ -70,9 +70,13 @@ module Duxml
             add(e, index == -1 ? index : index+i)
           end
         when obj.is_a?(String)
-          type = :NewText
-          nodes.insert(index, obj)
-          report(type, nodes.size-1)
+          if obj[0] == '<' and obj[-1] == '>' and (s = Ox.parse(obj))
+            add dclone s
+          else
+            type = :NewText
+            nodes.insert(index, obj)
+            report(type, nodes.size-1)
+          end
         else
           type = :Add
           nodes.insert(index, obj)
@@ -150,9 +154,9 @@ module Duxml
     # pre-order traverse through this node and all of its descendants
     #
     # @param &block [block] code to execute for each yielded node
-    def traverse(&block)
+    def traverse(node=nil, &block)
       return self.to_enum unless block_given?
-      node_stack = [self]
+      node_stack = [node || self]
 
       until node_stack.empty?
         current = node_stack.shift
@@ -162,7 +166,7 @@ module Duxml
         end
       end
 
-      self if block_given?
+      node || self if block_given?
     end
 
     # traverse through just the children of this node
@@ -176,6 +180,51 @@ module Duxml
     def name_space
       return nil unless (i = name.index(':'))
       name[0..i-1]
+    end
+
+
+    # @param source [Element] if not explicitly provided, creates deep clone of this element; source can be any XML element (not only Duxml) that responds to traverse with pre-order traversal
+    # @return [Element] deep clone of source, including its attributes and recursively cloned children
+    def dclone(source = self)
+      input_stack = []
+      output_stack = []
+      traverse(source) do |node|
+        if node.is_a?(String)
+          output_stack.last << node
+          next
+        end
+        copy = Element.new(node.name, node.attributes)
+        if output_stack.empty?
+          output_stack << copy
+          input_stack << node
+        else
+
+          if input_stack.last.nodes.none? do |n| n === node end
+            input_stack.pop
+            output_stack.pop
+          end
+
+          output_stack.last << copy
+          if node.nodes.any?
+            output_stack << copy
+            input_stack << node
+          end
+
+        end
+      end
+      output_stack.pop
+    end
+
+    # @return [Element] shallow clone of this element, with all attributes and children only if none are Elements
+    def sclone
+      stub = Element.new(name, attributes)
+      stub << nodes if text?
+      stub
+    end
+
+    # @return [true, false] true if all child nodes are text only; false if any child nodes are XML
+    def text?
+      nodes.all? do |node| node.is_a?(String) end
     end
   end # class Element < Node
 end # module Ox

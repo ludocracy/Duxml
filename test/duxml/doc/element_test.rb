@@ -82,6 +82,41 @@ class ElementTest < Test::Unit::TestCase
     assert_equal 2, o.args[2]
   end
 
+  def test_add_xml_from_str
+    x << '<fifth/>'
+    assert_equal '<fifth/>', x.fifth.to_s
+  end
+
+
+  def test_text?
+    e = x.second.third
+    assert_equal true, e.text?
+    e << Element.new('interloper')
+    assert_equal false, e.text?
+  end
+
+  def test_sclone
+    e_clone = x.sclone
+    assert_not_same x, e_clone
+    assert_equal '<root foot="poot"/>', e_clone.to_s
+
+
+    sclone_w_text = x.second.third.sclone
+    assert_equal '<third>some text</third>', sclone_w_text.to_s
+  end
+
+  def test_dclone
+    x << Element.new('fifth')
+    e_clone = x.dclone
+    assert_not_same x, e_clone
+    assert_equal x.to_s, e_clone.to_s
+    assert_not_same x[0], e_clone[0]
+    assert_not_same x[1], e_clone[1]
+    assert_not_same x[2], e_clone[2]
+
+    assert_equal '<root foot="poot"><first/><second><third>some text</third><fourth/></second><fifth/></root>', x.to_s
+  end
+
   def test_replace
     x[0] = 'coot'
     x[1] = 'moot'
