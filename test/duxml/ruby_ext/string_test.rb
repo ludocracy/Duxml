@@ -20,5 +20,7 @@ class StringTest < Test::Unit::TestCase
     assert_equal 'Mail_man', 'mail-man'.constantize
     assert_equal 'mail-man', 'mail-man'.constantize.nmtokenize
     assert_equal 'MailMan', 'MailMan'.constantize
+    assert_equal 'MailMan', 'mailMan'.constantize
+    assert_equal 'mailMan', 'mailMan'.constantize.nmtokenize(:snakeCase), "example of non-reversible transform: 'mailMan' -> 'MailMan'; 'MailMan' -> 'mail_man'"
   end
 end

@@ -43,24 +43,24 @@ class ChildrenRuleTest < Test::Unit::TestCase
   end
 
   def test_validate
-    p = ChildPatternClass.new(x, 1)
+    p = ChildPatternClass.new(x, x.one, 1)
     result = rule.qualify p
     assert_equal true, result
 
     x << Element.new('three')
-    c = ChildPatternClass.new(x, 2)
+    c = ChildPatternClass.new(x, x.three, 2)
     result = rule.qualify c
     assert_equal false, result
     assert_equal :ValidateError, o.args.first
   end
 
   def test_qualify
-    c = AddClass.new(x, 1)
+    c = AddClass.new(x, x.one, 1)
     result = rule.qualify c
     assert_equal true, result
 
     x << Element.new('three')
-    p = AddClass.new(x, 2)
+    p = AddClass.new(x, x.three, 2)
     result = rule.qualify p
     assert_equal false, result
     assert_equal :QualifyError, o.args.first
@@ -76,9 +76,9 @@ class ChildrenRuleTest < Test::Unit::TestCase
 
   def test_applies_to
     subj = Element.new('parent') << Element.new('primus') << Element.new('secundus')
-    assert_equal true, rule.applies_to?(ChildPatternClass.new(subj, 0))
-    assert_equal true, rule.applies_to?(ChildPatternClass.new(subj, 1))
-    assert_equal false, rule.applies_to?(ChildPatternClass.new(Element.new('node'), 0))
+    assert_equal true, rule.applies_to?(ChildPatternClass.new(subj, subj.primus, 0))
+    assert_equal true, rule.applies_to?(ChildPatternClass.new(subj, subj.secundus, 1))
+    assert_equal false, rule.applies_to?(ChildPatternClass.new(Element.new('node'), nil, 0))
   end
 
   def tear_down

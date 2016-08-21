@@ -2,16 +2,21 @@
 
 require File.expand_path(File.dirname(__FILE__) + '/../../lib/duxml/meta')
 require 'test/unit'
+GPATH = File.expand_path(File.dirname(__FILE__) + '/../../xml/dita_grammar.xml')
+module Dita
+  def self.grammar
+    Ox.parse_obj File.read GPATH
+  end
+end
 
 class MetaTest < Test::Unit::TestCase
   include Duxml
   include Ox
   def setup
-    @g_path = File.expand_path(File.dirname(__FILE__) + '/../../xml/dita_grammar.xml')
-    @m = MetaClass.new(g_path)
+    @m = MetaClass.new(GPATH)
   end
 
-  attr_reader :m, :g_path
+  attr_reader :m
 
   def test_xml
     x = m.xml
@@ -20,12 +25,14 @@ class MetaTest < Test::Unit::TestCase
     assert_equal 'history', x.nodes[1].name
   end
 
-  def test_init_no_grammar
+  def test_grammar=
     ng = MetaClass.new
     assert_equal false, ng.grammar.defined?
-    ng.grammar = g_path
+    ng.grammar = GPATH
     assert_equal true, ng.grammar.defined?
     assert_equal 'dita_grammar.xml', File.basename(ng.grammar_path)
+    ng.grammar = 'Dita.grammar'
+    assert_equal 373, ng.grammar.rules.size
   end
 
   def test_update

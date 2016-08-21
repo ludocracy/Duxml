@@ -10,13 +10,13 @@ class AddTest < Test::Unit::TestCase
     e = Element.new('parent', 599)
     e << Element.new('child1', 600)
     @t = Time.now
-    @v = AddClass.new(e, 0)
+    @v = AddClass.new(e, e.child1, 0)
   end
 
   attr_reader :v, :t
 
   def test_description
-    assert_equal %(at #{t} on line 600: <child1> added to <parent>.), v.description
+    assert_equal %(at #{t} on line 600: <child1> added to <parent> at index 0.), v.description
   end
 
   def tear_down

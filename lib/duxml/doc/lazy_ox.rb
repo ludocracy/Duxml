@@ -73,26 +73,30 @@ module Duxml
   # @param &block [block] if yielding result, yields to given block; if defining new method, block defines its contents
     def method_missing(sym, *args, &block)
       super(sym, *args, &block)
-    rescue NoMethodError
-      # handling Constant look up to dynamically extend or add to element
-      if lowercase?(sym)
-        if (const = look_up_const) and const.is_a?(Module)
-          extend const
-          result = method(sym).call(*args)
-          return(result) unless block_given?
-          yield(result)
-        elsif block_given?
-          new_method = proc(&block)
-          self.const_set(sym, new_method)
-          return new_method.call *args
+    rescue Exception => orig_error
+      begin
+        # handling Constant look up to dynamically extend or add to element
+        if lowercase?(sym)
+          if (const = look_up_const) and const.is_a?(Module)
+            extend const
+            result = method(sym).call(*args)
+            return(result) unless block_given?
+            yield(result)
+          elsif block_given?
+            new_method = proc(&block)
+            self.const_set(sym, new_method)
+            return new_method.call *args
+          else
+            raise orig_error
+          end # if (const = look_up_const) ... elsif block_given? ... else ...
         else
-          raise NoMethodError, "undefined method `#{sym.to_s}' for #{description}"
-        end # if (const = look_up_const) ... elsif block_given? ... else ...
-      else
-        results = filter(sym, args)
-        return results unless block_given?
-        results.keep_if do |node| yield(node) end
-      end # if lowercase? ... else ...
+          results = filter(sym, args)
+          return results unless block_given?
+          results.keep_if do |node| yield(node) end
+        end # if lowercase? ... else ...
+      rescue Exception
+        raise orig_error
+      end
     end # def method_missing(sym, *args, &block)
 
     private
@@ -124,16 +128,20 @@ module Duxml
     def look_up_const(maudule = Duxml)
       mod_names = name.split(':')
       until mod_names.empty?
-        word = mod_names.shift
-        k = word.constantize
-        if maudule.const_defined?(k, true) or Module.const_defined?(simple_class, true)
-          const = maudule.const_get(k)
-          if const.is_a?(Module)
-            maudule = const
-          end
-
-          return const if mod_names.empty? and [Module, Class].include?(const.class)
+        k = mod_names.shift.constantize
+        case
+          when maudule.const_defined?(k, true)
+          when Module.const_defined?(simple_class, true)
+            k = simple_class
+          else
+            return nil
         end
+        const = maudule.const_get(k)
+        if const.is_a?(Module)
+          maudule = const
+        end
+
+        return const if mod_names.empty? and [Module, Class].include?(const.class)
       end
       nil
     end

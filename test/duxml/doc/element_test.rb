@@ -70,15 +70,51 @@ class ElementTest < Test::Unit::TestCase
 
   def test_traverse
     res = []
+    x.first << Element.new('three-halves')
     x.traverse do |node| res << node.name if node.is_a?(Element) end
-    assert_equal %w(root first second third fourth), res
+    assert_equal %w(root first three-halves second third fourth), res
   end
 
   def test_add
     x << Element.new('fifth')
     assert_equal :Add, o.args[0]
     assert_equal 'root', o.args[1].name
-    assert_equal 2, o.args[2]
+    assert_equal '<fifth/>', o.args[2].to_s
+  end
+
+  def test_add_xml_from_str
+    x << '<fifth/>'
+    assert_equal '<fifth/>', x.fifth.to_s
+  end
+
+
+  def test_text?
+    e = x.second.third
+    assert_equal true, e.text?
+    e << Element.new('interloper')
+    assert_equal false, e.text?
+  end
+
+  def test_sclone
+    e_clone = x.sclone
+    assert_not_same x, e_clone
+    assert_equal '<root foot="poot"/>', e_clone.to_s
+
+
+    sclone_w_text = x.second.third.sclone
+    assert_equal '<third>some text</third>', sclone_w_text.to_s
+  end
+
+  def test_dclone
+    x << Element.new('fifth')
+    e_clone = x.dclone
+    assert_not_same x, e_clone
+    assert_equal x.to_s, e_clone.to_s
+    assert_not_same x[0], e_clone[0]
+    assert_not_same x[1], e_clone[1]
+    assert_not_same x[2], e_clone[2]
+
+    assert_equal '<root foot="poot"><first/><second><third>some text</third><fourth/></second><fifth/></root>', x.to_s
   end
 
   def test_replace
@@ -115,7 +151,7 @@ class ElementTest < Test::Unit::TestCase
     assert_equal 'some text', x.nodes.last
     assert_equal :NewText, o.args[0]
     assert_equal 'root', o.args[1].name
-    assert_equal 2, o.args[2]
+    assert_equal 'some text', o.args[2]
   end
 
   def test_add_array

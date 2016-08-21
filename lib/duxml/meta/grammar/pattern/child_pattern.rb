@@ -10,14 +10,14 @@ module Duxml
     include ChildPattern
 
     # @param _subject [Duxml::Element] parent element
-    # @param _index [Fixnum] index of child
-    def initialize(_subject, _index)
-      @index = _index
+    # @param _child [Fixnum] child node
+    def initialize(_subject, _child, _index)
+      @child, @index = _child, _index
       super _subject
     end
 
     alias_method :parent, :subject
-    attr_reader :index
+    attr_reader :child, :index
   end # class ChildPatternClass
 
   # null child patterns represent and parent child relationship where the child
@@ -27,14 +27,9 @@ module Duxml
 
     # @param _subject [Element] parent element
     # @param _missing_child [String] nmtoken for missing child element
-    def initialize(_subject, _missing_child)
-      @missing_child = _missing_child
+    def initialize(_subject, _missing_child, _index=-1)
+      @missing_child, @index = _missing_child, _index
       super _subject
-    end
-
-    # @return [-1] class must respond to #index; only NullChildPatternClass is allowed to have a negative index
-    def index
-      -1
     end
 
     def relationship
@@ -46,19 +41,12 @@ module Duxml
       "#{subject.description} #{relationship} <#{child}>"
     end
 
-    attr_reader :missing_child
+    attr_reader :missing_child, :index
     alias_method :child, :missing_child
     alias_method :parent, :subject
   end
 
   module ChildPattern
-    # @return [Element] child element
-    def child
-      subject.nodes[index]
-    end
-
-    alias_method :object, :child
-
     # @return [String] describes relationship between parent and child
     def relationship
       "#{(index+1).ordinal_name} #{super}"

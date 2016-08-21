@@ -9,28 +9,23 @@ module Duxml
   class AddClass < ChangeClass
     include Add
 
-    def initialize(_subject, _index)
+    def initialize(_subject, _child, _index)
       super _subject
-      @index = _index
+      @child, @index = _child, _index
     end
 
+    attr_reader :subject, :child, :index
     alias_method :parent, :subject
-    attr_reader :subject, :index
+    alias_method :object, :child
   end
 
   module Add
     def description
-      %(#{super} #{child.description} added to #{parent.description}.)
+      %(#{super} #{child.description} added to #{parent.description} at index #{index == -1 ? '0' : index.to_s}.)
     end
 
     def parent
       subject
     end
-
-    def child
-      subject.nodes[index]
-    end
-
-    alias_method :object, :child
   end # class Add
 end # module Duxml

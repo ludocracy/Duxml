@@ -74,7 +74,7 @@ class LazyOxTest < Test::Unit::TestCase
   end
 
   def test_no_method_error
-    assert_raise(NameError, "undefined method `asdf' for class `Duxml::El'") do x.asdf end
+    assert_raise(NoMethodError, "undefined method `asdf' for class `Duxml::El'") do x.asdf end
   end
 
   def test_class_match_array
@@ -105,6 +105,14 @@ class LazyOxTest < Test::Unit::TestCase
 
     #selected by block
     assert_equal [a.first], x.Two{|n| n[:attr] == 'val'}
+  end
+
+  def test_misnavigation
+    %w(one two two two).each do |name| x << El.new(name) end
+    assert_raise(NoMethodError) do x.three end
+
+    o = El.new('outer:inner_fake') << El.new('coo')
+    assert_raise(NoMethodError) do o.coo.yeah end
   end
 
   def tear_down
