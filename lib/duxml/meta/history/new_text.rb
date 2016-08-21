@@ -11,12 +11,12 @@ module Duxml
 
     # @param _subject [Duxml::Element] doc that has gained new text
     # @param _index [Fixnum] index of new text node
-    def initialize(_subject, _index)
+    def initialize(_subject, _str, _index)
       super _subject
-      @index = _index
+      @index, @str = _index, _str
     end
 
-    attr_reader :index
+    attr_reader :index, :str
   end
 
   module NewText

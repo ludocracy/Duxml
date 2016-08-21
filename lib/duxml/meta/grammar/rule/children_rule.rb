@@ -122,10 +122,9 @@ module Duxml
       child_index == object.index
     end
 
-    # @return [Fixnum] index of child currenlty being scanned
+    # @return [Fixnum] index of child currently being scanned
     def child_index
-      i = object.parent.nodes.size-child_stack.size-1
-      i
+      object.parent.nodes.size-child_stack.size-1
     end
 
     # @return [Element] previous element to the one being scanned

@@ -75,16 +75,15 @@ module Duxml
           else
             type = :NewText
             nodes.insert(index, obj)
-            report(type, nodes.size-1)
           end
         else
           type = :Add
           nodes.insert(index, obj)
-          if nodes.last.count_observers < 1 && @observer_peers
-            nodes.last.add_observer(@observer_peers.first.first)
+          if obj.count_observers < 1 && @observer_peers
+            obj.add_observer(@observer_peers.first.first)
           end
       end
-      report(type, nodes.size - 1)
+      report(type, obj, index)
       self
     end
 

@@ -10,12 +10,13 @@ module Duxml
 
     # @param _subject [Ox::Element] parent of text node
     # @param _index [Fixnum] index of text node
-    def initialize(_subject, _index)
+    def initialize(_subject, _str, _index)
       @index = _index
+      @string = _str
       super _subject
     end
 
-    attr_reader :subject, :index
+    attr_reader :subject, :index, :str
   end
 
   module TextPattern

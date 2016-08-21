@@ -44,7 +44,7 @@ module Duxml
         if node.name == child_rule.subject
           return child_rule.required_children.collect do |required_child_type|
             unless node.nodes.any? do |n| n.name == required_child_type end
-              NullChildPatternClass.new(node, required_child_type)
+              NullChildPatternClass.new(node, required_child_type, -1)
             end
           end.compact
         end
@@ -59,9 +59,9 @@ module Duxml
       node.nodes.collect do |child|
         i += 1
         if child.is_a?(String)
-          TextPatternClass.new(node, i)
+          TextPatternClass.new(node, child, i)
         else
-          ChildPatternClass.new(node, i)
+          ChildPatternClass.new(node, child, i)
         end
       end
     end # def get_child_patterns

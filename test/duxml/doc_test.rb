@@ -51,7 +51,7 @@ attr_reader :x
   def test_history
     assert_kind_of HistoryClass, x.history
     x << Element.new('root')
-    assert_equal '<root> added to document.', x.history[0].description[30..-1]
+    assert_equal '<root> added to document at index 0.', x.history[0].description[30..-1]
   end
 
   def test_grammar

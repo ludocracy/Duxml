@@ -79,7 +79,7 @@ class ElementTest < Test::Unit::TestCase
     x << Element.new('fifth')
     assert_equal :Add, o.args[0]
     assert_equal 'root', o.args[1].name
-    assert_equal 2, o.args[2]
+    assert_equal '<fifth/>', o.args[2].to_s
   end
 
   def test_add_xml_from_str
@@ -151,7 +151,7 @@ class ElementTest < Test::Unit::TestCase
     assert_equal 'some text', x.nodes.last
     assert_equal :NewText, o.args[0]
     assert_equal 'root', o.args[1].name
-    assert_equal 2, o.args[2]
+    assert_equal 'some text', o.args[2]
   end
 
   def test_add_array

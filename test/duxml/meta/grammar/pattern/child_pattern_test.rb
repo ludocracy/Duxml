@@ -9,7 +9,7 @@ class ChildPatternTest < Test::Unit::TestCase
   def setup
     e = Element.new('parent')
     e << Element.new('child')
-    @p = ChildPatternClass.new(e, 0)
+    @p = ChildPatternClass.new(e, e.child, 0)
     @q = NullChildPatternClass.new(e, 'missing')
   end
 
