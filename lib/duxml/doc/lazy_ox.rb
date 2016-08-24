@@ -72,6 +72,13 @@ module Duxml
   # @param *args [*several_variants] either arguments to method or initializing values for instance of given class
   # @param &block [block] if yielding result, yields to given block; if defining new method, block defines its contents
     def method_missing(sym, *args, &block)
+      if respond_to?(:name)
+        ns = name.split(':').first
+        if ns and ns != name
+          target = locate(ns + ':' + sym.to_s).first
+          return target if target
+        end
+      end
       super(sym, *args, &block)
     rescue Exception => orig_error
       begin
