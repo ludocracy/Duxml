@@ -107,6 +107,12 @@ class LazyOxTest < Test::Unit::TestCase
     assert_equal [a.first], x.Two{|n| n[:attr] == 'val'}
   end
 
+  def test_namespaced_children
+    r = El.new('asdf:root') << El.new('asdf:child')
+    c = r.child
+    assert_equal 'asdf:child', c.value
+  end
+
   def test_misnavigation
     %w(one two two two).each do |name| x << El.new(name) end
     assert_raise(NoMethodError) do x.three end

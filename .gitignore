@@ -25,3 +25,4 @@ xml/~*
 #coverage
 **/coverage/**
 doc/**
+/doc/
