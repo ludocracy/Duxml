@@ -117,6 +117,14 @@ class ElementTest < Test::Unit::TestCase
     assert_equal '<root foot="poot"><first/><second><third>some text</third><fourth/></second><fifth/></root>', x.to_s
   end
 
+  def test_set_doc
+    x.set_doc!('doc_placeholder')
+    assert_equal 'doc_placeholder', x.doc
+    assert_equal 'doc_placeholder', x.second.doc
+    x << Element.new('fifth')
+    assert_equal 'doc_placeholder', x.fifth.doc
+  end
+
   def test_replace
     x[0] = 'coot'
     x[1] = 'moot'

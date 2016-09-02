@@ -80,6 +80,12 @@ module Duxml
       File.write(Meta.meta_path(path), meta.xml.to_s)
       self
     end
+
+    def <<(obj)
+      super(obj)
+      obj.set_doc! self
+      self
+    end
   end # class Document < Element
 end
 

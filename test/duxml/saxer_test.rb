@@ -22,6 +22,20 @@ class SaxerTest < Test::Unit::TestCase
     assert_equal 6, doc.design.legal_parent.legal_child.line
   end
 
+  def test_parse_string
+    xml = sax '<root foot="poot">some text<child/></root>'
+    assert_equal 'root', xml.name
+    assert_equal 'poot', xml['foot']
+    assert_equal 'some text', xml.first
+    assert_equal 'child', xml[1].name
+  end
+
+  def test_doc
+    doc = sax(File.expand_path(File.dirname(__FILE__) + '/../../xml/design.xml'))
+    assert_same doc, doc.root.doc
+    assert_same doc, doc.root.nodes.first.doc
+  end
+
   def teardown
     # Do nothing
   end
