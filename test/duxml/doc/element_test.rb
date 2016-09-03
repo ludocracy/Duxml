@@ -83,10 +83,16 @@ class ElementTest < Test::Unit::TestCase
   end
 
   def test_add_xml_from_str
+    # TODO do we need this functionality? it does not work for nested XML elements!!!
     x << '<fifth/>'
     assert_equal '<fifth/>', x.fifth.to_s
   end
 
+  def test_delete_attr
+    assert_equal '<root foot="poot"/>', x.stub.to_s
+    x[:foot] = nil
+    assert_equal '<root/>', x.stub.to_s
+  end
 
   def test_text?
     e = x.second.third
