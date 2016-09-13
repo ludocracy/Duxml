@@ -26,3 +26,5 @@ xml/~*
 **/coverage/**
 doc/**
 /doc/
+
+*.gem

@@ -2,7 +2,7 @@
 # Copyright (c) 2016 Freescale Semiconductor Inc.
 Gem::Specification.new do |spec|
   spec.name          = "duxml"
-  spec.version       = "0.8.8"
+  spec.version       = "0.8.9"
   spec.summary       = "Dynamic Universal XML"
   spec.description   = "see README.md"
   spec.authors       = ["Peter Kong"]
