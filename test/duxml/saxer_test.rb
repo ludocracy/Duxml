@@ -1,12 +1,7 @@
 # Copyright (c) 2016 Freescale Semiconductor Inc.
 
 require File.expand_path(File.dirname(__FILE__) + '/../../lib/duxml/saxer')
-
 require 'test/unit'
-
-class Doc < ::Ox::Document
-
-end
 
 class SaxerTest < Test::Unit::TestCase
   include Duxml::Saxer

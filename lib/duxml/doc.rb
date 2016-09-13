@@ -13,11 +13,15 @@ module Duxml
     # meta data for this Doc; contains reference to grammar if it exists and history
     @meta
 
-    attr_reader :meta, :path
+    # hash of all unique-id elements within document; gets initialized as each is searched for
+    @id_hash
+
+    attr_reader :meta, :path, :id_hash
 
     def initialize(prolog={})
       super(prolog)
       self[:version] ||= '1.0'
+      @id_hash = {}
       @meta = MetaClass.new
       @nodes = NodeSet.new(self)
       add_observer meta.history
@@ -85,6 +89,19 @@ module Duxml
       super(obj)
       obj.set_doc! self
       self
+    end
+
+    # @param id [String, Symbol] document-unique id attribute value
+    # @return [Element, NilClass] found element or nil if not found
+    def find_by_id(id)
+      id_str = id.to_s
+      return @id_hash[id_str] if @id_hash[id_str]
+      root.traverse do |node|
+        if node.respond_to?(:nodes) and node[:id] == id_str
+          return @id_hash[id_str] = node
+        end
+      end
+      nil
     end
   end # class Document < Element
 end
