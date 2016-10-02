@@ -7,17 +7,21 @@ module Duxml
     @io
 
     attr_accessor :io
-    # @param path [String] path of file to parse
-    # @return [Doc] finished document with each Element's line and column info added
-    def sax(path, obs=nil)
-      io = File.open path
+    # @param path_or_xml [String] path of file to parse or XML as String
+    # @return [Doc, Element] finished document with each Element's line and column info added
+    def sax(path_or_xml, obs=nil)
+      doc_or_no = File.exists?(path_or_xml)
+      io = doc_or_no ? File.open(path_or_xml): path_or_xml
       saxer = DocuLiner.new(Duxml::Doc.new, obs)
       Ox.sax_parse(saxer, io, {convert_special: true, symbolize: false})
       doc = saxer.cursor
+      return doc.root unless doc_or_no
       doc.add_observer obs if obs and doc.count_observers < 1
-      doc.path = path
+      doc.path = path_or_xml
       doc
     end
+
+    alias_method :parse, :sax
 
     class DocuLiner < ::Ox::Sax
       # @param doc [Ox::Document] document that is being constructed as XML is parsed
@@ -39,7 +43,7 @@ module Duxml
 
       def start_element(name)
         cursor.nodes.insert(-1, Duxml::Element.new(name, line, column))
-        cursor_stack << cursor.nodes.last
+        cursor_stack << cursor.nodes.last.set_doc!(cursor_stack.first)
       end
 
       def attr(name, val)

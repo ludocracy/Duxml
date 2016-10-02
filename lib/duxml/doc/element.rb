@@ -18,6 +18,15 @@ module Duxml
   class Element < ::Ox::Element
     include ElementGuts
 
+    # line number
+    @line
+
+    # column
+    @column
+
+    # document to which this Element belongs
+    @doc
+
     # operates in two modes:
     # - from Ruby
     # - from file
@@ -27,6 +36,7 @@ module Duxml
     # @param name [String] name of element, in both Ruby and file modes
     # @param _line_or_content [Fixnum, Array, Hash] line number of element file mode; if Array, new child nodes; if Hash, attributes; can be nil
     # @param _col_or_children [Fixnum, Array] column position in file mode; if Array, new child nodes; can be nil
+    # @return [Element] new XML Element
     def initialize(name, _line_or_content=nil, _col_or_children=nil)
       super name
       @line = _line_or_content if _line_or_content.respond_to?(:%)
@@ -37,7 +47,7 @@ module Duxml
       @nodes = NodeSet.new(self) if @nodes.empty?
     end
 
-    attr_reader :line, :column
+    attr_reader :line, :column, :doc
 
     attr_accessor :nodes
   end
@@ -46,6 +56,17 @@ module Duxml
     # @return [Boolean] whether or not this has been written to file
     def abstract?
       line < 0 || column < 0
+    end
+
+    # @param _doc [Doc] document to which this element belongs - recursively applies to all descendants of this node
+    # @return [Element] self
+    def set_doc!(_doc)
+      @doc = _doc
+      traverse do |node|
+        next if node === self or node.is_a?(String)
+        node.set_doc!(_doc)
+      end
+      self
     end
 
     # @see Ox::Element#<<
@@ -82,6 +103,7 @@ module Duxml
           if obj.count_observers < 1 && @observer_peers
             obj.add_observer(@observer_peers.first.first)
           end
+          obj.set_doc! @doc
       end
       report(type, obj, index)
       self
@@ -99,14 +121,14 @@ module Duxml
     def []=(attr_sym, val)
       if attr_sym.is_a?(Fixnum)
         remove nodes[attr_sym]
-        add(val, attr_sym)
+        add(val, attr_sym) if val
         return self
       end
       attr = attr_sym.to_s
       raise "argument to [] must be a Symbol or a String." unless attr.is_a?(Symbol) or attr.is_a?(String)
       args = [attr]
       args << attributes[attr] if attributes[attr]
-      super(attr, val)
+      val.nil? ? @attributes.delete(attr) : super(attr, val)
       type = args.size == 1 ? :NewAttr : :ChangeAttr
       report(type, *args)
       self
