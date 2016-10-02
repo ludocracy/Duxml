@@ -12,7 +12,7 @@ class QualifyErrorTest < Test::Unit::TestCase
     e << Element.new('child1', 600)
     e << Element.new('what', 601)
     rule = ChildrenRuleClass.new('parent', 'child1|child2')
-    pattern = ChildPatternClass.new(e, 1)
+    pattern = ChildPatternClass.new(e, e[1], 1)
     @t = Time.now
     @q = QualifyErrorClass.new(rule, pattern)
   end

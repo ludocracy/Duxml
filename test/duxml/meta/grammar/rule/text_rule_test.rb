@@ -35,15 +35,15 @@ class TextRuleTest < Test::Unit::TestCase
   end
 
   def test_applies_to
-    assert_equal true, rule.applies_to?(Duxml::TextPatternClass.new(x, 0))
-    assert_equal true, rule.applies_to?(Duxml::NewTextClass.new(x, 0))
+    assert_equal true, rule.applies_to?(Duxml::TextPatternClass.new(x, 'some text', 0))
+    assert_equal true, rule.applies_to?(Duxml::NewTextClass.new(x, 'new text', 0))
     assert_equal true, rule.applies_to?(Duxml::ChangeTextClass.new(x, 0, 'old text'))
-    assert_equal false, rule.applies_to?(Duxml::NewTextClass.new(Element.new('foo'), 0))
+    assert_equal false, rule.applies_to?(Duxml::NewTextClass.new(Element.new('foo'), '', 0))
   end
 
   def test_qualify
     x << 'identifier'
-    a = Duxml::NewTextClass.new(x, 0)
+    a = Duxml::NewTextClass.new(x, 'new text', 0)
     assert_equal true, rule.qualify(a)
 
     x.nodes[0]= 'not identifier'
@@ -62,11 +62,11 @@ class TextRuleTest < Test::Unit::TestCase
 
   def test_validate
     x << 'identifier'
-    a = Duxml::TextPatternClass.new(x, 0)
+    a = Duxml::TextPatternClass.new(x, 'some text', 0)
     assert_equal true, rule.qualify(a)
 
     x.nodes[0] = 'not identifier'
-    a = Duxml::TextPatternClass.new(x, 1)
+    a = Duxml::TextPatternClass.new(x, 'some text', 1)
     assert_equal false, rule.qualify(a)
     assert_equal :ValidateError, o.args.first
   end

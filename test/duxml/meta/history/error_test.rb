@@ -13,7 +13,7 @@ class ErrorTest < Test::Unit::TestCase
     p << Element.new('child1', 600)
     p << Element.new('what', 601)
     rule = ChildrenRuleClass.new('parent', 'child1|child2')
-    pattern = ChildPatternClass.new(p, 1)
+    pattern = ChildPatternClass.new(p, p[1], 1)
     @e = ErrorClass.new(rule, pattern)
   end
 

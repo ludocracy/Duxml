@@ -9,7 +9,7 @@ class TextPatternTest < Test::Unit::TestCase
   def setup
     e = Element.new('parent')
     e << 'some text'
-    @p = TextPatternClass.new(e, 0)
+    @p = TextPatternClass.new(e, 'some text', 0)
   end
 
   attr_reader :p

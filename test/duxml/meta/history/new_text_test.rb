@@ -10,7 +10,7 @@ class NewTextTest < Test::Unit::TestCase
     e = Element.new('parent', 599)
     e << 'new text'
     @t = Time.now
-    @v = NewTextClass.new(e, 0)
+    @v = NewTextClass.new(e, 'new text', 0)
   end
 
   attr_reader :v, :t
