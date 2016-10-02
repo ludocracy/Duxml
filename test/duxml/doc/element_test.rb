@@ -92,6 +92,9 @@ class ElementTest < Test::Unit::TestCase
     assert_equal '<root foot="poot"/>', x.stub.to_s
     x[:foot] = nil
     assert_equal '<root/>', x.stub.to_s
+
+    x[:null] = nil
+    assert_equal '<root/>', x.stub.to_s
   end
 
   def test_text?
