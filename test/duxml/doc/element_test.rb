@@ -146,6 +146,14 @@ class ElementTest < Test::Unit::TestCase
     assert_equal 'cork', o.args[2]
   end
 
+  def test_nil_attr
+    x[:null] = nil
+    assert_equal '<root foot="poot"/>', x.stub.to_s
+
+    x[:foot] = nil
+    assert_equal '<root/>', x.stub.to_s
+  end
+
   def test_add_text
     x << 'some text'
     assert_equal 'some text', x.nodes.last

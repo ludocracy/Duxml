@@ -106,7 +106,7 @@ module Duxml
       raise "argument to [] must be a Symbol or a String." unless attr.is_a?(Symbol) or attr.is_a?(String)
       args = [attr]
       args << attributes[attr] if attributes[attr]
-      super(attr, val)
+      val.nil? ? @attributes.delete(attr) : super(attr, val)
       type = args.size == 1 ? :NewAttr : :ChangeAttr
       report(type, *args)
       self
