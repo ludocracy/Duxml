@@ -15,8 +15,11 @@ module Duxml
 
     # hash of all unique-id elements within document; gets initialized as each is searched for
     @id_hash
+    
+    #Doc Type of the File
+    @doc_type
 
-    attr_reader :meta, :path, :id_hash
+    attr_reader :meta, :path, :id_hash, :doc_type
 
     def initialize(prolog={})
       super(prolog)
@@ -24,6 +27,7 @@ module Duxml
       @id_hash = {}
       @meta = MetaClass.new
       @nodes = NodeSet.new(self)
+      @doc_type = nil
       add_observer meta.history
     end
 
@@ -54,6 +58,10 @@ module Duxml
               end
       self
     end
+    
+    def doctype=(doct)
+      @doc_type = doct
+    end
 
     # shortcut method @see Meta#grammar
     def grammar
@@ -79,7 +87,8 @@ module Duxml
     # @return [Doc] returns self after writing contents to file
     def write_to(path)
       s = attributes.collect do |k, v| %( #{k}="#{v}") end.join
-      File.write(path, %(<?xml #{s}?>\n) + root.to_s)
+      doctype_s = @doc_type.nil? ? '' : @doc_type.to_s
+      File.write(path, %(<?xml #{s}?>\n) + doctype_s + root.to_s)
       x = meta.xml
       File.write(Meta.meta_path(path), meta.xml.to_s)
       self
