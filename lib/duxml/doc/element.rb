@@ -52,6 +52,43 @@ module Duxml
     attr_accessor :nodes
   end
 
+  class DocTypeT < ::Ox::DocType
+    include ElementGuts
+    # line number
+    @line
+
+    # column
+    @column
+
+    # document to which this Element belongs
+    @doc
+
+    # name of the document
+    attr_reader :name, :attributes, :nodes
+    
+    # operates in two modes:
+    # - from Ruby
+    # - from file
+    # in file mode, args provide Element's line and column location then freezes each Fixnum so it cannot be overwritten
+    # in Ruby mode, args are some combination of new attributes/values and/or child nodes (text or XML) with which to initialize this node
+    #
+    # @param name [String] name of element, in both Ruby and file modes
+    # @param _line_or_content [Fixnum, Array, Hash] line number of element file mode; if Array, new child nodes; if Hash, attributes; can be nil
+    # @param _col_or_children [Fixnum, Array] column position in file mode; if Array, new child nodes; can be nil
+    # @return [Element] new XML Element
+    def initialize(value)
+      super value
+      @name = 'DocType'
+      @attributes = []
+      @nodes = []
+    end
+    
+    def to_s
+      "<!DOCTYPE #{value}>\n"
+    end
+    
+  end
+  
   module ElementGuts
     # @return [Boolean] whether or not this has been written to file
     def abstract?
