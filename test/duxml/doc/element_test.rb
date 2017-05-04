@@ -87,6 +87,11 @@ class ElementTest < Test::Unit::TestCase
     x << '<fifth/>'
     assert_equal '<fifth/>', x.fifth.to_s
   end
+  
+  def test_add_xml_from_str_mixed
+    x << "<new_test>See <ph audience=\"internal\">Something here</ph> cool things.</new_test>"
+    assert_equal "<new_test>See <ph audience=\"internal\">Something here</ph> cool things.</new_test>", x.new_test.to_s
+  end
 
   def test_delete_attr
     assert_equal '<root foot="poot"/>', x.stub.to_s
