@@ -215,7 +215,6 @@ module Duxml
     def traverse(node=nil, &block)
       return self.to_enum unless block_given?
       node_stack = [node || self]
-
       until node_stack.empty?
         current = node_stack.shift
         if current
@@ -223,7 +222,6 @@ module Duxml
           node_stack = node_stack.insert(0, *current.nodes) if current.respond_to?(:nodes)
         end
       end
-
       node || self if block_given?
     end
 
@@ -243,36 +241,53 @@ module Duxml
 
     # @param source [Element] if not explicitly provided, creates deep clone of this element; source can be any XML element (not only Duxml) that responds to traverse with pre-order traversal
     # @return [Element] deep clone of source, including its attributes and recursively cloned children
+#    def dclone(source = self)
+#      input_stack = []
+#      output_stack = []
+#      traverse(source) do |node|
+#        if node.is_a?(String)
+#          # binding.pry if debug
+#          output_stack.last << node
+#          next
+#        end
+#        copy = Element.new(node.name, node.attributes)
+#        if output_stack.empty?
+#          output_stack << copy
+#          input_stack << node
+#        else
+#
+#          if input_stack.last.nodes.none? do |n| n === node end
+#            input_stack.pop
+#            output_stack.pop
+#          end
+#
+#          output_stack.last << copy
+#          if node.nodes.any?
+#            output_stack << copy
+#            input_stack << node
+#          end
+#
+#        end
+#      end
+#      output_stack.first
+#    end
+
+    # The above code did the following:
+    #  -- source:  <p> See <xref href="abc.xml#id"> for more information</xref>.</p>
+    #  returned:  <p> See <xref href="abc.xml#id"> for more information.</xref></p>
+        
     def dclone(source = self)
-      input_stack = []
-      output_stack = []
-      traverse(source) do |node|
-        if node.is_a?(String)
-          output_stack.last << node
-          next
-        end
-        copy = Element.new(node.name, node.attributes)
-        if output_stack.empty?
-          output_stack << copy
-          input_stack << node
+      new_elem = Element.new(source.name, source.attributes)
+      source.nodes.each do |node|
+        if node.is_a? String
+          new_elem << node
         else
-
-          if input_stack.last.nodes.none? do |n| n === node end
-            input_stack.pop
-            output_stack.pop
-          end
-
-          output_stack.last << copy
-          if node.nodes.any?
-            output_stack << copy
-            input_stack << node
-          end
-
+          new_elem << dclone(node)
         end
       end
-      output_stack.pop
+      new_elem
     end
-
+    
     # @return [Element] shallow clone of this element, with all attributes and children only if none are Elements
     def sclone
       stub = Element.new(name, attributes)
