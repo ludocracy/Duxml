@@ -8,7 +8,6 @@ require File.expand_path(File.dirname(__FILE__) + '/grammar/rule/attrs_rule')
 require File.expand_path(File.dirname(__FILE__) + '/grammar/rule/value_rule')
 require File.expand_path(File.dirname(__FILE__) + '/../doc/lazy_ox')
 require File.expand_path(File.dirname(__FILE__) + '/grammar/rule/text_rule')
-require File.expand_path(File.dirname(__FILE__) + '/grammar/relax_ng')
 require 'forwardable'
 
 module Duxml
@@ -19,7 +18,6 @@ module Duxml
     include Spreadsheet
     include PatternMaker
     include LazyOx
-    include RelaxNG
   end
   # contains Duxml::Rules and can apply them by validating XML or qualifying user input
   # reporting Duxml::Errors to History as needed
