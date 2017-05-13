@@ -18,6 +18,7 @@ module Duxml
 
     alias_method :parent, :subject
     attr_reader :child, :index
+    alias_method :object, :child
   end # class ChildPatternClass
 
   # null child patterns represent and parent child relationship where the child

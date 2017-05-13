@@ -15,7 +15,7 @@ module Duxml
   module QualifyError
 
     def description
-      rule_str = rule.respond_to?(:validate) ? 'not allowed by this Grammar' : "violates #{rule.description}"
+      rule_str = rule.respond_to?(:get_rule) ? 'not allowed by this Grammar' : "violates #{rule.description}"
       "Qualify Error #{super} #{bad_change.description} #{rule_str}."
     end
   end # module QualifyError
