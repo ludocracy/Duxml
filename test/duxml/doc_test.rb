@@ -65,7 +65,8 @@ attr_reader :x
   end
 
   def test_find_by_id
-    doc = sax '../../xml/design.xml'
+    path = File.expand_path(File.dirname(__FILE__) + '/../../xml/design.xml')
+    doc = sax path
     target = doc.find_by_id('legal_child0')
     assert_same target, doc.root.legal_parent.legal_child
   end

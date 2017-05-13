@@ -10,7 +10,7 @@ class Observer
   attr_reader :args
 end
 
-class DocTypeTest < MiniTest::Unit::TestCase
+class DocTypeTest < Test::Unit::TestCase
   include Duxml
 
   def setup
