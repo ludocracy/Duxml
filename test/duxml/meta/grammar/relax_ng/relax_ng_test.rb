@@ -8,7 +8,7 @@ class RelaxNGTest < Test::Unit::TestCase
   include Nokogiri
 
   def test_relaxng
-    test_grammar = Grammar.import File.expand_path(File.dirname(__FILE__) + '/../../../../../xml/test_grammar.xml')
+    test_grammar = Grammar.import File.expand_path(File.dirname(__FILE__) + '/../../../../../xml/dita_grammar.xml')
     rng = test_grammar.relaxng File.expand_path(File.dirname(__FILE__) + '/../../../../../xml/test.rng')
     s = rng.to_s
     assert Nokogiri::XML::RelaxNG.new s

@@ -22,10 +22,10 @@ class RelaxNGTest < Test::Unit::TestCase
     assert_equal 'zeroOrMore', nodes.first.element.zeroOrMore.name
   end
 
-  def test_bang_child
-    g << ChildrenRuleClass.new('bang', 'child?')
+  def test_optional_child
+    g << ChildrenRuleClass.new('optional', 'child?')
     rng = g.relaxng
-    nodes = rng.root.Define(name: 'bang')
+    nodes = rng.root.Define(name: 'optional')
     assert_equal 1, nodes.size
     assert_equal 1, nodes.first.nodes.size
     assert_equal 'optional', nodes.first.element.optional.name

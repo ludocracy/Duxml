@@ -14,7 +14,7 @@ module Duxml
 
   module ValidateError
     def description
-      rule_str = rule.respond_to?(:validate) ? 'not allowed by this Grammar' : "violates #{rule.description}"
+      rule_str = rule.respond_to?(:get_rule) ? 'not allowed by this Grammar' : "violates #{rule.description}"
       "Validate Error #{super} #{bad_pattern.description} #{rule_str}."
     end
   end # module ValidateError
