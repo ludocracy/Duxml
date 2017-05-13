@@ -1,6 +1,6 @@
 # Copyright (c) 2016 Freescale Semiconductor Inc.
 
-require File.expand_path(File.dirname(__FILE__) + '/../../lib/duxml/doc')
+require File.expand_path(File.dirname(__FILE__) + '/../../lib/duxml/saxer')
 require 'test/unit'
 
 class Observer
@@ -12,6 +12,7 @@ end
 
 class DocTest < Test::Unit::TestCase
   include Duxml
+  include Saxer
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
@@ -61,6 +62,12 @@ attr_reader :x
   def test_assign_grammar
     x.grammar = GrammarClass.new
     assert_kind_of GrammarClass, x.grammar
+  end
+
+  def test_find_by_id
+    doc = sax '../../xml/design.xml'
+    target = doc.find_by_id('legal_child0')
+    assert_same target, doc.root.legal_parent.legal_child
   end
 
   # Called after every test method runs. Can be used to tear

@@ -83,10 +83,21 @@ class ElementTest < Test::Unit::TestCase
   end
 
   def test_add_xml_from_str
+    # TODO do we need this functionality? it does not work for nested XML elements!!!
     x << '<fifth/>'
     assert_equal '<fifth/>', x.fifth.to_s
   end
+  
+  def test_add_xml_from_str_mixed
+    x << "<new_test>See <ph audience=\"internal\">Something here</ph> cool things.</new_test>"
+    assert_equal "<new_test>See <ph audience=\"internal\">Something here</ph> cool things.</new_test>", x.new_test.to_s
+  end
 
+  def test_delete_attr
+    assert_equal '<root foot="poot"/>', x.stub.to_s
+    x[:foot] = nil
+    assert_equal '<root/>', x.stub.to_s
+  end
 
   def test_text?
     e = x.second.third
@@ -115,6 +126,14 @@ class ElementTest < Test::Unit::TestCase
     assert_not_same x[2], e_clone[2]
 
     assert_equal '<root foot="poot"><first/><second><third>some text</third><fourth/></second><fifth/></root>', x.to_s
+  end
+
+  def test_set_doc
+    x.set_doc!('doc_placeholder')
+    assert_equal 'doc_placeholder', x.doc
+    assert_equal 'doc_placeholder', x.second.doc
+    x << Element.new('fifth')
+    assert_equal 'doc_placeholder', x.fifth.doc
   end
 
   def test_replace

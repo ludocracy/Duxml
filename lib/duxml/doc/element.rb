@@ -18,6 +18,15 @@ module Duxml
   class Element < ::Ox::Element
     include ElementGuts
 
+    # line number
+    @line
+
+    # column
+    @column
+
+    # document to which this Element belongs
+    @doc
+
     # operates in two modes:
     # - from Ruby
     # - from file
@@ -27,6 +36,7 @@ module Duxml
     # @param name [String] name of element, in both Ruby and file modes
     # @param _line_or_content [Fixnum, Array, Hash] line number of element file mode; if Array, new child nodes; if Hash, attributes; can be nil
     # @param _col_or_children [Fixnum, Array] column position in file mode; if Array, new child nodes; can be nil
+    # @return [Element] new XML Element
     def initialize(name, _line_or_content=nil, _col_or_children=nil)
       super name
       @line = _line_or_content if _line_or_content.respond_to?(:%)
@@ -37,15 +47,63 @@ module Duxml
       @nodes = NodeSet.new(self) if @nodes.empty?
     end
 
-    attr_reader :line, :column
+    attr_reader :line, :column, :doc
 
     attr_accessor :nodes
   end
 
+  class DocTypeT < ::Ox::DocType
+    include ElementGuts
+    # line number
+    @line
+
+    # column
+    @column
+
+    # document to which this Element belongs
+    @doc
+
+    # name of the document
+    attr_reader :name, :attributes, :nodes
+    
+    # operates in two modes:
+    # - from Ruby
+    # - from file
+    # in file mode, args provide Element's line and column location then freezes each Fixnum so it cannot be overwritten
+    # in Ruby mode, args are some combination of new attributes/values and/or child nodes (text or XML) with which to initialize this node
+    #
+    # @param name [String] name of element, in both Ruby and file modes
+    # @param _line_or_content [Fixnum, Array, Hash] line number of element file mode; if Array, new child nodes; if Hash, attributes; can be nil
+    # @param _col_or_children [Fixnum, Array] column position in file mode; if Array, new child nodes; can be nil
+    # @return [Element] new XML Element
+    def initialize(value)
+      super value
+      @name = 'DocType'
+      @attributes = []
+      @nodes = []
+    end
+    
+    def to_s
+      "<!DOCTYPE #{value}>\n"
+    end
+    
+  end
+  
   module ElementGuts
     # @return [Boolean] whether or not this has been written to file
     def abstract?
       line < 0 || column < 0
+    end
+
+    # @param _doc [Doc] document to which this element belongs - recursively applies to all descendants of this node
+    # @return [Element] self
+    def set_doc!(_doc)
+      @doc = _doc
+      traverse do |node|
+        next if node === self or node.is_a?(String)
+        node.set_doc!(_doc)
+      end
+      self
     end
 
     # @see Ox::Element#<<
@@ -82,6 +140,7 @@ module Duxml
           if obj.count_observers < 1 && @observer_peers
             obj.add_observer(@observer_peers.first.first)
           end
+          obj.set_doc! @doc
       end
       report(type, obj, index)
       self
@@ -99,14 +158,14 @@ module Duxml
     def []=(attr_sym, val)
       if attr_sym.is_a?(Fixnum)
         remove nodes[attr_sym]
-        add(val, attr_sym)
+        add(val, attr_sym) if val
         return self
       end
       attr = attr_sym.to_s
       raise "argument to [] must be a Symbol or a String." unless attr.is_a?(Symbol) or attr.is_a?(String)
       args = [attr]
       args << attributes[attr] if attributes[attr]
-      super(attr, val)
+      val.nil? ? @attributes.delete(attr) : super(attr, val)
       type = args.size == 1 ? :NewAttr : :ChangeAttr
       report(type, *args)
       self
@@ -156,7 +215,6 @@ module Duxml
     def traverse(node=nil, &block)
       return self.to_enum unless block_given?
       node_stack = [node || self]
-
       until node_stack.empty?
         current = node_stack.shift
         if current
@@ -164,7 +222,6 @@ module Duxml
           node_stack = node_stack.insert(0, *current.nodes) if current.respond_to?(:nodes)
         end
       end
-
       node || self if block_given?
     end
 
@@ -184,36 +241,53 @@ module Duxml
 
     # @param source [Element] if not explicitly provided, creates deep clone of this element; source can be any XML element (not only Duxml) that responds to traverse with pre-order traversal
     # @return [Element] deep clone of source, including its attributes and recursively cloned children
+#    def dclone(source = self)
+#      input_stack = []
+#      output_stack = []
+#      traverse(source) do |node|
+#        if node.is_a?(String)
+#          # binding.pry if debug
+#          output_stack.last << node
+#          next
+#        end
+#        copy = Element.new(node.name, node.attributes)
+#        if output_stack.empty?
+#          output_stack << copy
+#          input_stack << node
+#        else
+#
+#          if input_stack.last.nodes.none? do |n| n === node end
+#            input_stack.pop
+#            output_stack.pop
+#          end
+#
+#          output_stack.last << copy
+#          if node.nodes.any?
+#            output_stack << copy
+#            input_stack << node
+#          end
+#
+#        end
+#      end
+#      output_stack.first
+#    end
+
+    # The above code did the following:
+    #  -- source:  <p> See <xref href="abc.xml#id"> for more information</xref>.</p>
+    #  returned:  <p> See <xref href="abc.xml#id"> for more information.</xref></p>
+        
     def dclone(source = self)
-      input_stack = []
-      output_stack = []
-      traverse(source) do |node|
-        if node.is_a?(String)
-          output_stack.last << node
-          next
-        end
-        copy = Element.new(node.name, node.attributes)
-        if output_stack.empty?
-          output_stack << copy
-          input_stack << node
+      new_elem = Element.new(source.name, source.attributes)
+      source.nodes.each do |node|
+        if node.is_a? String
+          new_elem << node
         else
-
-          if input_stack.last.nodes.none? do |n| n === node end
-            input_stack.pop
-            output_stack.pop
-          end
-
-          output_stack.last << copy
-          if node.nodes.any?
-            output_stack << copy
-            input_stack << node
-          end
-
+          new_elem << dclone(node)
         end
       end
-      output_stack.pop
+      new_elem
     end
-
+    
     # @return [Element] shallow clone of this element, with all attributes and children only if none are Elements
     def sclone
       stub = Element.new(name, attributes)

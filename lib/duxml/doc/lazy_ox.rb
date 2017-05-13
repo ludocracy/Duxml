@@ -23,43 +23,40 @@ module Duxml
   #
   #     Element.new('throwable').throw => 'throwing!!'
   #
-  #   if symbol name matches a class then method yields to block or returns as array child nodes that matches class
+  #   if symbol name matches a module then method yields to block or returns as array child nodes that matches class
   #   you can further refine search results by adding the symbol of the child instance variable, including name, by which to filter
   #   if block given, returns first child for which block evaluates to true
   #
   #   e.g.
-#       class Child; end
+  #     module Child; end
   #
   #     n = Element.new('node')
   #     n << 'text'
   #     n << Element.new('child')
   #     n << Element.new('child')
-  #     n.Element                                                      # returns Array of Element nodes
+  #     n.Child                                                      # returns Array of Element nodes
   #         => [#<Duxml::Element:0x0002 @value="child" ...>,
   #             #<Duxml::Element:0x0003 @value="child" ...>]
   #
-  #     n.Element.each do |child| child << 'some text' end              # adding some text
-  #         => ['text',
+  #     n.Child.each do |child| child << 'some text' end              # adding some text
+  #         => ['textsome text',
   #             #<Duxml::Element:0x0002 @value="child" ... @nodes=['some text']>,
   #             #<Duxml::Element 0x0003 @value="child" ... @nodes=['some text']>]
   #
-  #     n.Element do |child| child.nodes.first == 'some text' end                             # returns all children for which block is true
-  #         => [#<Duxml::Element:0x0002 @value="child" ... @nodes=['some text']>]
-  #
-  #     %w(bar mar).each_with_index do |x, i| next if i.zero?; n.Child[:foo] = x end        # adding some attributes
-  #         => ['text',
+  #     %w(bar mar).each_with_index do |x, i| next if i.zero?; n.Child[i][:foo] = x end        # adding some attributes
+  #         => ['textsome text',
   #             #<Duxml::Element:0x0002 @value="child" @attributes={foo: 'bar'} ...>,
   #             #<Duxml::Element:0x0003 @value="child" @attributes={foo: 'mar'} ...>]
   #
-  #     n.Element(:foo)                                                                       # returns array of Child nodes with attribute :foo
+  #     n.Child(:foo)                                                                       # returns array of Child nodes with attribute :foo
   #         => [#<Duxml::Element:0x0002 @value="child" @attributes={foo: 'bar'} ...>,
   #             #<Duxml::Element:0x0003 @value="child" @attributes={foo: 'mar'} ...>]
   #
-  #     n.Element(foo: 'bar')                                                                 # returns array of Child nodes with attribute :foo equal to 'bar'
+  #     n.Child(foo: 'bar')                                                                 # returns array of Child nodes with attribute :foo equal to 'bar'
   #         => [#<Duxml::Element:0xfff @value="child" @attributes={foo: 'bar'} ...>]
   #
   #
-  #   if element name has no matching Class or Module in namespace,
+  #   if element name has no matching Module in namespace,
   #     if symbol is lower case, it is made into a method, given &block as definition, then called with *args
   #       e.g. n.change_color('blue') do |new_color|  => #<Duxml::Element:0xfff @value="node" @attributes={color: 'blue'} @nodes=[]>
   #              @color = new_color

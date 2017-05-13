@@ -3,11 +3,8 @@
   <legal_parent>
     <also_legal_child/>
     <illegal_child/>
-    <legal_child visible="nope">text content</legal_child>
+    <legal_child id="legal_child0">text content</legal_child>
   </legal_parent>
 
 <illegal_content>&amp;&amp; &lt;</illegal_content>
-<temporary/>
-<temporary/>
-<temporary/>
 </design>
